@@ -1,0 +1,31 @@
+.navbar-nav .nav-item{
+    position: relative;
+}
+
+.navbar-nav .nav-item .nav-item{
+    position: relative;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #9EBADF ;
+}
+
+.navbar-nav .nav-item .nav-link::before{
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    bottom: 0;
+    left: 50%;
+    border-radius: 50%;
+    background-color: #9EBADF;
+    opacity: 0;
+}
+.navbar-nav .nav-item .nav-link:active:before,
+.navbar-nav .nav-item .nav-link:hover:before{
+    opacity: 1;
+}
+
+.dropdown{
+    position: relative;
+}
