@@ -83,26 +83,26 @@ function Article() {
 
 
     const handleKeyDown = (e) => {
-      if (e.key !== 'Enter') return
-      const value = e.target.value;
-      if (!value.trim()) return
-      setTags([...tags, value])
+        if (e.key !== 'Enter') return
+        const value = e.target.value;
+        if (!value.trim()) return
+        setTags([...tags, value])
 
-    //   setFormData({ ...formData, keyWords: value });
-    //   const { keyWords } = formData;
+        //   setFormData({ ...formData, keyWords: value });
+        //   const { keyWords } = formData;
 
-      setKeyWords( ...keyWords, [value] )
+        setKeyWords(...keyWords, [value])
 
 
 
-      e.target.value = ''
+        e.target.value = ''
     }
     const addFile = useSelector((state) => state.addFile);
     const { loading, error, files } = addFile;
 
 
     const removeTag = (index) => {
-      setTags(tags.filter((el, i) => i !== index))
+        setTags(tags.filter((el, i) => i !== index))
     }
 
 
@@ -182,7 +182,7 @@ function Article() {
                                                                 <div class="col-sm-9 text-secondary">
 
                                                                     <select className="select" name="typeArticle"
-                                                                    required
+                                                                        required
                                                                         onChange={(e) => {
                                                                             setTypeArticle(e.target.value);
 
@@ -216,7 +216,7 @@ function Article() {
 
                                                                                         <input type="checkbox" className='checkbox__box'
                                                                                             value={item._id}
-                                                                                            
+
                                                                                             name={attributesAticle}
                                                                                             onChange={(e) => {
                                                                                                 // Destructuring
@@ -248,6 +248,7 @@ function Article() {
                                                         </div>
 
                                                         <div class="row mb-3">
+
                                                             <div class="col-sm-3">
                                                                 <h6 class="mb-0">Title</h6>
                                                             </div>
@@ -386,48 +387,48 @@ function Article() {
                                                                 />
                                                             </div>
                                                         </div>
-                                                    
-                                                <div class="">
-                                    <div className='row  '>
-                                        <div className="col-md-15 offset-md">
-                                            <div className='card'>
 
-                                                <label>Article Requirements</label>
-                                                <p style={{ fontSize: '10px' }}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
-                                                <div style={{ display: "inline-flex" }}>
+                                                        <div class="">
+                                                            <div className='row  '>
+                                                                <div className="col-md-15 offset-md">
+                                                                    <div className='card'>
 
-                                                    {rules?.map((item, i) => (
+                                                                        <label>Article Requirements</label>
+                                                                        <p style={{ fontSize: '10px' }}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
+                                                                        <div style={{ display: "inline-flex" }}>
 
-                                                        <div key={i}>
+                                                                            {rules?.map((item, i) => (
 
-                                                            <input type="checkbox" className='checkbox'
-                                                                value={item._id}
-                                                                name={rulesChecked}
-                                                                required
-                                                                onChange={(e) => {
-                                                                    // Destructuring
-                                                                    const { value, checked } = e.target;
-                                                                    console.log(`${value} is ${checked}`);
+                                                                                <div key={i}>
 
-                                                                    // Case 1 : The user checks the box
-                                                                    if (checked) {
-                                                                        setRulesChecked(e.target.value);
+                                                                                    <input type="checkbox" className='checkbox'
+                                                                                        value={item._id}
+                                                                                        name={rulesChecked}
+                                                                                        required
+                                                                                        onChange={(e) => {
+                                                                                            // Destructuring
+                                                                                            const { value, checked } = e.target;
+                                                                                            console.log(`${value} is ${checked}`);
 
-                                                                    }
-                                                                }
-                                                                }
-                                                            />
-                                                            <label className='col' id="check" style={{ fontSize: '10px' }}  >{item.label}  </label>
+                                                                                            // Case 1 : The user checks the box
+                                                                                            if (checked) {
+                                                                                                setRulesChecked(e.target.value);
+
+                                                                                            }
+                                                                                        }
+                                                                                        }
+                                                                                    />
+                                                                                    <label className='col' id="check" style={{ fontSize: '10px' }}  >{item.label}  </label>
+                                                                                </div>
+                                                                            ))
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    ))
-                                                    }
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
+                                                        <div class="row">
                                                             <div class="col-sm-3"></div>
                                                             <div class="col-sm-5 text-secondary">
                                                                 <div className="footer">
@@ -452,7 +453,7 @@ function Article() {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
                         </div>

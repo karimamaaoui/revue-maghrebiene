@@ -35,7 +35,7 @@ import Feed from "./Components/feed/feed"
 
 import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
 
-
+import Feedback from './Components/feedback/Feedback'
 
 export default function RoutesList() {
 
@@ -47,6 +47,7 @@ export default function RoutesList() {
         <Route path="/search" element={<Search />} />
         <Route path="/home" element={<PageAccueil />} />
 
+        <Route path="/feedback" element={<Feedback />} />
 
         <Route path="/article" element={<Article />} />
         <Route path="/t" element={<Feed />} />
