@@ -1,6 +1,6 @@
 const Files = require('../model/Files');
 const uploadFile = require("../middleware/uploadImage");
-const { forEach, keysIn } = require('lodash');
+const { forEach, keysIn, ary } = require('lodash');
 const User = require('../model/user');
 const Type = require('../model/Type');
 //const { body, body } = require('express-validator');
@@ -139,11 +139,11 @@ const multipleUpload = async (req, res) => {
       const typeArticle = req.body.typeArticle;
       const attributesAticle = req.body.attributesAticle;
       const userId = await User.findOne(req.decoded);
-      const like= req.body.like;
+      const like = req.body.like;
       const authors = userId.id;
-      const comments= req.body.comments;
-      const rulesChecked= req.body.rulesChecked;
-      const view=req.body.view;
+      const comments = req.body.comments;
+      const rulesChecked = req.body.rulesChecked;
+      const view = req.body.view;
 
 
       //   const readerRole = await Role.findOne({name:'Reader'});
@@ -206,11 +206,11 @@ const multipleUpload = async (req, res) => {
               rule: rules,
               article: articleFile._id,
               checked: true
-      
+
             })
             ruleRespected.save()
-      
-                console.log("data file ", articleFile)
+
+            console.log("data file ", articleFile)
             res.send(data);
           });
 
@@ -231,7 +231,7 @@ const multipleUpload = async (req, res) => {
             valign: 'center'
           })
         }
-        
+
         doc.end()
         const type = await Type.findById(req.body.typeArticle);
         const typearti = type.label;
@@ -240,15 +240,15 @@ const multipleUpload = async (req, res) => {
         articleFile
           .save(articleFile)
           .then(data => {
-             // console.log("data file ", articleFile)
-             const ruleRespected = RuleRespected({
+            // console.log("data file ", articleFile)
+            const ruleRespected = RuleRespected({
               rule: rules,
               article: articleFile._id,
               checked: true
-      
+
             })
             ruleRespected.save()
-      
+
             res.send(data);
           });
 
@@ -283,53 +283,53 @@ const getAllArticle = (
     try {
       // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
       //   sort({ createdAt: -1 }).limit(limit).skip(skip);
-    articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
-    console.log('eeeeeeeeeeeeeeeeeeee',articles)
+      console.log('eeeeeeeeeeeeeeeeeeee', articles)
 
 
-    if (!articles.length > 0) {
-      articles = await Files.find({}).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      if (!articles.length > 0) {
+        articles = await Files.find({}).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
-    }
-    return res.status(200).json(articles);
+      }
+      return res.status(200).json(articles);
 
-   
+
     } catch (err) {
       return res.status(500).json({ msg: err });
     }
   });
 
-  const getAllArticleByAttribute = (
-    async (req, res) => {
-  
-      const currentPage = req.query.currentPage;
-      const total = await Files.countDocuments({});
-      console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
-  
-      const query = req.query.new;
-      const limit = 5;
-      const skip = (currentPage - 1) * limit;
-  
-      console.log('inside get list of files', skip);
-      try {
-        articles = await Files.find({ attributesAticle: req.query.attribut }).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
-  
-      console.log('eeeeeeeeeeeeeeeeeeee',req.query.attribut)
-  
-  
+const getAllArticleByAttribute = (
+  async (req, res) => {
+
+    const currentPage = req.query.currentPage;
+    const total = await Files.countDocuments({});
+    console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
+
+    const query = req.query.new;
+    const limit = 5;
+    const skip = (currentPage - 1) * limit;
+
+    console.log('inside get list of files', skip);
+    try {
+      articles = await Files.find({ attributesAticle: req.query.attribut }).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+
+      console.log('eeeeeeeeeeeeeeeeeeee', req.query.attribut)
+
+
       if (!articles.length > 0) {
         articles = await Files.find({}).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
-  
+
       }
       return res.status(200).json(articles);
-  
-     
-      } catch (err) {
-        return res.status(500).json({ msg: err });
-      }
-    });
-  
+
+
+    } catch (err) {
+      return res.status(500).json({ msg: err });
+    }
+  });
+
 
 const uploadArticleFile = async (req, res) => {
   if (!req.files) {
@@ -395,63 +395,63 @@ const retrieveAllFiles = (async (req, res) => {
   }
 });
 //download an article
-const download = async (req, res) => {
-  
-  //const fileName = req.params.name;
-  const _id = req.params.id;
-  const file = Files.findById(_id)
-    .then(data => {
-      // if (!data) {
-      //   res.status(404).send({
-      //     message: `Cannot download Article with id=${id}. Maybe Article was not found!`
-      //   });
-      // }
-      // else {
-      //   // res.send(data.multiple_files);
-        let ids = []
-        const cursor = data.multiple_files;
+// const download = async (req, res) => {
+
+//   //const fileName = req.params.name;
+//   const _id = req.params.id;
+//   const file = Files.findById(_id)
+//     .then(data => {
+//       // if (!data) {
+//       //   res.status(404).send({
+//       //     message: `Cannot download Article with id=${id}. Maybe Article was not found!`
+//       //   });
+//       // }
+//       // else {
+//       //   // res.send(data.multiple_files);
+//       let ids = []
+//       const cursor = data.multiple_files;
 
 
-        cursor.forEach((doc) => {
-          ids.push(
-            doc.name,
+//       cursor.forEach((doc) => {
+//         ids.push(
+//           doc.name,
 
 
-          );
-        });
-        console.log("data.multiple_files.name", (ids))
-        const fileName = ids[0];
-        const fileName2 = ids[1];
-        // console.log('article',article)
-        const directoryPath = path.join(__dirname, "../uploads/");
-        console.log("directoryPath from downolad", fileName);
+//         );
+//       });
+//       console.log("data.multiple_files.name", (ids))
+//       const fileName = ids[0];
+//       const fileName2 = ids[1];
+//       // console.log('article',article)
+//       const directoryPath = path.join(__dirname, "../uploads/");
+//       console.log("directoryPath from downolad", fileName);
 
-        if (fileName.includes('pdf') || fileName.includes('docx')) {
-          res.download(directoryPath + `${fileName}`, fileName, (err) => {
-            if (err) {
-              res.status(500).send({
-                message: "Could not download the file. " + err,
-              }).clone().catch(function(err){ console.log(err)})
+//       if (fileName.includes('pdf') || fileName.includes('docx')) {
+//         res.download(directoryPath + `${fileName}`, fileName, (err) => {
+//           if (err) {
+//             res.status(500).send({
+//               message: "Could not download the file. " + err,
+//             }).clone().catch(function (err) { console.log(err) })
 
-            }
-          })
-        }
+//           }
+//         })
+//       }
 
-        else {
+//       else {
 
-          res.download(directoryPath + `${fileName}.pdf`, fileName, (err) => {
-            if (err) {
-              res.status(500).send({
-                message: "Could not download the file. " + err,
-              }).clone().catch(function(err){ console.log(err)})
+//         res.download(directoryPath + `${fileName}.pdf`, fileName, (err) => {
+//           if (err) {
+//             res.status(500).send({
+//               message: "Could not download the file. " + err,
+//             }).clone().catch(function (err) { console.log(err) })
 
-            }
-          })
-        
+//           }
+//         })
 
-      }
-    })
-};
+
+//       }
+//     })
+// };
 
 const PDFParse = require('pdf2json');
 const Rule = require('../model/Rule');
@@ -491,8 +491,8 @@ const readFiles = async (req, res) => {
         // console.log('dfdfdkfdfldflfhnf', ext);
 
         //  console.log('article', fileName)
-        const directoryPath = path.join(__dirname, "../uploads/" );
-           console.log("directoryPath from downolad", directoryPath)
+        const directoryPath = path.join(__dirname, "../uploads/");
+        console.log("directoryPath from downolad", directoryPath)
 
         // fs.readFile(directoryPath, 'utf-8', function (err, files) {
         //   if (err) {
@@ -516,24 +516,24 @@ const readFiles = async (req, res) => {
         //      res.writeHead(200, { "Content-type": `text/html` });
         //    res.end(files)
         //   //   console.log(files)
-          
+
         //      //  res.status(200).send(files);
-            
+
         //   }
         // }
         // );
 
-       let fileSync= fs.readdirSync(directoryPath);
-       console.log('fileSync: ', fileSync)
-      
-       let pdfParser =new PDFParse(fileSync)
-      
+        let fileSync = fs.readdirSync(directoryPath);
+        console.log('fileSync: ', fileSync)
+
+        let pdfParser = new PDFParse(fileSync)
+
         //let pdfParser=new PDFParse (this,1);
-        pdfParser.loadPDF(directoryPath +"notes.pdf")
-       console.log('Parse: ', pdfParser)
-       console.log('PDF pages: ', pdfParser.numpages)
-   
-       console.log('File content: ', pdfParser.info)
+        pdfParser.loadPDF(directoryPath + "notes.pdf")
+        console.log('Parse: ', pdfParser)
+        console.log('PDF pages: ', pdfParser.numpages)
+
+        console.log('File content: ', pdfParser.info)
 
       }
     }
@@ -818,56 +818,56 @@ const addLike = (async (req, res) => {
   const article = await Files.findById(req.params.id);
   if (!article.like.includes(req.decoded.id)) {
     await article.updateOne({ $push: { like: req.decoded.id } },
-  
-  
-  // Files.findByIdAndUpdate(req.params.id,{
-  //   $push: {like:req.decoded.id}
-  // },
-  {
-    new :true
-  })
 
-  .then(data => {
-    if (!data) {
-      res.status(404).send({
-        message: `Cannot update Article with . Maybe Article was not found!`
+
+      // Files.findByIdAndUpdate(req.params.id,{
+      //   $push: {like:req.decoded.id}
+      // },
+      {
+        new: true
+      })
+
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: `Cannot update Article with . Maybe Article was not found!`
+          });
+        } else res.send({ message: "Article was updated successfully." });
+      })
+
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Article with id="
+        });
       });
-    } else res.send({ message: "Article was updated successfully." });
-  })
-  
-  .catch(err => {
-    res.status(500).send({
-      message: "Error updating Article with id=" 
-    });
-  });
 
   }
 })
 
 const addView = (async (req, res) => {
 
-  Files.findByIdAndUpdate(req.params.id,{
-     $push: {view:req.decoded.id}
-   },
-  {
-    new :true
-  })
+  Files.findByIdAndUpdate(req.params.id, {
+    $push: { view: req.decoded.id }
+  },
+    {
+      new: true
+    })
 
-  .then(data => {
-    if (!data) {
-      res.status(404).send({
-        message: `Cannot update View with . Maybe Article was not found!`
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update View with . Maybe Article was not found!`
+        });
+      } else res.send({ message: `View was updated successfully.${data.view.length}` });
+    })
+
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating View with id="
       });
-    } else res.send({ message: `View was updated successfully.${data.view.length}` });
-  })
-  
-  .catch(err => {
-    res.status(500).send({
-      message: "Error updating View with id=" 
     });
-  });
 
-  
+
 })
 
 
@@ -876,29 +876,29 @@ const addView = (async (req, res) => {
 const addComment = (async (req, res) => {
 
   const comment = {
-    text:req.body.text,
-    postedBy:req.decoded.id
-}
-  Files.findByIdAndUpdate(req.params.id,{
-    $push:{comments:comment}
-  },{
-    new :true
+    text: req.body.text,
+    postedBy: req.decoded.id
+  }
+  Files.findByIdAndUpdate(req.params.id, {
+    $push: { comments: comment }
+  }, {
+    new: true
   })
-  //.populate("comments.postedBy","_id name")
-  //.populate("postedBy","_id name")
+    //.populate("comments.postedBy","_id name")
+    //.populate("postedBy","_id name")
 
-  .then(data => {
-    if (!data) {
-      res.status(404).send({
-        message: `Cannot update Article with . Maybe Article was not found!`
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Article with . Maybe Article was not found!`
+        });
+      } else res.send({ message: "Article was updated successfully." });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Article with id="
       });
-    } else res.send({ message: "Article was updated successfully." });
-  })
-  .catch(err => {
-    res.status(500).send({
-      message: "Error updating Article with id=" 
     });
-  });
 
 
 })
@@ -911,22 +911,100 @@ const getArticle = (async (req, res) => {
   console.log('inside find article by id');
 
   try {
-      /*   const user= await User.findById({user:req.decoded.id } );
-         console.log("inside get user",user)
-         console.log("inside get user id ",req.decoded.id)
-         */
-      const article = await Files.findById(req.params.id);
-      console.log("inside get user", article)
+    /*   const user= await User.findById({user:req.decoded.id } );
+       console.log("inside get user",user)
+       console.log("inside get user id ",req.decoded.id)
+       */
+    const article = await Files.findById(req.params.id);
+    console.log("inside get user", article)
 
-      res.status(200).json(article);
+    res.status(200).json(article);
 
 
   } catch (err) {
-      res.status(500).json({ msg: "Unauthorized" });
+    res.status(500).json({ msg: "Unauthorized" });
   }
 
 
 });
+
+// filter by date
+var moment = require('moment');
+const { file } = require('pdfkit');
+
+const fitlerByDate = (async (req, res) => {
+
+  try {
+
+    // var dateTimeTofilter = new Date() - week;
+    // console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd datetimetofilter",dateTimeTofilter);
+
+    // var filter = { "createdAt": { $lte: dateTimeTofilter } };
+
+    // console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd",filter);
+
+    // var dateTimeTofilter = moment().subtract(1, 'year');
+    // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',dateTimeTofilter)
+    // var filter = {
+    //     "createdAt": {
+    //         $gte: new Date(dateTimeTofilter._d)
+    //     }
+    // };
+    //  console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd",filter);
+
+    // or $gte- depends on time windows
+    var query = req.query.createdAt;
+    //console.log('eeeeeeeeeeee',    moment(query).format("YYYY-MM-DD")    )
+    //  console.log('eeeeeeeeeeee', (query))
+
+
+    // let createdAt=moment(createdAt)
+
+    //  articles = await Files.find({createdAt:new Date('2022-05-06T15:11:44.909Z')})
+    //articles = await Files.find({ createdAt: query })
+    // .find({"OrderDateTime":{ $gte:ISODate("2019-02-10"), $lt:ISODate("2019-02-21") }
+
+
+    // let start = moment(req.query.createdAt)
+    //  console.log('eeeeeeeeeeee', (start))
+
+    // const query = { createdAt: { $gte: new Date("2022-05-06T15:11:44.909Z") } }
+    // console.log(query) //outputs { createdAt: { '$gte': '2018-01-01T02:00:00.000Z' } }
+    // const result = await Files.find(query)
+    //  articles= Files.aggregate(
+    //     [
+    //       {
+    //         $project:
+    //           {
+    //             birthYear: { $year: "$createdAt" }
+    //           }
+    //       }
+
+    //       // {
+    //       //   "$project":{
+    //       //       "year_month_day": {"$dateToString": { "format": "%Y-%m-%d", "date": "$tDate", "timezone": "America/Chicago"}}
+    //       //   },
+    //     ]
+    //   )
+
+    //   return res.status(200).json(articles);
+    articles = await (await Files.find({ query })).map((c) => {
+      const datecreare = moment(c.createdAt).format("YYYY-MM-DD")
+      if (datecreare === query){
+        
+        return c.createdAt
+      }
+    });
+    console.log('title',articles)
+
+    return res.status(200).json(articles);
+    
+
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+});
+
 
 module.exports = {
   addLike,
@@ -940,7 +1018,7 @@ module.exports = {
   singleFileUpload,
   getAllArticle,
   getStats,
-  download,
+  //download,
   getFiles,
   deleteArticle,
   updateArticle,
@@ -949,5 +1027,5 @@ module.exports = {
   convertFile,
   addComment,
   addView,
-
+  fitlerByDate
 }

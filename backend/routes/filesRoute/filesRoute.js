@@ -19,8 +19,11 @@ router.get("/getallfiles",verifyToken.verifyUserToken,filesController.getAllArti
 router.get("/getallfile",verifyToken.verifyUserToken,filesController.getAllArticleByAttribute);
 
 router.get("/stats", filesController.getStats);
-router.get("/:id", filesController.download);
+//router.get("/:id", filesController.download);
 router.get("/", filesController.getFiles);
+
+router.get("/filterbydate", filesController.fitlerByDate);
+
 
 router.put("/update/:id",verifyToken.verifyUserToken,[verifyRoles.isReader || verifyRoles.isAuthor],filesController.updateArticle);
 
