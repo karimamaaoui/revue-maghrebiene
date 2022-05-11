@@ -8,10 +8,11 @@ import NavbarList from "../adminPanel/views/navbarList";
 import SidebarScreen from "../sideBar/sidebarScreen";
 import './formArticle.css'
 
-
+import { useTranslation } from "react-i18next";
 import { io } from "socket.io-client";
 import 'antd/dist/antd.css';
 import { listRules } from "../../redux/Actions/rulesActions";
+import HeaderTran from "../adminPanel/views/ui/TRANSLATE/headerTrans";
 const ENDPOINT = "http://localhost:5000";
 export const socket = io(ENDPOINT);
 
@@ -81,6 +82,7 @@ function Article() {
 
     const [rulesChecked, setRulesChecked] = useState([]);
 
+    const { t } = useTranslation(["common", "profile"]);
 
     const handleKeyDown = (e) => {
         if (e.key !== 'Enter') return
@@ -164,6 +166,7 @@ function Article() {
                 userInfo.roleuser === "Author" ?
 
                     <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
+
                         <div className="main-body" >
                             <div className="row gutters-sm" style={{ maxWidth: "100%" }}>
                                 <SidebarScreen />
@@ -172,12 +175,15 @@ function Article() {
                                         <div id="content" className="p-6 p-md-10 pt-12">
                                             <NavbarList />
                                             <div className="" style={{ backgroundColor: 'white' }}>
+                                                <HeaderTran />
+
                                                 <div class="card-body">
+
                                                     <form onSubmit={handleSubmit} encType='multipart/form-data' >
                                                         <div class="row mb-3">
                                                             <div class="sign-up-container">
 
-                                                                <label style={{ fontSize: '20px' }}>Select A Type</label>
+                                                                <label style={{ fontSize: '20px' }}>{t("profile:selectAType")}</label>
 
                                                                 <div class="col-sm-9 text-secondary">
 
@@ -189,7 +195,7 @@ function Article() {
                                                                         }}
                                                                     >
 
-                                                                        <option value="">Choose one</option>
+                                                                        <option value="">{t("profile:chooseatheme")}</option>
                                                                         {types?.map((type, key) => {
 
                                                                             return <option key={key} value={type._id}  > {type.label}</option>;
@@ -250,7 +256,7 @@ function Article() {
                                                         <div class="row mb-3">
 
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">Title</h6>
+                                                                <h6 class="mb-0">{t("profile:title")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
                                                                 <input
@@ -264,7 +270,7 @@ function Article() {
                                                         </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">Bio</h6>
+                                                                <h6 class="mb-0">{t("profile:bio")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
 
@@ -279,18 +285,18 @@ function Article() {
                                                         </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">Abstract</h6>
+                                                                <h6 class="mb-0">{t("profile:abstract")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
                                                                 {/* <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="abstract"
-                                                                onChange={(e) => {
-                                                                    setAbstract(e.target.value);
+					 type="text"
+					 className="form-control"
+					 name="abstract"
+					 onChange={(e) => {
+						 setAbstract(e.target.value);
 
-                                                                }}
-                                                            /> */}
+					 }}
+				 /> */}
 
                                                                 <textarea name="abstract"
                                                                     rows="5" cols="33"
@@ -309,7 +315,7 @@ function Article() {
                                                         </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">KeyWords</h6>
+                                                                <h6 class="mb-0">{t("profile:keyWords")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
                                                                 <input
@@ -324,40 +330,40 @@ function Article() {
                                                                 />
                                                                 {/* <div className="tags-input-container">
 
-                                                                {
+					 {
 
-                                                                    tags.map((tag,index)=>{
-                                                                        <div className="tag-item">
-                                                                            <span className="text">
-                                                                                {tag}
-                                                                              
+						 tags.map((tag,index)=>{
+							 <div className="tag-item">
+								 <span className="text">
+									 {tag}
+								   
 
-                                                                            </span>
-                                                                            <span className="close">
-                                                                                &times;
-                                                                            </span>
-                                                                            </div>
-                                                                    })
-                                                                }
-                                                                  <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    name="keyWords"
-                                                                    required
-                                                                    onChange={(e) => {
-                                                                        setKeyWords(e.target.value);
+								 </span>
+								 <span className="close">
+									 &times;
+								 </span>
+								 </div>
+						 })
+					 }
+					   <input
+						 type="text"
+						 className="form-control"
+						 name="keyWords"
+						 required
+						 onChange={(e) => {
+							 setKeyWords(e.target.value);
 
-                                                                    }}
-                                                                    onClick={handleKeyDown}
-                                                                />
-                                                              
-                                                        </div> */}
+						 }}
+						 onClick={handleKeyDown}
+					 />
+				   
+			 </div> */}
 
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">Abbreviations</h6>
+                                                                <h6 class="mb-0">{t("profile:abbreviations")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
                                                                 <input
@@ -374,7 +380,7 @@ function Article() {
                                                         </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-3">
-                                                                <h6 class="mb-0">Content</h6>
+                                                                <h6 class="mb-0">{t("profile:content")}</h6>
                                                             </div>
                                                             <div class="col-sm-9 text-secondary">
                                                                 <input
@@ -393,7 +399,7 @@ function Article() {
                                                                 <div className="col-md-15 offset-md">
                                                                     <div className='card'>
 
-                                                                        <label>Article Requirements</label>
+                                                                        <label>{t("profile:articleRequirements")} </label>
                                                                         <p style={{ fontSize: '10px' }}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
                                                                         <div style={{ display: "inline-flex" }}>
 
@@ -438,8 +444,8 @@ function Article() {
                                                                         <button
                                                                             style={{ borderRadius: "15px" }}
                                                                         >
-                                                                            Add Article
-                                                                        </button>
+                                                                            {t("common:submit")}
+                                                                            </button>
 
                                                                     </div>
                                                                 </div>
@@ -447,7 +453,6 @@ function Article() {
                                                         </div>
 
                                                     </form>
-
                                                 </div>
                                             </div>
                                         </div>

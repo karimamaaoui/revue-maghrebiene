@@ -80,9 +80,6 @@ function HeaderTran() {
   return (
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          I18n
-        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -94,31 +91,6 @@ function HeaderTran() {
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <Link class="nav-link" to="/">
-                home
-              </Link>
-            </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/contact">
-                contact
-              </Link>
-            </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/contact">
-                contact
-              </Link>
-            </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="/contact">
-                contact
-              </Link>
-            </li>
-          
-          </ul>
-        </div>
         <div>
             <select class="form-select d-flex" style={{ width: "70px" }} onChange={onChangeLang}>
               <option  value="en" className="lang">

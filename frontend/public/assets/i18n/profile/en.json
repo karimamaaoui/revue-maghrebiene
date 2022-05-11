@@ -1,5 +1,11 @@
 {
-	"name": "Name",
-	"age": "Age",
-	"email": "Email"
+	"selectAType": "Select A Type",
+	"chooseatheme": "Choose A Theme",
+	"title": "Title",
+	"bio" :"Bio",
+	"abstract": "Abstract",
+	"keyWords": "KeyWords",
+	"content": "Content",
+	"articleRequirements":"Article Requirements",
+	"abbreviations":"Abbreviations"
 }

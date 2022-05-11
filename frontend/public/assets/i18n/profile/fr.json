@@ -1,5 +1,12 @@
 {
-	"name": "Nom",
-	"age": "Âge",
-	"email": "E-mail"
+	"selectAType": "Sélectionner un type",
+	"chooseatheme": "Choisir un thème",
+	"title": "Titre",
+	"bio" :"Bio",
+	"abstract": "Abstrait",
+	"keyWords": "Mots clés",
+	"content": "Conenu",
+	"articleRequirements":"Exigences de l’article",
+	"abbreviations":"Abréviations"
+
 }

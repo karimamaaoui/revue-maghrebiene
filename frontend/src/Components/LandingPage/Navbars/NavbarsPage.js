@@ -6,9 +6,7 @@ import HeaderTran from '../../adminPanel/views/ui/TRANSLATE/headerTrans';
 
 export default function NavbarsPage() {
   return (
-
     <header>
-
 <nav className="navbar navbar-expand-lg py-3 navbar-light bg-light" >
       <div class="container-fluid">
 
@@ -18,6 +16,7 @@ export default function NavbarsPage() {
   {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button> */}
+
   <button
           class="navbar-toggler"
           type="button"
