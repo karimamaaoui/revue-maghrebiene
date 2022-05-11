@@ -13,6 +13,7 @@ import { io } from "socket.io-client";
 import 'antd/dist/antd.css';
 import { listRules } from "../../redux/Actions/rulesActions";
 import HeaderTran from "../adminPanel/views/ui/TRANSLATE/headerTrans";
+import { Card } from "react-bootstrap";
 const ENDPOINT = "http://localhost:5000";
 export const socket = io(ENDPOINT);
 
@@ -451,6 +452,13 @@ function Article() {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div container spacing={2} justify="flex-end">
+                               <Card p={2}>
+                               {
+                                   JSON.stringify({title,bio,keyWords,abbreviations},null,4)
+                               } 
+                               </Card> 
+                               </div>
 
                                                     </form>
                                                 </div>
