@@ -18,8 +18,8 @@ export default function SearchPahe() {
 
     const dispatch = useDispatch();
     const history = useNavigate();
-    
-    
+
+
     const getAllArticle = useSelector((state) => state.getAllArticle);
     const { loadingGetAllArticle, errorGetAllArticle, articles } = getAllArticle;
     const [searchResult, setSearchResult] = useState(articles);
@@ -228,22 +228,46 @@ export default function SearchPahe() {
             })
 
     }
-
+    const [fileURL, setFileURL] = useState('');
+console.log('fileURL',fileURL)
 
     const handleRead = async (id) => {
-        // const { data } = await axios.get(`http://localhost:5000/api/file/${id}`);
-        // console.log("user data", data)
-        await axios.get(`http://localhost:5000/api/file/get/${id}`
-            , {
-                responseType: 'blob',
-            }
-        )
-            .then((response) => {
-                console.log("resp", response);
+        const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
 
-            }
+            {
+                responseType: 'arraybuffer',
+                responseEncoding: 'binary',
 
-            )
+                headers: {
+                    "Content-type": "application/pdf",
+                },
+            }
+        );
+
+        const blob = new Blob([pdf], {
+            type: 'application/pdf'
+          });
+          const fileURL = URL.createObjectURL(blob);
+          setFileURL(fileURL)
+          
+          window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
+
+
+           // console.log("user data", pdf)
+            //  await axios.get(`http://localhost:5000/api/file/get/${id}`
+            //     , {
+            //         responseType: 'blob',
+            //     }
+            // )
+            // .then((response) => {
+            //     console.log("resp", response);
+            // }
+
+          //  )
+        //  console.log(Buffer.from(pdf).toString('base64'));
+
+          console.log(  new Blob([new Uint8Array(pdf)]))
+
     }
     const handleCategory = e => {
 
@@ -579,223 +603,224 @@ export default function SearchPahe() {
                                                                 </>
 
                                                                 )
-                                                                
+
                                                             })
-                                                            
-                                                        ) 
-                                                        
-                                                        
-                                                        : (
-                                                            articles?.map((tdata, index) => {
 
-                                                                <div className="row">
-                                                                    <div className=""  >
-                                                                        <div className='pagination justify-content-center'>
-                                                                            <ReactPaginate
-                                                                                previousLabel={'previous'}
-                                                                                nextLabel={"next"}
-                                                                                breakLabel={'...'}
-                                                                                pageCount={25}
-                                                                                marginPagesDisplayed={2}
-                                                                                pageRangeDisplayed={3}
-                                                                                onPageChange={handlePageClick}
-                                                                                containerClassName={'pagination justofy-content-center'}
-                                                                                pageClassName={'page-item'}
-                                                                                pageLinkClassName={'page-link'}
-                                                                                previousClassName={'page-item'}
-                                                                                previousLinkClassName={'page-link'}
-                                                                                nextClassName={'page-item'}
-                                                                                nextLinkClassName={'page-link'}
-                                                                                breakClassName={'page-item'}
-                                                                                breakLinkClassName={'page-link'}
-                                                                                activeClassName={'active '}
+                                                        )
 
 
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                            : (
+                                                                articles?.map((tdata, index) => {
 
-                                                                return (
-
-                                                                    <div className='card'>
-                                                                        <div class="sign-up-container">
-                                                                            <br />
-
-
-                                                                            <div style={{ display: "inline-flex", fontSize: "50px" }}>
-
-
-                                                                                <div key={index}>
-                                                                                    <div class="card-body">
-                                                                                        <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
-
-
-                                                                                        <p>
-                                                                                            Abstract :
-                                                                                            {tdata.abstract}
-                                                                                            <br />
-                                                                                            KeyWords :
-                                                                                            {tdata.keyWords}
-
-                                                                                            <br />
-                                                                                            Created At : {tdata.createdAt}
-
-                                                                                            <br />
-                                                                                            Type :
-                                                                                            {tdata.typeArticle.map(
-                                                                                                (type, i) => {
-                                                                                                    return (
-                                                                                                        type.label
-                                                                                                    )
-                                                                                                })
-                                                                                            }
-                                                                                            <div className="footer">
-                                                                                                <div style={{ display: "inline-flex" }}>
-
-                                                                                                    <button type='submit' className='primary'
-                                                                                                        style={{ borderRadius: "10px" }}
-                                                                                                        onClick={async () => {
-                                                                                                            handleView(tdata._id);
+                                                                    <div className="row">
+                                                                        <div className=""  >
+                                                                            <div className='pagination justify-content-center'>
+                                                                                <ReactPaginate
+                                                                                    previousLabel={'previous'}
+                                                                                    nextLabel={"next"}
+                                                                                    breakLabel={'...'}
+                                                                                    pageCount={25}
+                                                                                    marginPagesDisplayed={2}
+                                                                                    pageRangeDisplayed={3}
+                                                                                    onPageChange={handlePageClick}
+                                                                                    containerClassName={'pagination justofy-content-center'}
+                                                                                    pageClassName={'page-item'}
+                                                                                    pageLinkClassName={'page-link'}
+                                                                                    previousClassName={'page-item'}
+                                                                                    previousLinkClassName={'page-link'}
+                                                                                    nextClassName={'page-item'}
+                                                                                    nextLinkClassName={'page-link'}
+                                                                                    breakClassName={'page-item'}
+                                                                                    breakLinkClassName={'page-link'}
+                                                                                    activeClassName={'active '}
 
 
-                                                                                                            const result = await Alert(
-
-                                                                                                                <div className="footer">
-                                                                                                                    <div style={{ display: "inline-flex" }}>
-
-                                                                                                                        <button type='submit' className='primary'
-                                                                                                                            onClick={() => handleDownload(tdata._id)}>
-                                                                                                                            download
-                                                                                                                        </button>
-                                                                                                                    </div>
-                                                                                                                    {/* <div style={{ display: "inline-flex" }}>
-    
-                                                                                                        <button type='submit' className='primary'
-                                                                                                            onClick={() => handleDownload(tdata._id)}>
-    
-    
-                                                                                                            Read
-                                                                                                        </button>
-    
-    
-                                                                                                    </div> */}
-                                                                                                                    <div style={{ display: "inline-flex", }}>
-
-                                                                                                                        <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                            onClick={() => handleLike(tdata._id)}
-                                                                                                                        ></button>
-                                                                                                                        <br />
-                                                                                                                    </div>
-
-                                                                                                                    {(tdata.like.length) > 0 ?
-
-                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                            {tdata.like.length} like(s)
-                                                                                                                        </h6>
-                                                                                                                        : <h6> </h6>
-                                                                                                                    }
-                                                                                                                    {(tdata.view.length) > 0 ?
-
-                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                            <i class="bi bi-eye"></i>
-
-                                                                                                                            {tdata.view.length} view(s)
-                                                                                                                        </h6>
-                                                                                                                        : <h6> </h6>
-                                                                                                                    }
-
-                                                                                                                    Abstract :
-                                                                                                                    {tdata.abstract}
-
-                                                                                                                </div>,
-                                                                                                                'Read More'
-
-
-                                                                                                            );
-
-                                                                                                            if (result) {
-                                                                                                                //  this.handleBooking(item.id);
-                                                                                                                { console.log("id", tdata._id) }
-
-                                                                                                            }
-                                                                                                        }}
-
-                                                                                                    >
-
-                                                                                                        Read More
-                                                                                                    </button>
-                                                                                                    <form
-                                                                                                        onSubmit={(e) => {
-                                                                                                            e.preventDefault()
-                                                                                                            makeComment(tdata._id)
-                                                                                                        }}
-                                                                                                    >  <input type="text"
-                                                                                                        name='text'
-                                                                                                        required
-                                                                                                        onChange={(e) => {
-                                                                                                            setText(e.target.value);
-
-                                                                                                        }} style={{
-                                                                                                            borderLeftColor: 'transparent',
-                                                                                                            borderTopColor: 'transparent',
-                                                                                                            borderRightColor: 'transparent',
-
-                                                                                                        }} placeholder="add a comment" />
-
-                                                                                                    </form>
-
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                        </p>
-                                                                                    </div>
-
-
-                                                                                </div>
-
-
+                                                                                />
                                                                             </div>
                                                                         </div>
                                                                     </div>
 
+                                                                    return (
 
-                                                                )
-                                                            })
-                                                        )}
-                                                         <div className="row">
+                                                                        <div className='card'>
+                                                                            <div class="sign-up-container">
+                                                                                <br />
 
-<div className="col-sm-12"  >
 
-    <div className='pagination justify-content-center'>
-        <ReactPaginate
-            previousLabel={'previous'}
-            nextLabel={"next"}
-            breakLabel={'...'}
-            pageCount={25}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination justofy-content-center'}
-            pageClassName={'page-item'}
-            pageLinkClassName={'page-link'}
-            previousClassName={'page-item'}
-            previousLinkClassName={'page-link'}
-            nextClassName={'page-item'}
-            nextLinkClassName={'page-link'}
-            breakClassName={'page-item'}
-            breakLinkClassName={'page-link'}
-            activeClassName={'active '}
-                                                            
+                                                                                <div style={{ display: "inline-flex", fontSize: "50px" }}>
 
-        />
-    </div>
- 
 
-</div>
+                                                                                    <div key={index}>
+                                                                                        <div class="card-body">
+                                                                                            <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
 
-</div>
+
+                                                                                            <p>
+                                                                                                Abstract :
+                                                                                                {tdata.abstract}
+                                                                                                <br />
+                                                                                                KeyWords :
+                                                                                                {tdata.keyWords}
+
+                                                                                                <br />
+                                                                                                Created At : {tdata.createdAt}
+
+                                                                                                <br />
+                                                                                                Type :
+                                                                                                {tdata.typeArticle.map(
+                                                                                                    (type, i) => {
+                                                                                                        return (
+                                                                                                            type.label
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
+                                                                                                <button type='submit' className='primary'
+                                                                                                    onClick={() => handleRead(tdata._id)}>
+
+
+                                                                                                    Read
+                                                                                                </button>
+
+                                                                                                <div className="footer">
+                                                                                                    <div style={{ display: "inline-flex" }}>
+
+                                                                                                        <button type='submit' className='primary'
+                                                                                                            style={{ borderRadius: "10px" }}
+                                                                                                            onClick={async () => {
+                                                                                                                handleView(tdata._id);
+
+
+                                                                                                                const result = await Alert(
+
+                                                                                                                    <div className="footer">
+                                                                                                                        <div style={{ display: "inline-flex" }}>
+
+                                                                                                                            <button type='submit' className='primary'
+                                                                                                                                onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                download
+                                                                                                                            </button>
+                                                                                                                        </div>
+                                                                                                                        <div style={{ display: "inline-flex" }}>
+
+
+
+                                                                                                                        </div>
+                                                                                                                        <div style={{ display: "inline-flex", }}>
+
+                                                                                                                            <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                onClick={() => handleLike(tdata._id)}
+                                                                                                                            ></button>
+                                                                                                                            <br />
+                                                                                                                        </div>
+
+                                                                                                                        {(tdata.like.length) > 0 ?
+
+                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                {tdata.like.length} like(s)
+                                                                                                                            </h6>
+                                                                                                                            : <h6> </h6>
+                                                                                                                        }
+                                                                                                                        {(tdata.view.length) > 0 ?
+
+                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                <i class="bi bi-eye"></i>
+
+                                                                                                                                {tdata.view.length} view(s)
+                                                                                                                            </h6>
+                                                                                                                            : <h6> </h6>
+                                                                                                                        }
+
+                                                                                                                        Abstract :
+                                                                                                                        {tdata.abstract}
+
+                                                                                                                    </div>,
+                                                                                                                    'Read More'
+
+
+                                                                                                                );
+
+                                                                                                                if (result) {
+                                                                                                                    //  this.handleBooking(item.id);
+                                                                                                                    { console.log("id", tdata._id) }
+
+                                                                                                                }
+                                                                                                            }}
+
+                                                                                                        >
+
+                                                                                                            Read More
+                                                                                                        </button>
+                                                                                                        <form
+                                                                                                            onSubmit={(e) => {
+                                                                                                                e.preventDefault()
+                                                                                                                makeComment(tdata._id)
+                                                                                                            }}
+                                                                                                        >  <input type="text"
+                                                                                                            name='text'
+                                                                                                            required
+                                                                                                            onChange={(e) => {
+                                                                                                                setText(e.target.value);
+
+                                                                                                            }} style={{
+                                                                                                                borderLeftColor: 'transparent',
+                                                                                                                borderTopColor: 'transparent',
+                                                                                                                borderRightColor: 'transparent',
+
+                                                                                                            }} placeholder="add a comment" />
+
+                                                                                                        </form>
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </p>
+                                                                                        </div>
+
+
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    )
+                                                                })
+                                                            )}
+                                                        <div className="row">
+
+                                                            <div className="col-sm-12"  >
+
+                                                                <div className='pagination justify-content-center'>
+                                                                    <ReactPaginate
+                                                                        previousLabel={'previous'}
+                                                                        nextLabel={"next"}
+                                                                        breakLabel={'...'}
+                                                                        pageCount={25}
+                                                                        marginPagesDisplayed={2}
+                                                                        pageRangeDisplayed={3}
+                                                                        onPageChange={handlePageClick}
+                                                                        containerClassName={'pagination justofy-content-center'}
+                                                                        pageClassName={'page-item'}
+                                                                        pageLinkClassName={'page-link'}
+                                                                        previousClassName={'page-item'}
+                                                                        previousLinkClassName={'page-link'}
+                                                                        nextClassName={'page-item'}
+                                                                        nextLinkClassName={'page-link'}
+                                                                        breakClassName={'page-item'}
+                                                                        breakLinkClassName={'page-link'}
+                                                                        activeClassName={'active '}
+
+
+                                                                    />
+                                                                </div>
+
+
+                                                            </div>
+
+                                                        </div>
 
                                                     </div>
                                                 </div>

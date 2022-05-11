@@ -2,6 +2,7 @@ import React from 'react'
 import homeLogo from '../../../assets/homeLogo.gif'
 import './navbar.css'
 import { Dropdown } from 'react-bootstrap';
+import HeaderTran from '../../adminPanel/views/ui/TRANSLATE/headerTrans';
 
 export default function NavbarsPage() {
   return (
@@ -9,15 +10,26 @@ export default function NavbarsPage() {
     <header>
 
 <nav className="navbar navbar-expand-lg py-3 navbar-light bg-light" >
-    <div className='container'>
+      <div class="container-fluid">
 
   <a className="navbar-brand" href="#">
-      <img src={homeLogo} alt="homeLogo" height="130px" width="400px" style={{marginTop:"-19%"}}/>
+      <img src={homeLogo} alt="homeLogo" height="130px" width="400px" style={{marginTop:"-50%"}}/>
       </a>
-  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
-  </button>
-
+  </button> */}
+  <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+     
   <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{marginTop:"-5%"}}>
     <ul className="navbar-nav ms-auto">
       <li className="nav-item ">

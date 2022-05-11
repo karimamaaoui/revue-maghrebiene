@@ -39,7 +39,7 @@ export default function Feedback() {
                                                     emptyIcon={<i className="far fa-star"></i>}
                                                     halfIcon={<i className="fa fa-star-half-alt"></i>}
                                                     fullIcon={<i className="fa fa-star"></i>}
-                                                    className="form-control"
+                                                    className="form-controlfeed"
                                                 />
                                       
                                               </div>
@@ -49,7 +49,7 @@ export default function Feedback() {
                                             <div className="form-content col-lg-6">
                                                 <form className="form-detail">
                                                     <div className="form-row">
-                                                        <textarea class="form-control" rows="4" placeholder="Message"></textarea>
+                                                        <textarea class="form-controlfeed" rows="4" placeholder="Message"></textarea>
 
                                                         <i className="fas fa-envelope"></i>
                                                     </div>

@@ -20,7 +20,7 @@ import Table from './Components/adminPanel/views/ui/Tables';
 import Grid from './Components/adminPanel/views/ui/Grid';
 import Breadcrumbs from './Components/adminPanel/views/ui/Breadcrumbs';
 import Cards from './Components/adminPanel/views/ui/Cards';
-import Forms from './Components/adminPanel/views/ui/Forms';
+import Forms from './Components/adminPanel/views/ui/TRANSLATE/Forms';
 //import FullLayout from './Components/adminPanel/layouts/FullLayout'
 import AdminPage from './Components/adminPanel/adminpage';
 import ManageUser from '../src/Components/adminPanel/manageUsers/manageUser'
@@ -36,10 +36,14 @@ import Feed from "./Components/feed/feed"
 import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
 
 import Feedback from './Components/feedback/Feedback'
+import HeaderTran from './Components/adminPanel/views/ui/TRANSLATE/headerTrans';
+import { Suspense } from "react";
 
 export default function RoutesList() {
 
   return (
+    <>
+
     <Router>
 
       <div>
@@ -71,7 +75,7 @@ export default function RoutesList() {
           <Route path="/restpassword" element={<RestPassword />} />
           <Route path="/s" element={<AddFile />} />
           <Route exact path='/*' element={<NoRouteFound />} />          
-          <Route exact path='/form' element={<FormArticle /> } />
+          <Route exact path='/profile' element={<FormArticle /> } />
 
 
 
@@ -95,6 +99,9 @@ export default function RoutesList() {
       </div>
 
     </Router>
+
+    </>
+
   );
 }
 

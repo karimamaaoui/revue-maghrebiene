@@ -2,7 +2,8 @@ import './App.css';
 import RoutesList from './Routes';
  import {io}  from "socket.io-client";
  import {useEffect,useState} from 'react'
-
+ import { Suspense } from "react";
+import './i18n'
 //  var socket;
 
 const App=()=> {
@@ -19,10 +20,11 @@ const App=()=> {
 
   
   return (
-     
+
     <div className="App" id="home">
       
       <RoutesList/>
+
     </div>
     );
 }
