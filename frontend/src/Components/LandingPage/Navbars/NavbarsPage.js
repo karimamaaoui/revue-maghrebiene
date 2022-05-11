@@ -13,7 +13,7 @@ export default function NavbarsPage() {
       <div class="container-fluid">
 
   <a className="navbar-brand" href="#">
-      <img src={homeLogo} alt="homeLogo" height="130px" width="400px" style={{marginTop:"-50%"}}/>
+      <img src={homeLogo} alt="homeLogo" height="130px" width="400px" style={{marginTop:"-30%"}}/>
       </a>
   {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
@@ -25,8 +25,7 @@ export default function NavbarsPage() {
           data-bs-target="#navbarNav"
           aria-controls="navbarNav"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
      
