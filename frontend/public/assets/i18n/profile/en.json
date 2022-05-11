@@ -1,11 +1,12 @@
 {
 	"selectAType": "Select A Type",
-	"chooseatheme": "Choose A Theme",
+	"chooseatheme": "Choose One",
 	"title": "Title",
 	"bio" :"Bio",
 	"abstract": "Abstract",
 	"keyWords": "KeyWords",
 	"content": "Content",
 	"articleRequirements":"Article Requirements",
-	"abbreviations":"Abbreviations"
+	"abbreviations":"Abbreviations",
+	"chooseattribute":"Choose A Theme"
 }

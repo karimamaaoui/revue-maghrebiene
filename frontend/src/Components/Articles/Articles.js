@@ -212,7 +212,7 @@ function Article() {
                                                                     <div className='card'>
                                                                         <div class="sign-up-container">
                                                                             <br />
-                                                                            <label style={{ fontSize: '20px' }}>Choose A Theme</label>
+                                                                            <label style={{ fontSize: '20px' }}>{t("profile:chooseattribute")}</label>
 
                                                                             <div style={{ display: "flex", fontSize: "50px", flexWrap: "wrap" }}>
 
