@@ -38,7 +38,8 @@ import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
 import Feedback from './Components/feedback/Feedback'
 import HeaderTran from './Components/adminPanel/views/ui/TRANSLATE/headerTrans';
 import { Suspense } from "react";
-
+import DemandAuthor from './Components/DemandAuthor/demandAuthor';
+import AcceptDemand from './Components/DemandAuthor/AcceptDemand'
 export default function RoutesList() {
 
   return (
@@ -48,8 +49,12 @@ export default function RoutesList() {
 
       <div>
         <Routes>
+        <Route path="/a" element={<SideBar />} />
+
         <Route path="/search" element={<Search />} />
         <Route path="/home" element={<PageAccueil />} />
+        <Route path="/demand" element={<DemandAuthor />} />
+        <Route path="/accept" element={<AcceptDemand />} />
 
         <Route path="/feedback" element={<Feedback />} />
 

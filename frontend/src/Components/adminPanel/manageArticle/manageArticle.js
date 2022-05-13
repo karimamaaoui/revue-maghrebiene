@@ -40,7 +40,7 @@ export default function ManageArticle() {
 
   useEffect(() => {
     dispatch(getAllArticles());
-    console.log("articles", getAllArticle)
+    console.log("articles", articles)
 
     if (!userInfo) {
       history("/");

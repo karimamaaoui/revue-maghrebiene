@@ -358,6 +358,7 @@ top: 80%
 @media only screen and (max-width:990px){.box15{margin-bottom:30px}
 } */
  
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css");
 .our-services{
   padding: 0 80px;
 }
@@ -405,3 +406,45 @@ top: 80%
       border-radius: 10px;
       background-image: linear-gradient(-45deg, #27b88d 0%, #22dd73 100%)}
  
+      .tags-input-container{
+        border: 2px solid  rgb(90, 187, 214);
+        padding: .5em;
+        border-radius: 10px;
+        margin-top: 1em;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        width: min(80vw,600px);
+        gap: .5em;
+      }
+      
+      .tag-item{
+        background-color: rgb(218, 216, 216);
+        padding: .5em .75em;
+        display: inline-block;
+        border-radius: 20px;
+      }
+      
+      .tag-item .close {
+        height: 20px;
+        width: 20px;
+        background-color: rgb(48, 48, 48);
+        border-radius: 50%;
+        color: #fff;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: .5em;
+        font-size: 18px;
+        cursor: pointer;
+      
+      }
+      .tags-input{
+      flex-grow: 1;
+      padding: .5em 0;
+      border: 10px;
+      outline: none;
+
+      
+      }
+      

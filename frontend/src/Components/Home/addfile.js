@@ -24,6 +24,7 @@ import { RWebShare } from "react-web-share";
 import axios from 'axios';
 import TextArea from 'antd/lib/input/TextArea';
 import ima from '../../assets/bg1.jpg'
+import { Alert } from 'reactstrap';
 
 export default function AddFile(props) {
 
@@ -562,6 +563,7 @@ export default function AddFile(props) {
     let urlfile;
     const [files, setFiles] = useState(null);
 
+    const [tags, setTags] = useState([]);
 
     const handleRead = async (id) => {
         const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/627a644444f9c7fa0bb8ae64`,
@@ -582,41 +584,75 @@ export default function AddFile(props) {
         const fileURL = URL.createObjectURL(blob);
         let params = URL.revokeObjectURL(fileURL);
 
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',params)
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', params)
 
         setFileURL(fileURL)
 
         window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
 
         //  console.log(new Blob([new Uint8Array(pdf)]))
-      //  { console.log("eeeeeeeeeeeeeeeee", fileURL) }
-      //  urlfile=fileURL.slice(5,fileURL.length)
+        //  { console.log("eeeeeeeeeeeeeeeee", fileURL) }
+        //  urlfile=fileURL.slice(5,fileURL.length)
 
-       // console.log("urfdfdf",urlfile)
+        // console.log("urfdfdf",urlfile)
     }
+    const [keyWords, setKeyWords] = useState([]);
+    const [isValidKeyWords, setIsValidKeyWords] = useState(false);
+    const [messageKeyWords, setMessageKeyWords] = useState('');
+
+    const handleKeyDown = (e) => {
+        if (e.key !== 'Enter') return
+        const value = e.target.value;
+        if (!value.trim()) return
+
+        if (tags.length ===5) 
+        {
+            setIsValidKeyWords(false);
+            setMessageKeyWords('Please enter only five keywords!');
+        
+        }
+          else{
+            setTags([...tags, value])
+            setKeyWords([...keyWords, value])
+            setIsValidKeyWords(true);
+            setMessageKeyWords('Your keywprds looks good!');
+      
+        }
+        //   setFormData({ ...formData, keyWords: value });
+        //   const { keyWords } = formData;
+
+        e.target.value = ''
+    }
+
+    const removeTags = (index) => {
+        setTags(tags.filter((el, i) => i !== index))
+    }
+
+    console.log('tags', tags)
+    console.log('keyword', keyWords)
 
 
     const handleFiles = async (id) => {
         const { data } = await axios.get(`http://localhost:5000/api/file/getfiles/627a644444f9c7fa0bb8ae64`,
 
-            
+
         );
 
-        console.log("urfdfdf",data)
+        console.log("urfdfdf", data)
     }
 
-    
+
     useEffect(() => {
-      //  handleRead()
+        //  handleRead()
     },
         [
-           
+
         ]);
-      
+
     return (
 
         <>
-        
+            {/*         
             <button type='submit' className='primary'
                 onClick={() => handleFiles()}>
 
@@ -635,9 +671,44 @@ export default function AddFile(props) {
       <button type="submit">Submit</button>
     </form> */}
 
-    <br/>
-    <br/>
-      
+            <br />
+            enter tags
+
+            <div className="tags-input-container">
+
+
+                {
+
+                    tags.map((tag, index) => (
+                        <div className="tag-item" key={index}>
+                            <span className="text">
+                                {tag}
+                            </span>
+                            <span className="close" onClick={() => removeTags(index)}>
+                                &times;
+                            </span>
+
+
+
+                        </div>
+
+                    ))}
+                <input
+                    name="keyWords"
+
+                    type="text"
+                    className="tags-input"
+                    required
+
+                    onKeyDown={handleKeyDown}
+                />
+            </div>
+            <div className={`message ${isValidKeyWords ? 'success' : 'error'}`}>
+                          {messageKeyWords}
+                        </div>
+                       
+            <br />
+            {/*       
         <div>
       <h1>Web Share - GeeksforGeeks</h1>
       <Link to={urlfile}>dfdd      </Link>
@@ -654,7 +725,7 @@ export default function AddFile(props) {
       </RWebShare>
       
     </div>
-      
+       */}
         </>
 
     );

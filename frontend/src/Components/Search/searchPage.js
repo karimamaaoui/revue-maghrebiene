@@ -229,7 +229,7 @@ export default function SearchPahe() {
 
     }
     const [fileURL, setFileURL] = useState('');
-console.log('fileURL',fileURL)
+    console.log('fileURL', fileURL)
 
     const handleRead = async (id) => {
         const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
@@ -246,27 +246,27 @@ console.log('fileURL',fileURL)
 
         const blob = new Blob([pdf], {
             type: 'application/pdf'
-          });
-          const fileURL = URL.createObjectURL(blob);
-          setFileURL(fileURL)
-          
-          window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
+        });
+        const fileURL = URL.createObjectURL(blob);
+        setFileURL(fileURL)
+
+        window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
 
 
-           // console.log("user data", pdf)
-            //  await axios.get(`http://localhost:5000/api/file/get/${id}`
-            //     , {
-            //         responseType: 'blob',
-            //     }
-            // )
-            // .then((response) => {
-            //     console.log("resp", response);
-            // }
+        // console.log("user data", pdf)
+        //  await axios.get(`http://localhost:5000/api/file/get/${id}`
+        //     , {
+        //         responseType: 'blob',
+        //     }
+        // )
+        // .then((response) => {
+        //     console.log("resp", response);
+        // }
 
-          //  )
+        //  )
         //  console.log(Buffer.from(pdf).toString('base64'));
 
-          console.log(  new Blob([new Uint8Array(pdf)]))
+        console.log(new Blob([new Uint8Array(pdf)]))
 
     }
     const handleCategory = e => {

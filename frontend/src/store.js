@@ -10,7 +10,8 @@ import {
   userUpdatePictureReducer,
   retrieveAllUserReducer,
   userDeleteReducer,
-  userNewArrivalReducer
+  userNewArrivalReducer,
+  demandAuthorReducer
 } from './redux/reducers/userReducer';
 import { retrieveTypeReducer } from './redux/reducers/typesReducers';
 import { retrieveAttributeReducer } from './redux/reducers/attributeReducers';
@@ -40,7 +41,7 @@ const reducer = combineReducers({
   RandomArticle:retrieveArticlerRandomReducer,
   listArrivals:userNewArrivalReducer,
   articleUpdate: articleUpdateReducer,
-
+  demandList: demandAuthorReducer
 
 })
 

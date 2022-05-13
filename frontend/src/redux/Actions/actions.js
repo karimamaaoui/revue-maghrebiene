@@ -5,6 +5,9 @@ import {
   DELETE_USER_FAIL,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  RETRIEVE_DEMAND_AUTHOR_FAIL,
+  RETRIEVE_DEMAND_AUTHOR_REQUEST,
+  RETRIEVE_DEMAND_AUTHOR_SUCCESS,
   RETRIEVE_USER_FAIL,
   RETRIEVE_USER_REQUEST,
   RETRIEVE_USER_SUCCESS,
@@ -360,6 +363,47 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+
+  }
+}
+
+
+// get all user
+export const getAllDemands = () => async (dispatch, getState) => {
+
+  try {
+    dispatch({ type: RETRIEVE_DEMAND_AUTHOR_REQUEST});
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+
+      },
+    };
+
+   // console.log("user token", config)
+
+    const { data } = await axios.get('http://localhost:5000/api/demand/', config);
+   // console.log("demand data", data)
+    dispatch({ type: RETRIEVE_DEMAND_AUTHOR_SUCCESS, payload: data });
+    
+    //dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+
+    //localStorage.setItem("userInfo", JSON.stringify(data, config));
+
+  } catch (error) {
+    dispatch({
+      type: RETRIEVE_DEMAND_AUTHOR_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

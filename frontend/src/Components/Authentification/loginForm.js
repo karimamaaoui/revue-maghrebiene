@@ -70,7 +70,7 @@ export default function LoginForm() {
         }
         else if (userInfo.roleuser === "User")
         {
-          history("/home");
+          history("/search");
 
         }
     

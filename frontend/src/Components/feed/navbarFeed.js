@@ -48,17 +48,16 @@ const NavBarFeed  = () => {
   const menu = (
     <Menu onClick={handleClick}           
     >
-      {feeds.length ? (
-        feeds.map((feed) => {
-          return (
-            <Menu.Item key={feed._id}>
-                {console.log("length",feeds.length)}
-              <p>{feed.title}</p>
+      {feeds.length ? 
+        // feeds.map((feed) => {
+            
+            <Menu.Item >
+                {feeds.length}
             </Menu.Item>
             
-          );
-        })
-      ) : (
+          
+        // })
+      : (
         <Menu.Item key="nothing">
           <p>No feeds to show!</p>
         </Menu.Item>

@@ -81,7 +81,7 @@ export default function NavbarList() {
                 <div class="card-block">
                   <h6 class="m-b-20">
                     <a href="#home" style={{ color: "white" }} >
-                      Users List
+                      New Arrivals
                     </a>
                   </h6>
                   <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span></span></h2>
@@ -90,23 +90,26 @@ export default function NavbarList() {
               </div>
             </div>
 
+            
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card" style={{ backgroundColor: "#CAD8E2", height: "50%" }}>
-                <div class="card-block">
+              <div class="card  order-card" style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
+                <div class="card-block" >
 
-                  <h6 class="m-b-20">
-                    <a href="#home" style={{ color: "white" }}>
-                      Users List
+                  <h6 class="m-b-20"  >
+                    <a href="#usersList" style={{ color: "white" }} >
+
+                      Demand Author
                     </a>
-
                   </h6>
                   <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span></span></h2>
-                  <p class="m-b-0">Users<span class="f-right"></span></p>
+                  <a href="/accept">
+                    <p class="m-b-0">Demand Author<span class="f-right"></span></p></a>
                 </div>
               </div>
             </div>
           </>
-          : < >
+          :        userInfo.roleuser === "Author" ?
+          < >
 
             <div class="col-md-4 col-xl-3">
               <div class="card order-card " style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
@@ -205,7 +208,107 @@ export default function NavbarList() {
 
        
           </>
+          :
+          < >
 
+          <div class="col-md-4 col-xl-3">
+            <div class="card order-card " style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
+
+              <div class="database" >
+                <div class="icon" style={{
+                  padding: "0 80px", marginBottom: "-30px", color: '#27b88d',
+                  transform: "translateY(-50%)"
+                }}>
+                  <i class="bi bi-book"></i>
+
+                </div>
+
+                <h6 class="m-b-20">
+                  <a href="#home" style={{ color: "white" }}>
+                    List of Article
+                  </a>
+
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-xl-3">
+            <div class="card order-card " style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
+
+              <div class="settings" >
+                <div class="icon" style={{
+
+                  padding: "0 80px",
+                  marginBottom: "-30px",
+                  transform: "translateY(-50%)"
+                }}
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <h6 class="m-b-20">
+                  <a href="#home" style={{ color: "white" }}>
+                  Add New Article
+                  </a>
+
+                </h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+            <div class="card order-card " style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
+
+              <div class="ssl" >
+                <div class="icon" style={{
+                  padding: "0 80px",
+                  marginBottom: "-30px",
+                  transform: "translateY(-50%)"
+                }}
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <h6 class="m-b-20">
+                  <a href="/demand" style={{ color: "white" }}>
+                    Demand to be an author
+                  </a>
+
+                </h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-xl-3">
+            <div class="card order-card " style={{ backgroundColor: "#CAD8E2", height: "70%" }}>
+
+              <div class="backups" >
+                <div class="icon" style={{
+                  padding: "0 80px",
+                  marginBottom: "-30px",
+                  color: 'orange',
+                  transform: "translateY(-50%)"
+                }}
+                >
+          <i class="bi bi-chat-square-text"></i>
+                </div>
+
+                <h6 class="m-b-20">
+                  <a href="#home" style={{ color: "white" }}>
+                    Feedback
+                  </a>
+
+                </h6>
+              </div>
+            </div>
+          </div>
+
+
+
+
+     
+        </>
+       
         }
       </div>
 
