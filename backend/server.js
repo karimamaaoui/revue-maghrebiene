@@ -17,6 +17,9 @@ const rulesRoute = require('./routes/rulesRoute/rules')
 const authorRoute = require('./routes/authorsRoutes/authorsRoute')
 const bodyParser = require('body-parser')
 const postRoute = require('./routes/postRoute');
+const demandRoute = require('./routes/demandRoute/demandRoute');
+
+
 const http = require('http');
 const Files = require("./model/Files");
 
@@ -146,6 +149,7 @@ app.use('/api/file', filesRoute);
 app.use('/api/rule', rulesRoute);
 app.use('/api/author', authorRoute);
 app.use('/api/post', postRoute);
+app.use('/api/demand', demandRoute);
 
 
 function initial() {

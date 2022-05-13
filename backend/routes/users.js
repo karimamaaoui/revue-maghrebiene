@@ -24,7 +24,7 @@ router.post('/restPassword',  userController.sendTemporaryPassword);
 
 router.post("/logout", userController.logOut);
 
-router.put("/addToAuthor/:id",verifyToken.verifyUserToken,verifyRoles.isReader, userController.AddToAuthor);
+router.put("/addToAuthor/:id", userController.AddToAuthor);
 router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader, userController.deleteUser);
 
 

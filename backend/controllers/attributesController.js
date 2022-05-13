@@ -65,6 +65,27 @@ const deleteAttribute = async (req, res) => {
 
 };
 
+//GET 
+const getOneAttribute= (async (req, res) => {
+  console.log('inside find article by id');
+
+  try {
+    /*   const user= await User.findById({user:req.decoded.id } );
+       console.log("inside get user",user)
+       console.log("inside get user id ",req.decoded.id)
+       */
+    const article = await Attribute.findById(req.params.id);
+    console.log("inside get user", article)
+
+    res.status(200).json(article);
+
+
+  } catch (err) {
+    res.status(500).json({ msg: "Unauthorized" });
+  }
+
+
+});
 
 //GET ALL
 
@@ -84,5 +105,7 @@ module.exports = {
   createAttribute,
   updateAttribute,
   deleteAttribute,
-  retrieveAllAttributes
+  retrieveAllAttributes,
+  getOneAttribute
+  ,
 }

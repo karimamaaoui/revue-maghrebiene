@@ -51,6 +51,7 @@ const getUser = (async (req, res) => {
 
 
 });
+
 //GET ALL
 
 const getAllUsers = (verifyToken.verifyUserToken,
@@ -480,7 +481,7 @@ const AddToAuthor = async (req, res) => {
     try {
 
         let user = await User.findById(_id);
-        let userId = await User.findOne({ user: req.decoded.id })
+       // let userId = await User.findOne({ user: req.decoded.id })
         console.log("user id from add author", user)
 
         console.log("inside add to entity author ");

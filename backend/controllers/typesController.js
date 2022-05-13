@@ -79,8 +79,32 @@ const retrieveAllTypes = ( async (req, res) => {
       return res.status(500).json({ msg: err });
     }
   });
+
+
+  //GET 
+const getOneType= (async (req, res) => {
+  console.log('inside find article by id');
+
+  try {
+    /*   const user= await User.findById({user:req.decoded.id } );
+       console.log("inside get user",user)
+       console.log("inside get user id ",req.decoded.id)
+       */
+    const type = await Type.findById(req.params.id);
+    console.log("inside get user", type)
+
+    res.status(200).json(type);
+
+
+  } catch (err) {
+    res.status(500).json({ msg: "Unauthorized" });
+  }
+
+
+});
+
 module.exports = {
-  createType,
+  createType,getOneType,
   deleteType,
   updateType,
   retrieveAllTypes

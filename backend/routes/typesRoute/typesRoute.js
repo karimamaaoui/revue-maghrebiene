@@ -11,6 +11,7 @@ router.put("/update/:id", verifyToken.verifyUserToken, verifyRoles.isReader, typ
 router.delete("/delete/:id", verifyToken.verifyUserToken, verifyRoles.isReader, typesController.deleteType);
 router.get("/types", verifyToken.verifyUserToken, typesController.retrieveAllTypes);
 
+router.get("/gettype/:id", typesController.getOneType);
 
 
 module.exports = router;

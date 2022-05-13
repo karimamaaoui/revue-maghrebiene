@@ -13,14 +13,17 @@ router.post("/multiple-upload",verifyToken.verifyUserToken,verifyRoles.isAuthor,
 router.get("/retrievefiles", filesController.retrieveAllFiles);
 router.get("/get/:id", filesController.readFiles);
 
+router.post("/drive", filesController.createFile);
+
+
 router.get("/convert/:id", filesController.convertFile);
 
 router.get("/getallfiles",verifyToken.verifyUserToken,filesController.getAllArticle);
 router.get("/getallfile",verifyToken.verifyUserToken,filesController.getAllArticleByAttribute);
 
 router.get("/stats", filesController.getStats);
-//router.get("/:id", filesController.download);
-router.get("/", filesController.getFiles);
+router.get("/:id", filesController.download);
+router.get("/getfiles/:id", filesController.getFiles);
 
 router.get("/filterbydate", filesController.fitlerByDate);
 

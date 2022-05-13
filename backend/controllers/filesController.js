@@ -10,9 +10,11 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 
-const getFiles = (req, res) => {
+const getFiles =async (req, res) => {
   const directoryPath = path.join(__dirname, "../uploads");
   console.log("directoryPath", directoryPath)
+ const filesss= await Files.findById(req.params.id);
+  console.log('fdfddfdf',filesss)
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
       res.status(500).send({
@@ -395,63 +397,63 @@ const retrieveAllFiles = (async (req, res) => {
   }
 });
 //download an article
-// const download = async (req, res) => {
+const download = async (req, res) => {
 
-//   //const fileName = req.params.name;
-//   const _id = req.params.id;
-//   const file = Files.findById(_id)
-//     .then(data => {
-//       // if (!data) {
-//       //   res.status(404).send({
-//       //     message: `Cannot download Article with id=${id}. Maybe Article was not found!`
-//       //   });
-//       // }
-//       // else {
-//       //   // res.send(data.multiple_files);
-//       let ids = []
-//       const cursor = data.multiple_files;
-
-
-//       cursor.forEach((doc) => {
-//         ids.push(
-//           doc.name,
+  //const fileName = req.params.name;
+  const _id = req.params.id;
+  const file = Files.findById(_id)
+    .then(data => {
+      // if (!data) {
+      //   res.status(404).send({
+      //     message: `Cannot download Article with id=${id}. Maybe Article was not found!`
+      //   });
+      // }
+      // else {
+      //   // res.send(data.multiple_files);
+      let ids = []
+      const cursor = data.multiple_files;
 
 
-//         );
-//       });
-//       console.log("data.multiple_files.name", (ids))
-//       const fileName = ids[0];
-//       const fileName2 = ids[1];
-//       // console.log('article',article)
-//       const directoryPath = path.join(__dirname, "../uploads/");
-//       console.log("directoryPath from downolad", fileName);
-
-//       if (fileName.includes('pdf') || fileName.includes('docx')) {
-//         res.download(directoryPath + `${fileName}`, fileName, (err) => {
-//           if (err) {
-//             res.status(500).send({
-//               message: "Could not download the file. " + err,
-//             }).clone().catch(function (err) { console.log(err) })
-
-//           }
-//         })
-//       }
-
-//       else {
-
-//         res.download(directoryPath + `${fileName}.pdf`, fileName, (err) => {
-//           if (err) {
-//             res.status(500).send({
-//               message: "Could not download the file. " + err,
-//             }).clone().catch(function (err) { console.log(err) })
-
-//           }
-//         })
+      cursor.forEach((doc) => {
+        ids.push(
+          doc.name,
 
 
-//       }
-//     })
-// };
+        );
+      });
+      console.log("data.multiple_files.name", (ids))
+      const fileName = ids[0];
+      const fileName2 = ids[1];
+      // console.log('article',article)
+      const directoryPath = path.join(__dirname, "../uploads/");
+      console.log("directoryPath from downolad", fileName);
+
+      if (fileName.includes('pdf') || fileName.includes('docx')) {
+        res.download(directoryPath + `${fileName}`, fileName, (err) => {
+          if (err) {
+            res.status(500).send({
+              message: "Could not download the file. " + err,
+            }).clone().catch(function (err) { console.log(err) })
+
+          }
+        })
+      }
+
+      else {
+
+        res.download(directoryPath + `${fileName}.pdf`, fileName, (err) => {
+          if (err) {
+            res.status(500).send({
+              message: "Could not download the file. " + err,
+            }).clone().catch(function (err) { console.log(err) })
+
+          }
+        })
+
+
+      }
+    })
+};
 
 const PDFParse = require('pdf2json');
 const Rule = require('../model/Rule');
@@ -491,21 +493,21 @@ const readFiles = async (req, res) => {
         // console.log('dfdfdkfdfldflfhnf', ext);
 
         //  console.log('article', fileName)
-        const directoryPath = path.join(__dirname, "../uploads/");
+        const directoryPath = path.join(__dirname, "../uploads/"+fileName);
         console.log("directoryPath from downolad", directoryPath)
 
-        // fs.readFile(directoryPath, 'utf-8', function (err, files) {
-        //   if (err) {
-        //     res.status(500).send({
-        //       message: "Unable to scan files!",
-        //     });
-        //   }
-        //   else {
-        //     console.log("fileInfo", files);
-        //     res.status(200).send(files)
-        //   }
+        fs.readFile(directoryPath, {dencoding: 'Buffer'}, function (err, files) {
+          if (err) {
+            res.status(500).send({
+              message: "Unable to scan files!",
+            });
+          }
+          else {
+            console.log("fileInfo", files);
+            res.status(200).send(files)
+          }
 
-        // })
+        })
         //   fs.readFile(directoryPath,'utf-8', function (err, files) {
         //   if (err) {
         //     res.status(500).send({
@@ -513,27 +515,27 @@ const readFiles = async (req, res) => {
         //     });
         //   }
         //   else {
-        //      res.writeHead(200, { "Content-type": `text/html` });
+        //      res.writeHead(200, { "Content-type": `application/pdf` });
         //    res.end(files)
         //   //   console.log(files)
 
-        //      //  res.status(200).send(files);
+        //     //  res.status(200).send(files);
 
         //   }
         // }
         // );
 
-        let fileSync = fs.readdirSync(directoryPath);
-        console.log('fileSync: ', fileSync)
+        // let fileSync = fs.readdirSync(directoryPath);
+        // console.log('fileSync: ', fileSync)
 
-        let pdfParser = new PDFParse(fileSync)
+        // let pdfParser = new PDFParse(fileSync)
 
-        //let pdfParser=new PDFParse (this,1);
-        pdfParser.loadPDF(directoryPath + "notes.pdf")
-        console.log('Parse: ', pdfParser)
-        console.log('PDF pages: ', pdfParser.numpages)
+        // //let pdfParser=new PDFParse (this,1);
+        // pdfParser.loadPDF(directoryPath + fileName)
+        // console.log('Parse: ', pdfParser)
+        // console.log('PDF pages: ', pdfParser.numpages)
 
-        console.log('File content: ', pdfParser.info)
+        // console.log('File content: ', pdfParser.info)
 
       }
     }
@@ -1018,7 +1020,7 @@ module.exports = {
   singleFileUpload,
   getAllArticle,
   getStats,
-  //download,
+  download,
   getFiles,
   deleteArticle,
   updateArticle,

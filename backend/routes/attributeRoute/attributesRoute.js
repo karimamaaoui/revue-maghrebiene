@@ -12,6 +12,8 @@ router.put("/update/:id",verifyToken.verifyUserToken,verifyRoles.isReader ,attri
 router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader ,attributeController.deleteAttribute);
 router.get("/attributes", verifyToken.verifyUserToken, attributeController.retrieveAllAttributes);
 
+router.get("/getattribute/:id",verifyToken.verifyUserToken,  attributeController.getOneAttribute);
+
 
 module.exports = router;
 
