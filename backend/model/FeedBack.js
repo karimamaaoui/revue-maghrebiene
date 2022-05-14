@@ -1,25 +1,29 @@
-const mongoose= require("mongoose");
+const mongoose = require("mongoose");
 
-const FeedBackSchema =mongoose.Schema;
+const FeedBackSchema = mongoose.Schema;
 
 const FeedBack = FeedBackSchema({
-    title: {
+    
+    star: {
+        type: Number,
+        required: true,
+    },
+
+    message: {
         type: String,
         required: true,
-        max: 55,
-        minlength:2 
-    },
-
-    message:{
-        type:String,
-        required: true,
-        unique: true,
-        minlength:2 
+        minlength: 2
 
     },
-    
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+
+
+    },
+
 },
-    {timestamps: true}
+    { timestamps: true }
 );
 
-module.exports = mongoose.model("FeedBack",FeedBack);
+module.exports = mongoose.model("FeedBack", FeedBack);
