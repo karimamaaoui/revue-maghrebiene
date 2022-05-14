@@ -19,6 +19,7 @@ const bodyParser = require('body-parser')
 const postRoute = require('./routes/postRoute');
 const demandRoute = require('./routes/demandRoute/demandRoute');
 const feedbackRoute=require('./routes/feedbackRoute/feedRoute')
+const favoriteRoute=require('./routes/favoriteRoute/favoriteRoute')
 
 const http = require('http');
 const Files = require("./model/Files");
@@ -90,9 +91,6 @@ io.on("connection", (socket) => {
     io.sockets.emit("change_data");
   });
 
-
-
-
   socket.on("disconnect", () => [
     // console.log("someone has left")
     removeUser(socket.id)
@@ -151,6 +149,7 @@ app.use('/api/author', authorRoute);
 app.use('/api/post', postRoute);
 app.use('/api/demand', demandRoute);
 app.use('/api/feedback', feedbackRoute);
+app.use('/api/favorite', favoriteRoute);
 
 
 function initial() {
