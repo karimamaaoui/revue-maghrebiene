@@ -374,8 +374,7 @@ top: 80%
     box-shadow: 0 0 12px 0 rgba(20,27,201,.05);
     cursor: pointer;
     border-radius: 10px;
-    margin-top: -9px;
-    background-image: linear-gradient(-45deg, #3615e7 0%, #DCE3ED 100%);
+    background-image: linear-gradient(-45deg, #AFB5D9 0%, #DCE3ED 100%);
   }
 
 
@@ -389,22 +388,19 @@ top: 80%
       cursor: pointer;background-image: linear-gradient(-45deg, #3615e7 0%, #44a2f6 100%)}
       
       .backups:hover{box-shadow: 0 0 25px 0 rgba(20,27,201,.05);cursor: pointer;
-        margin-top: -8px;
         border-radius: 10px;  
-      background-image: linear-gradient(-45deg, #fc6a0e 0%, #fdb642 100%)}
+      background-image: linear-gradient(-45deg, #F1A049 0%, #fdb642 100%)}
       
       .ssl:hover{box-shadow: 0 0 25px 0 rgba(20,27,201,.05);
-        margin-top: -11px;
-
+        border-radius: 10px;  
         cursor: pointer;
-        background-image: linear-gradient(-45deg, #8d40fb 0%, #5a57fb 100%)}
+        background-image: linear-gradient(-45deg, #A786C2 0%, #8d40fb 100%)}
     
       .database:hover{
       box-shadow: 0 0 25px 0 rgba(20,27,201,.05);
       cursor: pointer;
-      margin-top: -11px;
       border-radius: 10px;
-      background-image: linear-gradient(-45deg, #27b88d 0%, #22dd73 100%)}
+      background-image: linear-gradient(-45deg, #8ed2b0 0%, #8ed2b0 100%)}
  
       .tags-input-container{
         border: 2px solid  rgb(90, 187, 214);

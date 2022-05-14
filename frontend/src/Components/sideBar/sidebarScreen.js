@@ -62,7 +62,7 @@ export default function SidebarScreen() {
   return (
     <nav id="sidebar" >
 
-    <div className="p-6 pt-5" style={{backgroundColor:'#CAD8E2',position:"sticky",height:"100%",border:"solid",borderRightColor:"#AAD3E2"}}>
+    <div className="p-6 pt-5" style={{backgroundColor:'#AAD3E2',position:"sticky",height:"100%",border:"solid",borderRightColor:"#AAD3E2"}}>
       <h5>Menu</h5>
       
       <div className="list-unstyled components mb-2">

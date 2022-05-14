@@ -55,6 +55,13 @@ export default function DemandAuthor() {
 
             }).catch(err => {
                 console.log(err)
+                Swal.fire({
+                    title: "Error!",
+                    text: "Request Already Send",
+                    icon: 'error',
+                    button: "OK!"
+                  });
+
             })
 
 

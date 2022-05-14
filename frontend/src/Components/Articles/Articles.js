@@ -140,15 +140,9 @@ function Article() {
 
             formData.append('multiple_files', multiple_files[i]);
             setFilesname(multiple_files[i])
-
         }
-
         setPostSubmitted(true)
-
-
         dispatch(addNewFile(formData));
-
-
     }
 
     const handlePhoto = (e) => {
@@ -157,6 +151,7 @@ function Article() {
         console.log("handlephpoto")
     }
     const handleChange = (e) => {
+        
         setTitle(e.target.value);
 
         console.log(title)

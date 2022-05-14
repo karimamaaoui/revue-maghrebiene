@@ -45,7 +45,8 @@ function Step1({ formData, setFormData }) {
 
     <div className="sign-up-container" style={{ backgroundColor: 'white' }}>
         <label style={{marginLeft:'-140px'}}>Section</label>
-      <select className="select" value={formData.typeArticle} onChange={(event) =>
+      <select className="select" value={formData.typeArticle} 
+      onChange={(event) =>
         setFormData({ ...formData, typeArticle: event.target.value }) }>
           
         <option value="">Choose one</option>

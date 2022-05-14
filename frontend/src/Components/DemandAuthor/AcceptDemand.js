@@ -8,6 +8,8 @@ import SidebarScreen from '../sideBar/sidebarScreen'
 import './accept.css'
 import Accepter from '../../assets/accepter.png'
 import Refuser from '../../assets/refuser.png'
+import Swal from 'sweetalert2'
+import { Confirm } from 'react-st-modal'
 
 export default function AcceptDemand() {
 
@@ -58,7 +60,14 @@ export default function AcceptDemand() {
             .then((res) => {
 
                 console.log(res.data);
-                console.log('article => ' + JSON.stringify(res.data));
+                //console.log('article => ' + JSON.stringify(res.data));
+                Swal.fire({
+                    title: "Succces!",
+                    text: "Demand Accpeted Successfully",
+                    icon: 'success',
+                    button: "OK!"
+                  });
+
 
             }).catch(err => {
                 console.log(err)
@@ -66,6 +75,34 @@ export default function AcceptDemand() {
 
 
     }
+
+    const deleteRequest = async (id) => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+
+            },
+        };
+      
+          console.log("user token", config)
+      
+          const { data } = await axios.delete(`http://localhost:5000/api/demand/delete/${id}`, config);
+          console.log("user data", data)
+                      Swal.fire({
+                    title: "Warning!",
+                    text: "Demand Deleted Successfully",
+                    icon: 'warning',
+                    button: "OK!"
+                  })
+
+                .catch(err => {
+                console.log(err)
+            })
+
+
+    }
+
 
     useEffect(() => {
 
@@ -81,6 +118,7 @@ export default function AcceptDemand() {
             dispatch,
             history,
             userInfo,
+            
 
         ]);
 
@@ -148,7 +186,15 @@ export default function AcceptDemand() {
                                                                         }}
                                                                         
                                                                         style={{ height: '35px' }} />
-                                                                        <img src={Refuser} onClick="" style={{ height: '35px' }} />
+                                                                        <img src={Refuser} onClick={async() => {
+                                                                            const result = await Confirm('Are you sure you want to delete this one', 
+                                                                            'Delete Сonfirmation');
+                                                                          if (result) {
+                                                                            deleteRequest(demand._id);
+                                                                          }
+
+                                                                        }}
+                                                                         style={{ height: '35px' }} />
 
                                                                     </div>
                                                                 </div>
