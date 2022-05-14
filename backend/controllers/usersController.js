@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const Author = require('../model/Author');
 const db = require("../routes/Roles");
+const Demand = require('../model/Demand');
 const Role = db.role;
 
 
@@ -474,7 +475,7 @@ const sendTemporaryPassword = async (req, res) => {
 // add user to author
 const AddToAuthor = async (req, res) => {
 
-    console.log("add to author");
+    console.log("inside add to entity author ");
     const _id = req.params.id;
     console.log("user id", _id);
 
@@ -482,9 +483,8 @@ const AddToAuthor = async (req, res) => {
 
         let user = await User.findById(_id);
        // let userId = await User.findOne({ user: req.decoded.id })
-        console.log("user id from add author", user)
+       // console.log("user id from add author", user)
 
-        console.log("inside add to entity author ");
 
         if (!user) {
             res.status(404).json({ msg: 'User does not exist' });
@@ -498,9 +498,20 @@ const AddToAuthor = async (req, res) => {
                 return;
             }
             user.role = [role._id];
-            console.log("user role role user role", user.role)
+           // console.log("user role role user role", user.role)
 
         })
+
+
+        Demand.findOneAndRemove({ user: _id }, (err, demand) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            } 
+            console.log("user demand", demand)
+            
+        })
+
         const isApproved = true;
         await User.findOneAndUpdate(
 
@@ -510,7 +521,7 @@ const AddToAuthor = async (req, res) => {
 
             });
 
-        console.log("useer role after", user.role)
+        //console.log("useer role after", user.role)
 
         user.save();
         res.json({ msg: 'Approved', user });
@@ -529,7 +540,7 @@ const AddToAuthor = async (req, res) => {
 
             });
 
-        console.log("user roles after updating", user.role)
+        console.log("user roles after updating", user._id)
 
 
         await User.findOneAndUpdate(
@@ -543,7 +554,7 @@ const AddToAuthor = async (req, res) => {
 
         });
         await author.save();
-
+      
 
     } catch (err) {
         console.error(err);
@@ -582,7 +593,8 @@ const getNewArrivals = (
 module.exports = {
     getUser,
     getAllUsers,
-    updatePassword, AddToAuthor,
+    updatePassword, 
+    AddToAuthor,
     updateUser,
     logOut,
     forgotPassword,

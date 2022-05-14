@@ -5,7 +5,7 @@ const createDemand = async (req, res) => {
     console.log('inside  create  Demand');
    
     const userId = await User.findOne({_id:req.decoded.id});
-    console.log('inside  create  Demand',userId);
+  //  console.log('inside  create  Demand',userId);
     if (!userId) {
         res.status(404).json({ msg: 'User does not exist' });
     }
@@ -14,11 +14,16 @@ const createDemand = async (req, res) => {
     const demand = await new Demand({
       user: userId.id,
     });
+    
+    
+
     // Save attribute in the database
     demand
       .save(demand)
       .then(data => {
+       // if(data.includes())
         console.log("data demand", data)
+
         res.send(data);
       })
       
@@ -45,12 +50,26 @@ const getAllDemands = ( async (req, res) => {
           return res.status(500).json({ msg: err });
       }
   });
+
+  //delete Demand
+const deleteDemand = async (req, res) => {
+  console.log('inside  delete  demand');
+  try {
+    await Demand.findByIdAndRemove(req.params.id);
+    res.status(201).json('demand has been deleted...');
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+};
+
     
 
   
 module.exports = {
     createDemand,
     getAllDemands,
-
+    deleteDemand
   }
   

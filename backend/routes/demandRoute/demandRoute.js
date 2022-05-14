@@ -10,5 +10,7 @@ router.post("/add",verifyToken.verifyUserToken  ,demandController.createDemand);
 
 router.get("/",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.getAllDemands);
 
+router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.deleteDemand);
+
 module.exports = router;
 
