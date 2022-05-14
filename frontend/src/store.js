@@ -19,6 +19,7 @@ import { addArticleReducer, articleDeleteReducer, articleUpdateReducer, retrieve
 import { addFileReducer } from './redux/reducers/fileReducers';
 import { retrieveRulesReducer } from './redux/reducers/rulesReducers';
 import { getArticleByFilter } from './redux/Actions/articleActions';
+import { addFeedBackReducer } from './redux/reducers/feedbackReducers';
 
 const reducer = combineReducers({
   // here contain our reducers
@@ -41,7 +42,8 @@ const reducer = combineReducers({
   RandomArticle:retrieveArticlerRandomReducer,
   listArrivals:userNewArrivalReducer,
   articleUpdate: articleUpdateReducer,
-  demandList: demandAuthorReducer
+  demandList: demandAuthorReducer,
+  addFeedback:addFeedBackReducer
 
 })
 

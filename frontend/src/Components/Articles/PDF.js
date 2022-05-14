@@ -101,56 +101,82 @@ const PDF = (props) => {
     <>
 
 
-      <div className='row mb-3 '>
-
-        <div className="col-md-15 offset-md">
-          <div className="row">
 
 
-            <div className="col-sm-12"  >
-              <div class="card border-primary mb-3" ref={ref}>
-                <div class="card-header">   Title  :{props.title}</div>
-                <div class="card-body text-primary">
-                  <h5 class="card-title">Author  : {userInfo.user.username}
-                    <br />
-                    FileName  :{props.filesname}
-                    <br />
-                    Theme: {attributeList.label}
-                    <br />
-                    Type: {typeList.label}
-                    <br />
+      <div class="receipt-content">
+        <div class="container bootstrap snippets bootdey "ref={ref}>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="invoice-wrapper">
+                <div class="intro">
+                  Title: <strong>{props.title}</strong>,
+                  <br />
+                  Author : {userInfo.user.username}
+                </div>
 
-                    KeyWords :{props.keyWords}
-                    Bio : {props.bio}
+                <div class="payment-info">
+                  <div class="row">
+                    <div class="col-sm-5">
+                      <span>Type :</span>
+                      <strong>  {typeList.label}</strong>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                      <span>Theme :</span>
+                      <strong>{attributeList.label}</strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="payment-details">
+                  <div class="row">
+                    <div class="col-sm-5">
+                      <span> FileName : </span>
+                      <p>
+                      {props.filesname} <br />
+                      </p>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                      <span>KeyWords :</span>
+                      <p>
+                        {props.keyWords}
+
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="line-items">
+                  <div class="headers clearfix">
+                    <div class="row">
+                      <div class="col-xs-4">Bio : {props.bio}</div>
+                      <div class="col-xs-3"> Abbreviations:
+                        {props.abbreviations}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="total text-right">
+                    <p class="extra-notes col-sm-12">
+                      <strong>Abstract :</strong>
+                      {props.abstract} 
+                    </p>
+
+                  </div>
                     <br/>
-                    Abbreviations: 
-                    {props.abbreviations}
-                     <br/>
-                     {props.abstract}        
-
-                  </h5>
-                </div>      
+                  <div class="footer">
+                    <Pdf targetRef={ref} filename="post.pdf" >
+                    {({ toPdf }) =>
+                      <button className="" onClick={toPdf}>Capture as PDF</button>
+                    }
+                  </Pdf>
+                  </div>
                 </div>
-                <div className="footer">
-
-                <div style={{ display: "inline-flex" }}>
-
-                
-              <Pdf targetRef={ref} filename="post.pdf" >
-                {({ toPdf }) => 
-                
-                   
-          
-                <button className="footer" onClick={toPdf}>Capture as PDF</button>
-                }
-              </Pdf>
               </div>
-                </div>
+
+              <div class="footer">
+                Copyright © 2022. company name
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      </div>
-
     </>
   );
 }

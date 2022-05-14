@@ -43,8 +43,6 @@ function Article() {
     const [isValidKeyWords, setIsValidKeyWords] = useState(false);
     const [messageKeyWords, setMessageKeyWords] = useState('');
 
-
-
     useEffect(() => {
         if (!userInfo) {
             history("/");

@@ -79,7 +79,7 @@ export default function DemandAuthor() {
                             <div className='container'>
                                 <div id="content" className="p-6 p-md-10 pt-12">
                                     <NavbarList />
-                                    <div className="" style={{ backgroundColor: 'white' }}>
+                                    <div className="card mb-3" style={{ backgroundColor: 'white' }}>
                                         <div class="card-body">
                                             <div className="row">
                                                 <h1 style={{ color: 'rgb(151, 213, 230)' }}>Demand To Be An Author:::::::::::::::::::::::::::::::::::::::::</h1>
