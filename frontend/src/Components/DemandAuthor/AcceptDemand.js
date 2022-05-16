@@ -119,6 +119,7 @@ export default function AcceptDemand() {
             history,
             userInfo,
             
+            demandList
 
         ]);
 

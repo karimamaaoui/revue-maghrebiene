@@ -7,7 +7,6 @@ import { listTypes } from "../../redux/Actions/typeAction";
 import NavbarList from "../adminPanel/views/navbarList";
 import SidebarScreen from "../sideBar/sidebarScreen";
 import './formArticle.css'
-
 import { useTranslation } from "react-i18next";
 import { io } from "socket.io-client";
 import 'antd/dist/antd.css';
@@ -18,7 +17,15 @@ import PDF from "./PDF";
 import axios from "axios";
 import AddForm from "./addFrom";
 import Swal from "sweetalert2";
+
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToHTML } from 'draft-convert';
+import DOMPurify from 'dompurify';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import RichTextEditor from "./RichTextEditor";
 const ENDPOINT = "http://localhost:5000";
+
 export const socket = io(ENDPOINT);
 
 function Article() {
@@ -46,6 +53,7 @@ function Article() {
     const [isValidKeyWords, setIsValidKeyWords] = useState(false);
     const [messageKeyWords, setMessageKeyWords] = useState('');
     const [authorList, setAuthorList] = useState([]);
+    const [firstname, setFirstname] = useState('');
 
     const [university, setUniversity] = useState('');
     const [placeofpractice, setPlaceofpractice] = useState('');
@@ -61,16 +69,14 @@ function Article() {
 
         return await axios.get(`http://localhost:5000/api/author/get`, config)
             .then((res) => {
-                console.log(res.data);
+                //    console.log(res.data);
                 setAuthorList(res.data)
             }).catch(err => {
                 console.log(err)
             })
-            
+
 
     }
-
-
     useEffect(() => {
         if (!userInfo) {
             history("/");
@@ -80,17 +86,12 @@ function Article() {
             dispatch(listAttribute());
             dispatch(listRules())
             getAuthor();
-
-            
         }
-        
-        
     }, [
         dispatch,
         history,
         userInfo,
-        
-        
+        //authorList
     ]);
 
     useEffect(() => {
@@ -103,9 +104,6 @@ function Article() {
         };
     }, []);
     const changeData = () => socket.emit("initial_data");
-
-
-
     //  const [authors, setAuthors] = useState([userInfo.user._id]);
     const [tags, setTags] = useState([]);
     const [attributesAticle, setAttributesAticle] = useState([]);
@@ -151,6 +149,17 @@ function Article() {
     const [show, setShow] = useState(false);
     const [requiredItem, setRequiredItem] = useState(0);
 
+    const [bold, setBold] = useState(false);
+    const [italized, setItalized] = useState(false);
+    const [underlined, setUnderlined] = useState(false);
+
+    const [value, setValue] = useState("");
+    const getValue = (value) => {
+       // console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',createMarkup (value))
+        setValue(value);
+        setAbstract(value)
+    };
+
     const handleEdit = (e) => {
         e.preventDefault();
         const config = {
@@ -161,13 +170,14 @@ function Article() {
             },
         };
 
+        const auteur = { university, placeofpractice }
         //  addEmployee(name, email, phone, address);
-        return axios.put(`http://localhost:5000/api/author/updateauthor`, { university, placeofpractice }, config)
+        return axios.put(`http://localhost:5000/api/author/updateauthor`, auteur, config)
             .then((res) => {
 
                 console.log(res.data);
 
-                console.log('article => ' + JSON.stringify(res.data));
+                console.log('article => ' + JSON.stringify(auteur));
                 Swal.fire({
                     title: "Succces!",
                     text: "Request Sended Successfully",
@@ -186,6 +196,30 @@ function Article() {
 
             })
 
+    }
+
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+    );
+
+    const [convertedContent, setConvertedContent] = useState(null);
+    
+    const handleEditorChange = (state) => {
+        setEditorState(state);
+
+        convertContentToHTML();
+    }
+
+    const convertContentToHTML = () => {
+        let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+
+        setConvertedContent(currentContentAsHTML);
+    }
+
+    const createMarkup = (html) => {
+        return {
+            __html: DOMPurify.sanitize(html)
+        }
     }
 
 
@@ -220,6 +254,8 @@ function Article() {
         dispatch(addNewFile(formData));
     }
 
+
+
     const handlePhoto = (e) => {
         setMultiple_files(e.target.files);
         setFilename(e.target.files[0].names);
@@ -241,6 +277,9 @@ function Article() {
         setRequiredItem(id)
     }
 
+
+
+
     return (
 
         <>
@@ -261,6 +300,48 @@ function Article() {
                                                 {!postSubmitted ?
 
                                                     <div class="card-body">
+                                                        {/* <div className="row">
+                                                            <div className="col-md-6" style={{ margin: "auto", marginTop: "50px" }}>
+                                                                <div style={{ textAlign: "center" }}>
+                                                                    <h3>Rich Text Editor</h3>
+                                                                </div>
+                                                                {/* <Editor
+                                                                    editorState={editorState}
+                                                                    onEditorStateChange={handleEditorChange}
+                                                                    wrapperClassName="wrapper-class"
+                                                                    editorClassName="editor-class"
+                                                                    toolbarClassName="toolbar-class"
+                                                                    name="abstract"
+                                                                
+                                                                /> */}
+
+                                                                {/* <RichTextEditor initialValue="" getValue={getValue}
+                                                                    name="abstract"
+                                                                    value={abstract}
+                                                                    
+
+                                                                />
+                                                                <div className="preview" dangerouslySetInnerHTML={createMarkup(value)}
+
+                                                                ></div>
+
+                                                                <br /> 
+                                                                <div>
+
+                                                                </div>
+
+
+                                                            </div>
+
+                                                        </div> */}
+                                                        {/* <div className="headText">
+                                                            <span className="Control">
+                                                                <button className="btnText" onClick={onBoldClick}><strong>B</strong></button>
+                                                                <button className="btnText" onClick={onItalicsClick}><em>I</em></button>
+                                                                <button className="btnText" onClick={onUnderlineClick}><u>U</u></button>
+                                                            </span>
+                                                            <textarea rows="5" className="Text" />
+                                                        </div> */}
 
                                                         <form onSubmit={handleSubmit} encType='multipart/form-data' >
                                                             <div class="row mb-3">
@@ -371,17 +452,18 @@ function Article() {
                                                                     <h6 class="mb-0">{t("profile:abstract")}</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
-                                                                    {/* <input
-					 type="text"
-					 className="form-control"
-					 name="abstract"
-					 onChange={(e) => {
-						 setAbstract(e.target.value);
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        name="abstract"
+                                                                        defaultValue={abstract}
+                                                                        onChange={(e) => {
+                                                                            setAbstract(e.target.value);
 
-					 }}
-				 /> */}
+                                                                        }}
+                                                                    />
 
-                                                                    <textarea name="abstract"
+                                                                    {/* <textarea name="abstract"
                                                                         rows="5" cols="33"
                                                                         className="form-control"
                                                                         required
@@ -392,7 +474,7 @@ function Article() {
 
                                                                     >
 
-                                                                    </textarea>
+                                                                    </textarea> */}
 
                                                                 </div>
                                                             </div>
@@ -479,7 +561,7 @@ function Article() {
                                                                                                 <button onClick={handleShow} className="btn text-warning btn-act" data-toggle="modal"><i className="material-icons">&#xE254;</i></button>
                                                                                             </OverlayTrigger>
                                                                                             </div> */}
-                                                                                        Email: {userInfo.user.email} username:
+                                                                                        Email: {userInfo.user.email} username: {userInfo.user.username}
                                                                                         {authorList?.map((auth, key) => {
 
                                                                                             return (
@@ -526,6 +608,7 @@ function Article() {
 
                                                                                                                         />
                                                                                                                     </Form.Group>
+
                                                                                                                     <Form.Group>
                                                                                                                         <Form.Label>
                                                                                                                             Place Of Practice
@@ -541,6 +624,8 @@ function Article() {
 
                                                                                                                             }} />
                                                                                                                     </Form.Group>
+
+
                                                                                                                     <br />
                                                                                                                     <Button variant="primary" type="submit" block onClick={handleEdit}>
                                                                                                                         Update
@@ -552,8 +637,8 @@ function Article() {
                                                                                                         </Modal>
 
                                                                                                     </div>
-                                                                                                    <p>placeofpractice {auth.placeofpractice}</p>
-                                                                                                    <p>university {auth.university}</p>
+                                                                                                    <p>Place Of Practice  {auth.placeofpractice}</p>
+                                                                                                    <p>University : {auth.university}</p>
 
                                                                                                 </>
                                                                                             )

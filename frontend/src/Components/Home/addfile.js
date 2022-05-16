@@ -21,6 +21,11 @@ import {
 
 import { RWebShare } from "react-web-share";
 
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToHTML } from 'draft-convert';
+import DOMPurify from 'dompurify';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import axios from 'axios';
 import TextArea from 'antd/lib/input/TextArea';
 import ima from '../../assets/bg1.jpg'
@@ -28,6 +33,26 @@ import { Alert } from 'reactstrap';
 
 export default function AddFile(props) {
 
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+      );
+      const  [convertedContent, setConvertedContent] = useState(null);
+    
+      const handleEditorChange = (state) => {
+        setEditorState(state);
+        convertContentToHTML();
+      }
+    
+      const convertContentToHTML = () => {
+        let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+        setConvertedContent(currentContentAsHTML);
+      }
+    
+      const createMarkup = (html) => {
+        return  {
+          __html: DOMPurify.sanitize(html)
+        }
+      }
 
 
     //     const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -652,6 +677,26 @@ export default function AddFile(props) {
     return (
 
         <>
+                 <div className="row">
+
+                                                            <div className="col-md-6" style={{ margin: "auto", marginTop: "50px" }}>
+                                                                <div style={{ textAlign: "center" }}>
+                                                                    <h3>Rich Text Editor</h3>
+                                                                </div>
+                                               
+           <div className="">
+        Rich Text Editor Example
+      </div>
+      <Editor
+        editorState={editorState}
+        onEditorStateChange={handleEditorChange}
+        wrapperClassName="wrapper-class"
+        editorClassName="editor-class"
+        toolbarClassName="toolbar-class"
+      />
+      <div className="preview" dangerouslySetInnerHTML={createMarkup(convertedContent)}></div>
+      </div>
+      </div>
             {/*         
             <button type='submit' className='primary'
                 onClick={() => handleFiles()}>
@@ -671,41 +716,6 @@ export default function AddFile(props) {
       <button type="submit">Submit</button>
     </form> */}
 
-            <br />
-            enter tags
-
-            <div className="tags-input-container">
-
-
-                {
-
-                    tags.map((tag, index) => (
-                        <div className="tag-item" key={index}>
-                            <span className="text">
-                                {tag}
-                            </span>
-                            <span className="close" onClick={() => removeTags(index)}>
-                                &times;
-                            </span>
-
-
-
-                        </div>
-
-                    ))}
-                <input
-                    name="keyWords"
-
-                    type="text"
-                    className="tags-input"
-                    required
-
-                    onKeyDown={handleKeyDown}
-                />
-            </div>
-            <div className={`message ${isValidKeyWords ? 'success' : 'error'}`}>
-                          {messageKeyWords}
-                        </div>
                        
             <br />
             {/*       
