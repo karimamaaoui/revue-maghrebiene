@@ -12,6 +12,7 @@ import { Confirm, Prompt, Alert } from 'react-st-modal';
 import ReactPaginate from 'react-paginate'
 import { listAttribute } from '../../redux/Actions/attributeActions';
 import './search.css'
+import Swal from 'sweetalert2';
 
 
 export default function SearchPahe() {
@@ -42,6 +43,7 @@ export default function SearchPahe() {
     const [attributeIds, setAttributeIds] = useState([]);
     const [likeArticle, setLikeArticle] = useState([]);
     const [viewArticle, setViewArticle] = useState([]);
+    const [favoriteList, setFavoriteList] = useState([]);
 
     const [text, setText] = useState('');
     //paginate
@@ -200,6 +202,46 @@ export default function SearchPahe() {
 
     }
 
+    const handleFavoris = async (article) => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+
+            },
+        };
+        let userId = userInfo.user._id;
+        let user = { userId, article }
+        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+
+
+        return await axios.post(`http://localhost:5000/api/favorite/add/`, user, config)
+            .then((res) => {
+
+                console.log(res.data);
+                Swal.fire({
+                    title: "Succces!",
+                    text: "Request Sended Successfully",
+                    icon: 'success',
+                    button: "OK!"
+                });
+
+            }).catch(err => {
+                console.log(err)
+                Swal.fire({
+                    title: "Error!",
+                    text: "Request Already Send",
+                    icon: 'error',
+                    button: "OK!"
+                });
+
+            })
+
+
+    }
+
+
+
 
     const handleView = async (id) => {
         const config = {
@@ -231,44 +273,46 @@ export default function SearchPahe() {
     const [fileURL, setFileURL] = useState('');
     console.log('fileURL', fileURL)
 
-    const handleRead = async (id) => {
-        const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
+    // const handleRead = async (id) => {
+    //     const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
 
-            {
-                responseType: 'arraybuffer',
-                responseEncoding: 'binary',
+    //         {
+    //             responseType: 'arraybuffer',
+    //             responseEncoding: 'binary',
 
-                headers: {
-                    "Content-type": "application/pdf",
-                },
-            }
-        );
+    //             headers: {
+    //                 "Content-type": "application/pdf",
+    //             },
+    //         }
+    //     );
 
-        const blob = new Blob([pdf], {
-            type: 'application/pdf'
-        });
-        const fileURL = URL.createObjectURL(blob);
-        setFileURL(fileURL)
+    //     const blob = new Blob([pdf], {
+    //         type: 'application/pdf'
+    //     });
+    //     const fileURL = URL.createObjectURL(blob);
+    //     setFileURL(fileURL)
 
-        window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
+    //     window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
 
 
-        // console.log("user data", pdf)
-        //  await axios.get(`http://localhost:5000/api/file/get/${id}`
-        //     , {
-        //         responseType: 'blob',
-        //     }
-        // )
-        // .then((response) => {
-        //     console.log("resp", response);
-        // }
+    //     // console.log("user data", pdf)
+    //     //  await axios.get(`http://localhost:5000/api/file/get/${id}`
+    //     //     , {
+    //     //         responseType: 'blob',
+    //     //     }
+    //     // )
+    //     // .then((response) => {
+    //     //     console.log("resp", response);
+    //     // }
 
-        //  )
-        //  console.log(Buffer.from(pdf).toString('base64'));
+    //     //  )
+    //     //  console.log(Buffer.from(pdf).toString('base64'));
 
-        console.log(new Blob([new Uint8Array(pdf)]))
+    //     console.log(new Blob([new Uint8Array(pdf)]))
 
-    }
+    // }
+
+
     const handleCategory = e => {
 
         const currentCategoryChecked = e.target.value;
@@ -523,17 +567,23 @@ export default function SearchPahe() {
     
     
                                                                                                     </div> */}
-                                                                                                                    <div style={{ display: "inline-flex", }}
-
-                                                                                                                    >
-
-
+                                                                                                                    <div style={{ display: "inline-flex", }}>
                                                                                                                         <button className="bi bi-hand-thumbs-up-fill"
                                                                                                                             style={{ borderRadius: '10px', width: '100%' }}
                                                                                                                             onClick={() => handleLike(tdata._id)}
                                                                                                                         ></button>
+
                                                                                                                         <br />
                                                                                                                     </div>
+                                                                                                                    <div style={{ display: "inline-flex", }}>
+
+                                                                                                                        <button className="bi bi-star-fill"
+                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                            onClick={() => handleFavoris(tdata._id)}
+                                                                                                                        ></button>
+                                                                                                                        <br />
+                                                                                                                    </div>
+
                                                                                                                     {(tdata.like.length) > 0 ?
 
                                                                                                                         <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
@@ -552,9 +602,7 @@ export default function SearchPahe() {
                                                                                                                     {tdata.abstract}
 
                                                                                                                 </div>,
-                                                                                                                'Read More'
-
-
+                                                                                                                'Load More'
                                                                                                             );
 
                                                                                                             if (result) {
@@ -563,11 +611,11 @@ export default function SearchPahe() {
 
                                                                                                             }
                                                                                                         }}
-
                                                                                                     >
 
-                                                                                                        Read More
+                                                                                                        Load More
                                                                                                     </button>
+                                                                                                    <br/>
                                                                                                     <form
                                                                                                         onSubmit={(e) => {
                                                                                                             e.preventDefault()
@@ -674,12 +722,12 @@ export default function SearchPahe() {
                                                                                                         )
                                                                                                     })
                                                                                                 }
-                                                                                                <button type='submit' className='primary'
+                                                                                                {/* <button type='submit' className='primary'
                                                                                                     onClick={() => handleRead(tdata._id)}>
 
 
                                                                                                     Read
-                                                                                                </button>
+                                                                                                </button> */}
 
                                                                                                 <div className="footer">
                                                                                                     <div style={{ display: "inline-flex" }}>
@@ -714,6 +762,15 @@ export default function SearchPahe() {
                                                                                                                             <br />
                                                                                                                         </div>
 
+                                                                                                                        <div style={{ display: "inline-flex", }}>
+
+                                                                                                                            <button className="bi bi-star-fill"
+                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                onClick={() => handleFavoris(tdata._id)}
+                                                                                                                            ></button>
+                                                                                                                            <br />
+                                                                                                                        </div>
+
                                                                                                                         {(tdata.like.length) > 0 ?
 
                                                                                                                             <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
@@ -735,7 +792,7 @@ export default function SearchPahe() {
                                                                                                                         {tdata.abstract}
 
                                                                                                                     </div>,
-                                                                                                                    'Read More'
+                                                                                                                    'Load More'
 
 
                                                                                                                 );
@@ -749,8 +806,9 @@ export default function SearchPahe() {
 
                                                                                                         >
 
-                                                                                                            Read More
+                                                                                                            Load More
                                                                                                         </button>
+                                                                                                        <br/>
                                                                                                         <form
                                                                                                             onSubmit={(e) => {
                                                                                                                 e.preventDefault()

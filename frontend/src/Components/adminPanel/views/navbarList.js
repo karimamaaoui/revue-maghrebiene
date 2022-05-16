@@ -124,7 +124,7 @@ export default function NavbarList() {
                   </div>
 
                   <h6 class="m-b-20">
-                    <a href="#home" style={{ color: "white" }}>
+                    <a href="/search" style={{ color: "white" }}>
                       List of Article
                     </a>
 
@@ -147,7 +147,7 @@ export default function NavbarList() {
                   </div>
 
                   <h6 class="m-b-20">
-                    <a href="#home" style={{ color: "white" }}>
+                    <a href="/article" style={{ color: "white" }}>
                     Add New Article
                     </a>
 
@@ -194,7 +194,7 @@ export default function NavbarList() {
                   </div>
 
                   <h6 class="m-b-20">
-                    <a href="#home" style={{ color: "white" }}>
+                    <a href="/feedback" style={{ color: "white" }}>
                       Feedback
                     </a>
 

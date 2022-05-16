@@ -13,8 +13,11 @@ import { io } from "socket.io-client";
 import 'antd/dist/antd.css';
 import { listRules } from "../../redux/Actions/rulesActions";
 import HeaderTran from "../adminPanel/views/ui/TRANSLATE/headerTrans";
-import { Card } from "react-bootstrap";
+import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PDF from "./PDF";
+import axios from "axios";
+import AddForm from "./addFrom";
+import Swal from "sweetalert2";
 const ENDPOINT = "http://localhost:5000";
 export const socket = io(ENDPOINT);
 
@@ -42,6 +45,31 @@ function Article() {
     const [postSubmitted, setPostSubmitted] = useState(false);
     const [isValidKeyWords, setIsValidKeyWords] = useState(false);
     const [messageKeyWords, setMessageKeyWords] = useState('');
+    const [authorList, setAuthorList] = useState([]);
+
+    const [university, setUniversity] = useState('');
+    const [placeofpractice, setPlaceofpractice] = useState('');
+
+    const getAuthor = async () => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+
+            },
+        };
+
+        return await axios.get(`http://localhost:5000/api/author/get`, config)
+            .then((res) => {
+                console.log(res.data);
+                setAuthorList(res.data)
+            }).catch(err => {
+                console.log(err)
+            })
+            
+
+    }
+
 
     useEffect(() => {
         if (!userInfo) {
@@ -51,11 +79,18 @@ function Article() {
             dispatch(listTypes());
             dispatch(listAttribute());
             dispatch(listRules())
+            getAuthor();
+
+            
         }
+        
+        
     }, [
         dispatch,
         history,
         userInfo,
+        
+        
     ]);
 
     useEffect(() => {
@@ -113,7 +148,49 @@ function Article() {
 
     const addFile = useSelector((state) => state.addFile);
     const { loading, error, files } = addFile;
+    const [show, setShow] = useState(false);
+    const [requiredItem, setRequiredItem] = useState(0);
 
+    const handleEdit = (e) => {
+        e.preventDefault();
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+
+            },
+        };
+
+        //  addEmployee(name, email, phone, address);
+        return axios.put(`http://localhost:5000/api/author/updateauthor`, { university, placeofpractice }, config)
+            .then((res) => {
+
+                console.log(res.data);
+
+                console.log('article => ' + JSON.stringify(res.data));
+                Swal.fire({
+                    title: "Succces!",
+                    text: "Request Sended Successfully",
+                    icon: 'success',
+                    button: "OK!"
+                });
+
+            }).catch(err => {
+                console.log(err)
+                Swal.fire({
+                    title: "Error!",
+                    text: "Request Already Send",
+                    icon: 'error',
+                    button: "OK!"
+                });
+
+            })
+
+    }
+
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     const handleSubmit = (e) => {
         console.log("inside handle submit");
@@ -149,7 +226,7 @@ function Article() {
         console.log("handlephpoto")
     }
     const handleChange = (e) => {
-        
+
         setTitle(e.target.value);
 
         console.log(title)
@@ -158,6 +235,12 @@ function Article() {
         setBio(e.target.value);
 
     }
+
+    const replaceModalItem = (id) => {
+        handleShow()
+        setRequiredItem(id)
+    }
+
     return (
 
         <>
@@ -381,13 +464,101 @@ function Article() {
                                                                     <div className="col-md-15 offset-md">
                                                                         <div className='card'>
                                                                             <div class="">
-                                                                                <br />
+
                                                                                 <label style={{ fontSize: '20px' }}>author</label>
-                                                                                <br/>
+                                                                                <br />
                                                                                 <div style={{ display: "inline-flex", fontSize: "50px", flexWrap: "wrap" }}>
                                                                                     <p>
-                                                                                       Email: {userInfo.user.email} username: {userInfo.user.username}
-                                                                                       
+                                                                                        {/* <div className="col-sm-6">
+                                                                                            <OverlayTrigger 
+                                                                                                overlay={
+                                                                                                    <Tooltip id={`tooltip-top`}>
+                                                                                                        Edit 
+                                                                                                    </Tooltip>
+                                                                                                }>
+                                                                                                <button onClick={handleShow} className="btn text-warning btn-act" data-toggle="modal"><i className="material-icons">&#xE254;</i></button>
+                                                                                            </OverlayTrigger>
+                                                                                            </div> */}
+                                                                                        Email: {userInfo.user.email} username:
+                                                                                        {authorList?.map((auth, key) => {
+
+                                                                                            return (
+                                                                                                <>
+                                                                                                    <div class="row justify-content-around" style={{ marginLeft: '110%', marginTop: "-40px" }}>
+                                                                                                        <div class="col">
+                                                                                                        </div>
+                                                                                                        <div class="col-20">
+                                                                                                            <div key={key}>
+
+                                                                                                                <button className="btn btn-primary"
+                                                                                                                    data-toggle="modal" data-target="#exampleModal"
+                                                                                                                    onDoubleClick={() => {
+                                                                                                                        replaceModalItem(auth._id)
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <i class="bi bi-pencil-square"></i>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        <Modal show={show} onHide={handleClose}>
+                                                                                                            <Modal.Header closeButton >
+                                                                                                                <Modal.Title>
+                                                                                                                    Edit
+                                                                                                                </Modal.Title>
+                                                                                                            </Modal.Header>
+                                                                                                            <Modal.Body>
+                                                                                                                <Form >
+                                                                                                                    <Form.Group>
+                                                                                                                        <Form.Label>
+                                                                                                                            University
+                                                                                                                        </Form.Label>
+                                                                                                                        <Form.Control
+                                                                                                                            type="text"
+                                                                                                                            placeholder="university *"
+                                                                                                                            name="university"
+                                                                                                                            defaultValue={auth.university}
+                                                                                                                            onChange={(e) => {
+                                                                                                                                setUniversity(e.target.value);
+
+                                                                                                                            }}
+
+
+                                                                                                                        />
+                                                                                                                    </Form.Group>
+                                                                                                                    <Form.Group>
+                                                                                                                        <Form.Label>
+                                                                                                                            Place Of Practice
+                                                                                                                        </Form.Label>
+
+                                                                                                                        <Form.Control
+                                                                                                                            type="text"
+                                                                                                                            placeholder="placeofpractice *"
+                                                                                                                            name="placeofpractice"
+                                                                                                                            defaultValue={auth.placeofpractice}
+                                                                                                                            onChange={(e) => {
+                                                                                                                                setPlaceofpractice(e.target.value);
+
+                                                                                                                            }} />
+                                                                                                                    </Form.Group>
+                                                                                                                    <br />
+                                                                                                                    <Button variant="primary" type="submit" block onClick={handleEdit}>
+                                                                                                                        Update
+                                                                                                                    </Button>
+                                                                                                                </Form>
+
+                                                                                                            </Modal.Body>
+
+                                                                                                        </Modal>
+
+                                                                                                    </div>
+                                                                                                    <p>placeofpractice {auth.placeofpractice}</p>
+                                                                                                    <p>university {auth.university}</p>
+
+                                                                                                </>
+                                                                                            )
+                                                                                        })}
+
                                                                                     </p>
 
                                                                                 </div>
@@ -475,6 +646,7 @@ function Article() {
                                                         keyWords={keyWords}
                                                         abbreviations={abbreviations}
                                                         bio={bio}
+                                                        author={authorList}
 
                                                     />}
 

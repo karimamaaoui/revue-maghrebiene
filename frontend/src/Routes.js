@@ -17,9 +17,6 @@ import Alerts from './Components/adminPanel/views/ui/Alerts';
 import Buttons from './Components/adminPanel/views/ui/Alerts';
 import Badges from './Components/adminPanel/views/ui/Badges';
 import Table from './Components/adminPanel/views/ui/Tables';
-import Grid from './Components/adminPanel/views/ui/Grid';
-import Breadcrumbs from './Components/adminPanel/views/ui/Breadcrumbs';
-import Cards from './Components/adminPanel/views/ui/Cards';
 import Forms from './Components/adminPanel/views/ui/TRANSLATE/Forms';
 //import FullLayout from './Components/adminPanel/layouts/FullLayout'
 import AdminPage from './Components/adminPanel/adminpage';
@@ -89,11 +86,8 @@ export default function RoutesList() {
           <Route exact path="/alerts" element= {<Alerts />} />
           <Route exact path="/badges" element= {<Badges />} />
           <Route exact path="/buttons" element= {<Buttons />} />
-          <Route exact path="/cards" element= {<Cards />} />
-          <Route exact path="/grid" element= {<Grid />} />
           <Route exact path="/table" element= {<Table />} />
           <Route exact path="/forms" element= {<Forms />} />
-          <Route exact path="/breadcrumbs" element= {<Breadcrumbs />} />
           <Route exact path="/adminpanel" element= {<AdminPage />} />
 
 
