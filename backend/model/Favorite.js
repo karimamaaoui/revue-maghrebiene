@@ -6,6 +6,7 @@ const Favorite =FavoriteSchema({
     user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    
   },
 
   article: {

@@ -37,23 +37,6 @@ const User = UserSchema({
         unique: true,
 
     },
-    university:{
-        type:String,
-        default:"",
-        max:100
-
-    },
-
-    placeofpractice:{
-        type:String,
-        default:"",
-        max:100
-    },
-
-    notifcations:{
-        type:[],
-    },
-   
    
     profilePic:{
         type:String,

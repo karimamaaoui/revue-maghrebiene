@@ -179,8 +179,8 @@ const updateUser = (async (req, res) => {
           user.username = req.body.username || user.username;
           user.firstname = req.body.firstname || user.firstname;
           user.lastname = req.body.lastname || user.lastname;
-          user.university = req.body.university || user.university;
-          user.placeofpractice = req.body.placeofpractice || user.placeofpractice;
+        //   user.university = req.body.university || user.university;
+        //   user.placeofpractice = req.body.placeofpractice || user.placeofpractice;
        
           const updatedUser = await user.save();
       

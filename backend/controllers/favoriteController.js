@@ -20,8 +20,6 @@ const createFavorite = async (req, res) => {
     favorite
       .save(favorite)
       .then(data => {
-       // if(data.includes())
-        console.log("data favorite", data)
         res.send(data);
       })
       

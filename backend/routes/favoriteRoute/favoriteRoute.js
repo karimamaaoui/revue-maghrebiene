@@ -6,10 +6,9 @@ router.use(cors());
 const verifyRoles = require('../../middleware/verifyRole');
 const verifyToken = require('../../middleware/verifyToken');
 
+
 router.post("/add",verifyToken.verifyUserToken  ,favoriteController.createFavorite);
-
 router.get("/",verifyToken.verifyUserToken,favoriteController.getAllFavorite);
-
 router.delete("/delete/:id",verifyToken.verifyUserToken,favoriteController.deleteFavorite);
 
 module.exports = router;
