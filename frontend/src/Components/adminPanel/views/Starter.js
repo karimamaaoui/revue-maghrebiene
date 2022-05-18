@@ -69,11 +69,6 @@ const Starter = () => {
             </Col>
           </Row>
           {/***Table ***/}
-          <Row>
-            <Col lg="12">
-              <ManageUser />
-            </Col>
-          </Row>
           {/***Blog Cards
           <Row>
             {BlogData.map((blg, index) => (

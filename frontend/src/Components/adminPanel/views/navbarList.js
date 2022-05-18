@@ -38,12 +38,12 @@ export default function NavbarList() {
         <br />
         <br />
 
-        {userInfo.roleuser === "Reader" ?
+        {/* {userInfo.roleuser === "Reader" ?
 
           < >
 
             <div class="col-md-4 col-xl-3">
-              <div class="card  order-card" style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card  order-card" style={{ backgroundColor: "#B00820", height: "70%" }}>
                 <div class="card-block" >
 
                   <h6 class="m-b-20"  >
@@ -61,7 +61,7 @@ export default function NavbarList() {
 
 
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card" style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card" style={{ backgroundColor: "#B00820", height: "70%" }}>
                 <div class="card-block">
                   <h6 class="m-b-20">
                     <a href="#articlesList" style={{ color: "white" }} >
@@ -77,7 +77,7 @@ export default function NavbarList() {
             </div>
 
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card" style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card" style={{ backgroundColor: "#B00820", height: "70%" }}>
                 <div class="card-block">
                   <h6 class="m-b-20">
                     <a href="#home" style={{ color: "white" }} >
@@ -92,7 +92,7 @@ export default function NavbarList() {
 
             
             <div class="col-md-4 col-xl-3">
-              <div class="card  order-card" style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card  order-card" style={{ backgroundColor: "#B00820", height: "70%" }}>
                 <div class="card-block" >
 
                   <h6 class="m-b-20"  >
@@ -112,7 +112,7 @@ export default function NavbarList() {
           < >
 
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
                 <div class="database" >
                   <div class="icon" style={{
@@ -133,7 +133,7 @@ export default function NavbarList() {
               </div>
             </div>
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
                 <div class="settings" >
                   <div class="icon" style={{
@@ -157,7 +157,7 @@ export default function NavbarList() {
             </div>
 
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
                 <div class="ssl" >
                   <div class="icon" style={{
@@ -180,7 +180,7 @@ export default function NavbarList() {
             </div>
 
             <div class="col-md-4 col-xl-3">
-              <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+              <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
                 <div class="backups" >
                   <div class="icon" style={{
@@ -212,7 +212,7 @@ export default function NavbarList() {
           < >
 
           <div class="col-md-4 col-xl-3">
-            <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+            <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
               <div class="database" >
                 <div class="icon" style={{
@@ -233,7 +233,7 @@ export default function NavbarList() {
             </div>
           </div>
           <div class="col-md-4 col-xl-3">
-            <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+            <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
               <div class="settings" >
                 <div class="icon" style={{
@@ -257,7 +257,7 @@ export default function NavbarList() {
           </div>
 
           <div class="col-md-4 col-xl-3">
-            <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+            <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
               <div class="ssl" >
                 <div class="icon" style={{
@@ -280,7 +280,7 @@ export default function NavbarList() {
           </div>
 
           <div class="col-md-4 col-xl-3">
-            <div class="card order-card " style={{ backgroundColor: "#AFB5D9", height: "70%" }}>
+            <div class="card order-card " style={{ backgroundColor: "#B00820", height: "70%" }}>
 
               <div class="backups" >
                 <div class="icon" style={{
@@ -309,7 +309,7 @@ export default function NavbarList() {
      
         </>
        
-        }
+        } */}
       </div>
 
 

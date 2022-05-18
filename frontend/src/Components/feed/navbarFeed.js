@@ -59,14 +59,14 @@ const NavBarFeed  = () => {
         // })
       : (
         <Menu.Item key="nothing">
-          <p>No feeds to show!</p>
+          <p>No Article to show!</p>
         </Menu.Item>
       )}
     </Menu>
   );
   return (
     <>
-          <div style={{ position: "absolute",backgroundColor:'blue' }} className="d-flex align-items-center border-0 rounded-circle me-6">
+          <div style={{ position: "absolute",backgroundColor:'#852124' }} className="d-flex align-items-center border-0 rounded-circle me-6">
             <Dropdown  
               overlay={menu}
               trigger={["click"]}

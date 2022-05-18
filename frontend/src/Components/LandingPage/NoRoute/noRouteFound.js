@@ -14,21 +14,28 @@ export default function NoRouteFound() {
 
   return (
      
-    <div className="noRoute" >
+    <div class="page-404">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="inner-circle"><i class="fa fa-home"></i><span>404</span></div>
+                    <span class="inner-status">Oops! You're lost</span>
+                    <span class="inner-detail">
+                        We can not find the page you're looking for.
 
-             <div className='h1'> 
-               <h1 className="h1route" >
-                 4
-                 <span>
-                   </span>
-                   4
-                   </h1>
-                   </div>
-                <h2 > THIS PAGE DOES NOT EXIST</h2>
-                <div className="col-sm-12">
-                 
-                <button type="submit" className="btn btn-primary" onClick={handleReturn}>Return</button>
+                        <div className='foot'>
+                        <button className='norout'>
+                        <a href="/" class="button"><i class="fa fa-home"></i>&nbsp;
+                      
+                        Return home
+                        </a> 
+
+                        </button>
+                        </div>
+                    </span>
                 </div>
-  </div>   
+            </div>
+        </div>
+    </div>   
   )
 }

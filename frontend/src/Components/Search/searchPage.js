@@ -384,7 +384,7 @@ export default function SearchPahe() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: 'rgb(151, 213, 230)' }}>Search::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                <h1 style={{ color:'#B91736' }}>Search::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
                                             </div>
                                             <br />
                                             <div className="row ">

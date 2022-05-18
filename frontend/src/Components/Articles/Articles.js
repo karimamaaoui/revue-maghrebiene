@@ -155,7 +155,7 @@ function Article() {
 
     const [value, setValue] = useState("");
     const getValue = (value) => {
-       // console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',createMarkup (value))
+        // console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',createMarkup (value))
         setValue(value);
         setAbstract(value)
     };
@@ -203,7 +203,7 @@ function Article() {
     );
 
     const [convertedContent, setConvertedContent] = useState(null);
-    
+
     const handleEditorChange = (state) => {
         setEditorState(state);
 
@@ -315,7 +315,7 @@ function Article() {
                                                                 
                                                                 /> */}
 
-                                                                {/* <RichTextEditor initialValue="" getValue={getValue}
+                                                        {/* <RichTextEditor initialValue="" getValue={getValue}
                                                                     name="abstract"
                                                                     value={abstract}
                                                                     
@@ -343,6 +343,11 @@ function Article() {
                                                             <textarea rows="5" className="Text" />
                                                         </div> */}
 
+                                                        <div className="row">
+                                                            <h1 style={{ color: '#B91736' }}>Add New Article::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                        </div>
+                                                        <br />
+
                                                         <form onSubmit={handleSubmit} encType='multipart/form-data' >
                                                             <div class="row mb-3">
                                                                 <div class="sign-up-container">
@@ -360,10 +365,14 @@ function Article() {
                                                                         >
 
                                                                             <option value="">{t("profile:chooseatheme")}</option>
+
                                                                             {types?.map((type, key) => {
 
                                                                                 return <option key={key} value={type._id}  > {type.label}</option>;
+                                                                               
+                                                                                
                                                                             })}
+                                                                            
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -483,7 +492,7 @@ function Article() {
                                                                     <h6 class="mb-0">{t("profile:keyWords")}</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
-                                                                    <div className="tags-input-container">
+                                                                    <div className="tags-input-container" style={{ borderColor: "#B91736" }}>
                                                                         {
                                                                             tags.map((tag, index) => (
                                                                                 <div className="tag-item" key={index}>

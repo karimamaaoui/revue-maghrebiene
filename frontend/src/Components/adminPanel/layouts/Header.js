@@ -57,7 +57,7 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <Navbar style={{ backgroundColor: "#e3f2fd", marginTop: "-34px" }} dark expand="md">
+    <Navbar style={{ backgroundColor: "#D68082", marginTop: "-34px" }} dark expand="md">
     <div className="hstack gap-2">
         <Button
           color="primary"

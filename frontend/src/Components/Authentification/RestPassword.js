@@ -52,7 +52,7 @@ export default function RestPassword() {
               {error && <ErrorMessage variant="danger">
                 Email Incorrect</ErrorMessage>}
      
-              <div className="page-content"style={{background:'#CAD8E2'}}>
+              <div className="page-content"style={{background:'#FEE5CF'}}>
                 <div className="form-v5-content">
                     <form className="form-detail" onSubmit={submitHandler}>
                         <h2 style={{ color: 'black' }}>Please Check Your E-mail And Re-enter Your Password</h2>

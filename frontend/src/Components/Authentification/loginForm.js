@@ -87,7 +87,7 @@ export default function LoginForm() {
         {error && <ErrorMessage variant="danger">
           Username Or Password Incorrect</ErrorMessage>}
      
-            <div className='main' style={{height: "769px"}}>
+            <div className='main' style={{height: "730px",backgroundColor:'#FEE5CF'}}>
 
                 <div className='container mx-auto' style={{ marginTop: '-18px' }} >
                     <div className='sub-container' style={{ marginTop: '40px',borderRadius:'15px', marginBottom: '32px',height:'600px' }}>
@@ -139,8 +139,8 @@ export default function LoginForm() {
                           <button type="submit" value="submit"  >submit</button>
                         </div>
                         <br />
-                        <p style={{ color: 'black', fontSize: '14px' }}>
-                          <a href='/forgotpassword'>  Forgot Password ?
+                        <p style={{ fontSize: '14px' }}>
+                          <a href='/forgotpassword' style={{ color: '#D68082'}}>  Forgot Password ?
                           </a>
                         </p>
                       </form></div>
