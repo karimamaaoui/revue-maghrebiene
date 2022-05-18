@@ -956,14 +956,22 @@ const fitlerByDate = (async (req, res) => {
 
     // or $gte- depends on time windows
     var query = req.query.createdAt;
-    //console.log('eeeeeeeeeeee',    moment(query).format("YYYY-MM-DD")    )
-    //  console.log('eeeeeeeeeeee', (query))
+   // console.log('eeeeeeeeeeee',    moment(query).format("YYYY-MM-DD")    )
 
 
     // let createdAt=moment(createdAt)
 
-    //  articles = await Files.find({createdAt:new Date('2022-05-06T15:11:44.909Z')})
-    //articles = await Files.find({ createdAt: query })
+      articles = await Files.find({createdAt:query})
+      console.log('created at', articles.map((art)=>{
+        const dat= new Date(moment(art.createdAt).format("YYYY-MM-DD"))
+        console.log('eeeeeeeeeeee', typeof(query))
+        console.log('dat', typeof(dat))
+
+        return query===dat
+      }))
+      
+      return res.status(200).json(articles);
+          //articles = await Files.find({ createdAt: query })
     // .find({"OrderDateTime":{ $gte:ISODate("2019-02-10"), $lt:ISODate("2019-02-21") }
 
 
@@ -990,16 +998,16 @@ const fitlerByDate = (async (req, res) => {
     //   )
 
     //   return res.status(200).json(articles);
-    articles = await (await Files.find({ query })).map((c) => {
-      const datecreare = moment(c.createdAt).format("YYYY-MM-DD")
-      if (datecreare === query){
+    // articles = await (await Files.find({ query })).map((c) => {
+    //   const datecreare = moment(c.createdAt).format("YYYY-MM-DD")
+    //   if (datecreare === query){
         
-        return c.createdAt
-      }
-    });
-    console.log('title',articles)
+    //     return c.createdAt
+    //   }
+    // });
+    // console.log('title',articles)
 
-    return res.status(200).json(articles);
+    // return res.status(200).json(articles);
     
 
   } catch (err) {

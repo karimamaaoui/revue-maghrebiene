@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
 
 
   socket.on("initial_data", async () => {
-    const feed = await Files.find({}).sort({createdAt: -1}).limit(5);
+    const feed = await Files.find({}).sort({createdAt: -1});
     io.sockets.emit("get_data", feed);
   });
 
@@ -80,7 +80,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("check_all_notifications", async () => {
-    const files = await Files.find({}).limit(5);
+    const files = await Files.find({});
 
     files.forEach((file) => {
       file.read = true;

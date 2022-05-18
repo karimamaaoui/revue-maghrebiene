@@ -60,7 +60,7 @@ const getAllUsers = (verifyToken.verifyUserToken,
         const query = req.query.new;
         console.log('inside get list of users');
         try {
-            const users = await query ? await User.find().sort({ _id: -1 }).limit(10) : await User.find();
+            const users = await query ? await User.find().populate('roles',['name']).sort({ _id: -1 }).limit(10) : await User.find().populate('roles',['name']);
             return res.status(200).json(users);
 
         } catch (err) {
@@ -472,6 +472,18 @@ const sendTemporaryPassword = async (req, res) => {
             }
         })
 }
+
+
+//testing success
+
+transporter.transporter.verify(function (error, success) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(success);
+    }
+  });
+
 // add user to author
 const AddToAuthor = async (req, res) => {
 
@@ -490,7 +502,7 @@ const AddToAuthor = async (req, res) => {
             res.status(404).json({ msg: 'User does not exist' });
         }
         let role = await Role.findById(user.roles);
-        console.log(role)
+        console.log(user.email)
 
         Role.findOne({ name: "Author" }, (err, role) => {
             if (err) {
@@ -553,9 +565,26 @@ const AddToAuthor = async (req, res) => {
             author: user._id,
 
         });
+
         await author.save();
       
 
+        const mailOptions={
+            from: "scongresses@gmail.com",
+            to: user.email,
+            subject:"Your  Demand To Be An Author Is Accepted ",
+            html: `<p>verify account  here  to procced. </p>`,
+            };
+          console.log(req.body.email)
+          transporter.sendMail(mailOptions,function(error,response){
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log("msg sent");
+            
+          }
+          })
     } catch (err) {
         console.error(err);
         res.status(500).json({ msg: err });
