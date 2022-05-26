@@ -31,12 +31,18 @@ import Search from "./Components/Search/searchPage"
 import Feed from "./Components/feed/feed"
 
 import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
+import AttributeArticle from "./Components/searchWithAttribute/searchWithAttribute"
 
 import Feedback from './Components/feedback/Feedback'
 import HeaderTran from './Components/adminPanel/views/ui/TRANSLATE/headerTrans';
 import { Suspense } from "react";
 import DemandAuthor from './Components/DemandAuthor/demandAuthor';
 import AcceptDemand from './Components/DemandAuthor/AcceptDemand'
+import AddPost from './Components/Home/addPost'
+
+import ShowPost from './Components/Home/showPost'
+
+
 export default function RoutesList() {
 
   return (
@@ -47,6 +53,9 @@ export default function RoutesList() {
       <div>
         <Routes>
         <Route path="/a" element={<SideBar />} />
+        <Route path="/c" element={<ShowPost />} />
+
+        <Route path="/b" element={<AddPost />} />
 
         <Route path="/search" element={<Search />} />
         <Route path="/home" element={<PageAccueil />} />
@@ -57,7 +66,9 @@ export default function RoutesList() {
 
         <Route path="/article" element={<Article />} />
         <Route path="/t" element={<Feed />} />
+        <Route path="/getarticlefromattribute/:id" element={<AttributeArticle />} />
 
+        
         <Route path="/users" element={<ManageUser />} />
         <Route path="/managearticles" element={<ManageArticle />} />
         <Route path="/managearticles/:key" element={<ManageArticle />} />

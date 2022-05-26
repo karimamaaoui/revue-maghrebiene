@@ -62,7 +62,7 @@ export default function SidebarScreen() {
   return (
     <>
 
-      <nav id="sidebar" >
+      {/* <nav id="sidebar" >
 
         <div id="wrapper" class="wrapper-content" >
           <div id="sidebar-wrapper" style={{ backgroundColor: '#FEE5CF' }}>
@@ -118,34 +118,105 @@ export default function SidebarScreen() {
 
         </div>
 
-      </nav>
-      {/* <nav id="sidebar" >
+      </nav> */}
 
-    <div className="p-6 pt-5" style={{backgroundColor:'#F0C7A0',position:"sticky",height:"100%",border:"solid",borderRightColor:"#F0C7A0"}}>
-      <h5>Menu</h5>
-      
-      <div className="list-unstyled components mb-2">
+      <nav id="sidebar" >
 
-          {navigation.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
+    <div className="p-6 pt-5 " style={{backgroundColor:'#FEE5CF',position:"sticky",height:"100%"}}>
+              <ul class="">
+              <h2 >
+                Menu
+              </h2>
+
+              <li className="list-unstyled components mb-2">
+                <a href="/search" className="inline-block ">
+                  <i className="bi bi-search "></i>
+                  {' '}
+                  Search Article</a>
+              </li>
+              <li className="list-unstyled components mb-2">
+                <a href="#" className="inline-block">
+                  <i className="bi bi-newspaper "></i>
+                  {' '}
+                  Recent Article</a>
+              </li>
+
+              <li className="list-unstyled components mb-2">
+                <a href="#" className="inline-block">
+                  <i className="bi bi-book"></i>
+                  {' '}
+                  Most Read</a>
+              </li>
+              {userInfo.roleuser === "Reader" ?
+              <>
+              
+                <li className="list-unstyled components mb-2">
+                  <a href="/users" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Users List</a>
+                </li>
+                
+                <li className="list-unstyled components mb-2">
+                  <a href="/managearticles" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Articles List</a>
+                </li>
+
+                </>
+                : <></>
+
+              }
+
+
+            </ul>
+         
+             
+
+      {/* <div className="list-unstyled components mb-2">
+
+
+
+            <NavItem  className="sidenav-bg">
               <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon} ></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
+                to="/profile"
+                 >
+                <i className="bi bi-book"></i>
+                <span className="ms-3 d-inline-block">Search Article</span>
               </Link>
             </NavItem>
-          ))}
         
-   </div>
+            <NavItem  className="sidenav-bg">
+              <Link
+                to="/profile"
+                 >
+                <i className="bi bi-book"></i>
+                <span className="ms-3 d-inline-block">Add Article</span>
+              </Link>
+            </NavItem>
+            <NavItem  className="sidenav-bg">
+              <Link
+                to="/profile"
+                 >
+                <i className="bi bi-book"></i>
+                <span className="ms-3 d-inline-block">sdsds Article</span>
+              </Link>
+            </NavItem>
+            <NavItem  className="sidenav-bg">
+              <Link
+                to="/profile"
+                 >
+                <i className="bi bi-book"></i>
+                <span className="ms-3 d-inline-block">Seaddddddrch Article</span>
+              </Link>
+            </NavItem>
+        
+        
+   </div> */}
 
     </div>
-      </nav> */}
+      </nav>
     </>
 
   )

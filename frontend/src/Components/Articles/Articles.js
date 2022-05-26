@@ -152,6 +152,36 @@ function Article() {
     const [bold, setBold] = useState(false);
     const [italized, setItalized] = useState(false);
     const [underlined, setUnderlined] = useState(false);
+    const [imagename, setImagename] = useState("");
+    const [pathFile, setFilePath] = useState('');
+    const [profilePicMessage, setProfilePicMessage] = useState();
+
+    const postDetails = (pics) => {
+        setProfilePicMessage(null);
+        if (pics.type === "image/jpeg" || pics.type === "image/png") {
+            const data = new FormData();
+            data.append("file", pics);
+            setImagename(pics)
+            data.append("upload_preset", "notezipper");
+            data.append("cloud_name", "piyushproj");
+            fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
+                method: "post",
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setFilePath(data.url.toString());
+                    // console.log(data.url.toString());
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            return setProfilePicMessage("Please Select an Image");
+        }
+
+    };
+
 
     const [value, setValue] = useState("");
     const getValue = (value) => {
@@ -240,6 +270,10 @@ function Article() {
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
         formData.append('rulesChecked', rulesChecked);
+        formData.append('pathFile', pathFile);
+        formData.append('imagename', imagename);
+
+
 
 
 
@@ -251,6 +285,7 @@ function Article() {
             setFilesname(multiple_files[i])
         }
         setPostSubmitted(true)
+        console.log("form", formData)
         dispatch(addNewFile(formData));
     }
 
@@ -348,6 +383,11 @@ function Article() {
                                                         </div>
                                                         <br />
 
+             
+
+
+
+
                                                         <form onSubmit={handleSubmit} encType='multipart/form-data' >
                                                             <div class="row mb-3">
                                                                 <div class="sign-up-container">
@@ -369,11 +409,12 @@ function Article() {
                                                                             {types?.map((type, key) => {
 
                                                                                 return <option key={key} value={type._id}  > {type.label}</option>;
-                                                                               
-                                                                                
+
+
                                                                             })}
-                                                                            
+
                                                                         </select>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -489,6 +530,38 @@ function Article() {
                                                             </div>
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
+                                                                    <h6 class="mb-0">image</h6>
+                                                                </div>
+                                                                <div class="col-sm-9 text-secondary">
+                                                                    <input
+                                                                        type="file"
+                                                                        required
+                                                                        name="imagename"
+                                                                        className="file-uploader "
+                                                                        defaultValue={imagename}
+                                                                        onChange={(e) => postDetails(e.target.files[0])}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className='widget-49-meeting-points'>
+                                                                {imagename != '' ?
+                                                                    <img src={pathFile} alt="" height="210px" width="10%" />
+                                                                    : <></>}
+
+                                                            </div>
+
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="pathFile"
+                                                                defaultValue={pathFile}
+                                                                onChange={(e) => setFilePath(e.target.value)}
+                                                                style={{ visibility: 'hidden' }}
+                                                            />
+
+
+                                                            <div class="row mb-3">
+                                                                <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:keyWords")}</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
@@ -534,6 +607,7 @@ function Article() {
                                                                     />
                                                                 </div>
                                                             </div>
+
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:content")}</h6>
@@ -730,6 +804,7 @@ function Article() {
                                                             </div> */}
 
                                                         </form>
+
                                                     </div>
                                                     : <PDF
                                                         title={title}

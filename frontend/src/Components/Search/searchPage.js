@@ -14,6 +14,9 @@ import { listAttribute } from '../../redux/Actions/attributeActions';
 import './search.css'
 import Swal from 'sweetalert2';
 
+import BG1 from "../../assets/Bannière Orange de Restaurant Reprise d'Activité Format Paysage.png"
+import BG2 from '../../assets/Jaune Professionnel Dégradé Application Développement Bannière Paysage.png'
+import BG3 from '../../assets/Bannière.png'
 
 export default function SearchPahe() {
 
@@ -63,7 +66,7 @@ export default function SearchPahe() {
         dispatch(getAllArticles());
         console.log('articme', articles)
         dispatch(listTypes());
-        dispatch(listAttribute());
+        // dispatch(listAttribute());
 
         //console.log("articles", types)
 
@@ -170,11 +173,7 @@ export default function SearchPahe() {
             }).catch(err => {
                 console.log(err)
             })
-
-
     }
-
-
     const handleLike = async (id) => {
         const config = {
             headers: {
@@ -239,9 +238,6 @@ export default function SearchPahe() {
 
 
     }
-
-
-
 
     const handleView = async (id) => {
         const config = {
@@ -314,16 +310,17 @@ export default function SearchPahe() {
 
 
     const handleCategory = e => {
+        let updatedCategoryIds;
 
         const currentCategoryChecked = e.target.value;
         const allCategoriesChecked = [...typeIds];
         const indexFound = allCategoriesChecked.indexOf(currentCategoryChecked);
 
-        let updatedCategoryIds;
         if (indexFound === -1) {
             // add
             updatedCategoryIds = [...typeIds, currentCategoryChecked];
-            console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds)
+            console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
+
             setTypeIds(updatedCategoryIds);
         } else {
             // remove
@@ -335,11 +332,12 @@ export default function SearchPahe() {
 
 
         dispatch(getArticleByType(updatedCategoryIds));
-
+        setTypeIds('')
 
     };
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
 
-
+    
     const handleAttribute = e => {
 
         const currentAttributeChecked = e.target.value;
@@ -376,7 +374,41 @@ export default function SearchPahe() {
                             <div className='container'>
 
                                 <div id="content" className="p-6 p-md-10 pt-12">
+
                                     <NavbarList />
+                                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style={{ width: '100%', background: 'beige' }}>
+                                        <div class="carousel-indicators">
+                                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true"
+                                                aria-label="Slide 1"></button>
+                                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+
+                                        </div>
+                                        <div class="carousel-inner" >
+
+                                            <div class="carousel-item active">
+                                                <img src={BG2} class="d-block " height="200px" alt="..." />
+
+                                            </div>
+
+                                            <div class="carousel-item">
+                                                <img src={BG1} class="d-block " height="200px" alt="..." />
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src={BG3} class="d-block " height="200px" alt="..." />
+                                            </div>
+
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
 
 
                                     <div className="card mb-3">
@@ -384,7 +416,7 @@ export default function SearchPahe() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color:'#B91736' }}>Search::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                <h1 style={{ color: '#B91736' }}>Search::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
                                             </div>
                                             <br />
                                             <div className="row ">
@@ -408,10 +440,11 @@ export default function SearchPahe() {
                                                         />
                                                     </div>
 
+
                                                     <div className='col-4' style={{ display: "flex", fontSize: "15px", flexWrap: "wrap" }}>
                                                         <p>   Choose  Type : </p>
 
-                                                        {types &&
+                                                        {/* {types &&
                                                             types.map(c => (
                                                                 <div key={c._id} className='form-check' >
                                                                     <input
@@ -431,11 +464,31 @@ export default function SearchPahe() {
                                                                         {c.label}
                                                                     </label>
                                                                 </div>
-                                                            ))}
+                                                            ))} */}
+
+                                                        <select className="select" name="types"
+                                                            required
+                                                            onChange={handleCategory}
+
+                                                        >
+
+                                                            <option >chooseatheme</option>
+
+                                                            {types &&
+                                                            types.map((type, key) => {
+
+                                                                return <option key={key} value={type._id}    selected={typeIds.includes(type._id)}
+                                                                > {type.label}</option>;
+
+
+                                                            })}
+
+                                                        </select>
+
                                                     </div>
 
 
-
+                                                    {/* 
                                                     <div className='col-4' style={{ display: "flex", fontSize: "15px", flexWrap: "wrap" }}>
                                                         <p>   Choose  Attribute : </p>
                                                         {attributes &&
@@ -459,7 +512,7 @@ export default function SearchPahe() {
                                                                     </label>
                                                                 </div>
                                                             ))}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
 
                                             </div>
@@ -615,7 +668,7 @@ export default function SearchPahe() {
 
                                                                                                         Load More
                                                                                                     </button>
-                                                                                                    <br/>
+                                                                                                    <br />
                                                                                                     <form
                                                                                                         onSubmit={(e) => {
                                                                                                             e.preventDefault()
@@ -702,6 +755,7 @@ export default function SearchPahe() {
                                                                                         <div class="card-body">
                                                                                             <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
 
+                                                                                            <img src={tdata.pathFile} alt="" height="140px" width="30px" />
 
                                                                                             <p>
                                                                                                 Abstract :
@@ -808,7 +862,7 @@ export default function SearchPahe() {
 
                                                                                                             Load More
                                                                                                         </button>
-                                                                                                        <br/>
+                                                                                                        <br />
                                                                                                         <form
                                                                                                             onSubmit={(e) => {
                                                                                                                 e.preventDefault()

@@ -73,7 +73,7 @@ export default function Feedback() {
                                 <div className="card mb-3" style={{ backgroundColor: 'white' }}>
                                     <div class="card-body">
                                         <div className="row">
-                                            <h1 style={{ color: 'rgb(151, 213, 230)' }}>Feedback::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                            <h1 style={{ color: '#B91736' }}>Feedback::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
                                         </div>
 
                                         <div class="mb-4 p-4 text-center">

@@ -16,10 +16,10 @@ import {
 import { retrieveTypeReducer } from './redux/reducers/typesReducers';
 import { retrieveAttributeReducer } from './redux/reducers/attributeReducers';
 import { addArticleReducer, articleDeleteReducer, articleUpdateReducer, retrieveAllArticleReducer, retrieveArticlerRandomReducer } from './redux/reducers/articleReducers';
-import { addFileReducer } from './redux/reducers/fileReducers';
+import { addFileReducer, addPostReducer } from './redux/reducers/fileReducers';
 import { retrieveRulesReducer } from './redux/reducers/rulesReducers';
 import { getArticleByFilter } from './redux/Actions/articleActions';
-import { addFeedBackReducer } from './redux/reducers/feedbackReducers';
+import { addFeedBackReducer, retreiveFeedBackReducer, retrieveAllFeedbackReducer } from './redux/reducers/feedbackReducers';
 
 const reducer = combineReducers({
   // here contain our reducers
@@ -33,6 +33,7 @@ const reducer = combineReducers({
   attributeList: retrieveAttributeReducer,
   addArticle: addArticleReducer,
   addFile:addFileReducer,
+  addPost:addPostReducer,
   getAllUser:retrieveAllUserReducer,
   userDelete:userDeleteReducer,
   getAllArticle:retrieveAllArticleReducer,
@@ -43,7 +44,8 @@ const reducer = combineReducers({
   listArrivals:userNewArrivalReducer,
   articleUpdate: articleUpdateReducer,
   demandList: demandAuthorReducer,
-  addFeedback:addFeedBackReducer
+  addFeedback:addFeedBackReducer,
+  feedbackList:retrieveAllFeedbackReducer
 
 })
 

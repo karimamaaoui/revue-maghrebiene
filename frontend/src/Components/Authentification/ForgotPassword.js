@@ -55,7 +55,7 @@ export default function ForgotPassword() {
       <div className="page-content" style={{ background: '#FEE5CF' }}>
         <div className="form-v5-content col-lg-6">
           <form className="form-detail" onSubmit={submitHandler}>
-            <h2 style={{ color: 'black' }}>Forgot Password</h2>
+            <h2 style={{ color: 'black' }}>Forget Password</h2>
             <div className="form-row">
               <label >Your Email</label>
               <input type="email"

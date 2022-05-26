@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "react-dom"
 import Header from '../adminPanel/layouts/Header';
+
 export default function Profile() {
 
+  const Pf='https://res.cloudinary.com/piyushproj/image/upload/'
   /***
    *              <ul>
         {userInfo.user.roles &&
@@ -29,6 +31,7 @@ export default function Profile() {
 
   return (
     <>
+    
       <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
         <div className="main-body">
           <div className="row gutters-sm">
@@ -43,7 +46,10 @@ export default function Profile() {
               {userInfo ?
               <div>
               <div className="media col-md-10 col-lg-8 col-xl-7 py-5 mx-auto">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" className="d-block ui-w-100 rounded-circle" />
+                {console.log("userInfo.user.profilePic",userInfo.user.profilePic)}
+                {userInfo.user.profilePic && (
+                <img src={Pf+userInfo.user.profilePic} alt="" className="d-block ui-w-100 rounded-circle" />
+                )}
                 <div className="media-body ml-5">
                   <h4 className="font-weight-bold mb-4">{userInfo.user.username} </h4>
 
@@ -107,9 +113,12 @@ export default function Profile() {
                   <div className="row">
 
                     <div className="col-sm-12">
-                      <a className="btn btn-info "
-                        href="/editprofile" style={{ backgroundColor: "#9EBADF", borderColor: "#106CAA" }}>Edit</a>
+                      <button className="btn btn-danger ">
+                      <a 
+                        href="/editprofile" style={{ color: "white" }}>Edit</a>
+                        </button>
                     </div>
+                    
                   </div>
                 </div>
               </div>    

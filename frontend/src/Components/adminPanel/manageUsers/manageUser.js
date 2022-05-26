@@ -20,8 +20,6 @@ var socket;
 
 export default function ManageUser() {
 
-
-
   const dispatch = useDispatch();
   const history = useNavigate();
   const [noOfElement, setNoOfElement] = useState(1);

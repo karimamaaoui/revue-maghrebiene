@@ -57,10 +57,11 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
   return (
+    <>
     <Navbar style={{ backgroundColor: "#D68082", marginTop: "-34px" }} dark expand="md">
     <div className="hstack gap-2">
         <Button
-          color="primary"
+          color="danger"
           size="sm"
           className="d-sm-block d-md-none"
           onClick={Handletoggle}
@@ -85,16 +86,16 @@ const Header = () => {
       
         </Nav>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle color="primary" className="rounded-circle p-1 bg-info">
+          <DropdownToggle color="primary" className="rounded-circle p-1" style={{backgroundColor:'#B00820' ,borderColor:"#B00820"}}>
             <img
               src={user1}
               alt="profile"
-              className="rounded-circle"
+              className="rounded-circle" 
               width="30"
               height="32px"
             ></img>
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu >
             <DropdownItem header>Info</DropdownItem>
             <DropdownItem>
               <Label>{userInfo.user.username}</Label>
@@ -121,6 +122,9 @@ const Header = () => {
 
       </Collapse>
     </Navbar>
+    
+    
+    </>
   );
 };
 

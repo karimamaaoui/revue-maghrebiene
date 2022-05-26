@@ -31,6 +31,33 @@ export default function UpdateProfile() {
     const userUpdate = useSelector((state) => state.userUpdate);
     const { loading, error, success } = userUpdate;
 
+    useEffect(() => {
+        if (!userInfo) {
+
+            history("/");
+        } else {
+            setUsername(userInfo.user.username);
+            setFirstname(userInfo.user.firstname);
+            setLastname(userInfo.user.lastname);
+           // setProfilePic(userInfo.user.profilePic);
+            setUniversity(userInfo.user.university);
+            setEmail(userInfo.user.email);
+            setPlaceOfPractice(userInfo.user.placeofpractice);
+            setPassword(userInfo.user.password);
+
+        }
+        console.log("userinfo", userInfo)
+
+    }, [history, userInfo]);
+
+    const token = userInfo.token;
+   
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(updateProfile({ username, firstname, lastname, university, placeofpractice }, token));
+        history("/profile")
+    };
+
     const postDetails = (pics) => {
         setProfilePicMessage(null);
         if (pics.type === "image/jpeg" || pics.type === "image/png") {
@@ -45,7 +72,7 @@ export default function UpdateProfile() {
                 .then((res) => res.json())
                 .then((data) => {
                     setProfilePic(data.url.toString());
-                    console.log(profilePic);
+                    console.log(data.url.toString());
                 })
                 .catch((err) => {
                     console.log(err);
@@ -54,42 +81,17 @@ export default function UpdateProfile() {
             return setProfilePicMessage("Please Select an Image");
         }
     };
-    useEffect(() => {
-        if (!userInfo) {
-
-            history("/");
-        } else {
-            setUsername(userInfo.user.username);
-            setFirstname(userInfo.user.firstname);
-            setLastname(userInfo.user.lastname);
-            setProfilePic(userInfo.user.profilePic);
-            setUniversity(userInfo.user.university);
-            setEmail(userInfo.user.email);
-            setPlaceOfPractice(userInfo.user.placeofpractice);
-            setPassword(userInfo.user.password);
-
-        }
-        console.log("userinfo", userInfo)
-
-    }, [history, userInfo]);
-
-    const token = userInfo.token;
-    console.log('token', token)
    
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(updateProfile({ username, firstname, lastname, university, placeofpractice }, token));
-        history("/profile")
-    };
-
     const addPictureHandler = (e) => {
         e.preventDefault();
-        const token = userInfo.token;
         dispatch(userupdatePicture({ profilePic }, token));
+        
         history("/profile")
     };
 
     return (
+        <React.StrictMode>        
+
         <div>
 
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -122,7 +124,9 @@ export default function UpdateProfile() {
 
                                             <input type="file" className="file-uploader "
                                                 onChange={(e) => postDetails(e.target.files[0])}
-                                            />
+                                                />
+                                                 {console.log('eeeeeeeeeeeeeee',profilePic)}
+                                           
                                             <button type="submit" className="btn btn-primary" onClick={addPictureHandler}>Upload</button>
                                         </div>
                                     </div>
@@ -212,5 +216,7 @@ export default function UpdateProfile() {
                 </div>
             </div>
         </div>
+              </React.StrictMode>        
+
     )
 }

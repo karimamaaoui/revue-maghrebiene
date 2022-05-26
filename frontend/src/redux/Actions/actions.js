@@ -228,17 +228,20 @@ export const userupdatePicture = (profilePic) => async (dispatch, getState) => {
       },
     };
 
-    console.log("user token", config)
+    console.log("profilePic", profilePic)
 
-    const { data } = await axios.patch('http://localhost:5000/api/user/upload-image', {profilePic}, config);
-    console.log("user data", data)
+    const { data } = await axios.patch('http://localhost:5000/api/user/upload-image',
+     profilePic, config);
+    console.log("user data", config)
 
 
     dispatch({ type: USER_UPDATE_Picture_SUCCESS, payload: data });
     
+    
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
-    //localStorage.setItem("userInfo", JSON.stringify(data, config));
+    localStorage.setItem("userInfo", JSON.stringify(data, config));
+
 
   } catch (error) {
     dispatch({

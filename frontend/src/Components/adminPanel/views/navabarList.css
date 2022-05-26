@@ -2,3 +2,23 @@ a:link {
     text-decoration: none;
 
 }
+
+.navbar {
+    display: flex;
+    align-items: center;
+    
+    background: #B00820;
+    color: white;
+    font-family: Helvetica;
+}
+
+.navbar__title {
+    margin-right: auto;
+    font-size: 150%;
+    padding: 12px 16px;
+}
+
+.navbar__item {
+    cursor: pointer;
+    vertical-align: middle;
+}

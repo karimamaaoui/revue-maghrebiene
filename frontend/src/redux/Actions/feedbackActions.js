@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { ADD_FEEDBACK_FAIL, ADD_FEEDBACK_REQUEST, ADD_FEEDBACK_SUCCESS } from "../Types/types";
+import { ADD_FEEDBACK_FAIL, ADD_FEEDBACK_REQUEST, ADD_FEEDBACK_SUCCESS, RETRIEVE_FEEDBACK_FAIL, RETRIEVE_FEEDBACK_REQUEST, RETRIEVE_FEEDBACK_SUCCESS } from "../Types/types";
 
 export const addnewFeedback = (formData) => async (dispatch,getState) => {
     try {
@@ -47,3 +47,38 @@ export const addnewFeedback = (formData) => async (dispatch,getState) => {
   
   }
   
+
+  
+// get all user
+export const getAllFeedback = () => async (dispatch) => {
+
+  try {
+    dispatch({ type: RETRIEVE_FEEDBACK_REQUEST});
+
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+
+    // const config = {
+    //   headers: {
+    //     "Content-type": "application/json",
+    //     Authorization: `Bearer ${userInfo.token}`,
+
+    //   },
+    // };
+
+    const { data } = await axios.get('http://localhost:5000/api/feedback/getFeedback');
+   // console.log('feedback data',data)
+    dispatch({ type: RETRIEVE_FEEDBACK_SUCCESS, payload: data });
+
+  } catch (error) {
+    dispatch({
+      type: RETRIEVE_FEEDBACK_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+
+  }
+}

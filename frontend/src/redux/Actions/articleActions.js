@@ -252,8 +252,8 @@ export const getArticleByAttribute= (updatedAttributeIds) => async (dispatch, ge
     };
 
 
-    const { data } = await axios.get(`http://localhost:5000/api/file/getallfile?attribut=${updatedAttributeIds}`, config);
-
+    const { data } = await axios.get(`http://localhost:5000/api/file/getarticle/${updatedAttributeIds}`, config);
+    console.log('data from get attribtue',data)
 
     dispatch({ type: RETRIEVE_ARTICLE_SUCCESS, payload: data });
     

@@ -4,10 +4,10 @@ import Feeds from "../dashboard/Feeds";
 import ProjectTables from "../dashboard/ProjectTable";
 import TopCards from "../dashboard/TopCards";
 import Blog from "../dashboard/Blog";
-import bg1 from "../../../assets/bg1.jpg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import bg4 from "../../../assets/bg4.jpg";
+// import bg1 from "../../../assets/bg1.jpg";
+// import bg2 from "../../../assets/bg2.jpg";
+// import bg3 from "../../../assets/bg3.jpg";
+// import bg4 from "../../../assets/bg4.jpg";
 
 import './container.css'
 import SidebarScreen from "../../sideBar/sidebarScreen";
@@ -17,40 +17,41 @@ import ManageUser from "../manageUsers/manageUser";
 import { Link } from "react-router-dom";
 import ManageArticle from "../manageArticle/manageArticle";
 import NavbarList from "./navbarList";
-const BlogData = [
-  {
-    image: bg1,
-    title: "This is simple blog",
-    subtitle: "2 comments, 1 Like",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    btnbg: "primary",
-  },
-  {
-    image: bg2,
-    title: "Lets be simple blog",
-    subtitle: "2 comments, 1 Like",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    btnbg: "primary",
-  },
-  {
-    image: bg3,
-    title: "Don't Lamp blog",
-    subtitle: "2 comments, 1 Like",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    btnbg: "primary",
-  },
-  {
-    image: bg4,
-    title: "Simple is beautiful",
-    subtitle: "2 comments, 1 Like",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    btnbg: "primary",
-  },
-];
+
+// const BlogData = [
+//   {
+//     image: bg1,
+//     title: "This is simple blog",
+//     subtitle: "2 comments, 1 Like",
+//     description:
+//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
+//     btnbg: "primary",
+//   },
+//   {
+//     image: bg2,
+//     title: "Lets be simple blog",
+//     subtitle: "2 comments, 1 Like",
+//     description:
+//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
+//     btnbg: "primary",
+//   },
+//   {
+//     image: bg3,
+//     title: "Don't Lamp blog",
+//     subtitle: "2 comments, 1 Like",
+//     description:
+//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
+//     btnbg: "primary",
+//   },
+//   {
+//     image: bg4,
+//     title: "Simple is beautiful",
+//     subtitle: "2 comments, 1 Like",
+//     description:
+//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
+//     btnbg: "primary",
+//   },
+// ];
 
 const Starter = () => {
   return (

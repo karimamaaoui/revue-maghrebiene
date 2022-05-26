@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { addNewFile } from '../../redux/Actions/fileActions';
+import { addNewFile, addNewPost } from '../../redux/Actions/fileActions';
 import { Viewer } from '@react-pdf-viewer/core'; // install this library
 // Plugins
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'; // install this library
@@ -28,31 +28,30 @@ import DOMPurify from 'dompurify';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import axios from 'axios';
 import TextArea from 'antd/lib/input/TextArea';
-import ima from '../../assets/bg1.jpg'
 import { Alert } from 'reactstrap';
 
 export default function AddFile(props) {
 
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
-      );
-      const  [convertedContent, setConvertedContent] = useState(null);
-    
-      const handleEditorChange = (state) => {
+    );
+    const [convertedContent, setConvertedContent] = useState(null);
+
+    const handleEditorChange = (state) => {
         setEditorState(state);
         convertContentToHTML();
-      }
-    
-      const convertContentToHTML = () => {
+    }
+
+    const convertContentToHTML = () => {
         let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(currentContentAsHTML);
-      }
-    
-      const createMarkup = (html) => {
-        return  {
-          __html: DOMPurify.sanitize(html)
+    }
+
+    const createMarkup = (html) => {
+        return {
+            __html: DOMPurify.sanitize(html)
         }
-      }
+    }
 
 
     //     const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -560,124 +559,243 @@ export default function AddFile(props) {
 
     //       </>
     //     )
-
+    const addPost = useSelector((state) => state.addPost);
+    const { loading, error, posts } = addPost;
+   
     const [url, setUrl] = useState("");
-    const [file, setFile] = useState(null);
+    const [imagename, setImagename] = useState("");
+    const [pathFile, setFilePath] = useState('');
+    const [title, setTitle] = useState('');
+
+    const [profilePicMessage, setProfilePicMessage] = useState();
+    const dispatch = useDispatch();
+    const history = useNavigate();
+  
+    const postDetails = (pics) => {
+        setProfilePicMessage(null);
+        if (pics.type === "image/jpeg" || pics.type === "image/png") {
+            const data = new FormData();
+            data.append("file", pics);
+            setImagename(pics)
+            data.append("upload_preset", "notezipper");
+            data.append("cloud_name", "piyushproj");
+            fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
+                method: "post",
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setFilePath(data.url.toString());
+                    // console.log(data.url.toString());
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            return setProfilePicMessage("Please Select an Image");
+        }
+    };
+
+//    console.log("data.url.toString()", pathFile);
+
     const handleSubmit = async (e) => {
+        try {
+
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("file", file.data);
-        const response = await axios.post("http://localhost:5000/file/drive", formData
-        );
+        // let formData = new FormData();
+        // formData.append("imagename", imagename);
+        // formData.append("pathFile", pathFile);
+        // formData.append("title", title);
+        const data={imagename,pathFile,title}
 
-        const responseWithBody = await response.json();
-        if (response) setUrl(responseWithBody.publicUrl);
-    };
+        // const config = {
+        //     headers: {
+        //       Accept: 'application/json',
+        //       'content-type': 'multipart/form-data',
+        //     },
+        //   };
+          
+        // const response = await axios.post("http://localhost:5000/api/post/add",
+        //  formData,config
+        // );
+        // console.log(response)
+       // setImagename(formData);
+       dispatch(addNewPost(data));
 
+        }
+        catch (error) {
+            console.log(error)
+            
+          
+    };}
+  //  console.log('setImagename', imagename)
 
+    const [fileURL, setFileURL] = useState(3);
 
-    const handleFileChange = (e) => {
-        const file = {
-            preview: URL.createObjectURL(e.target.files[0]),
-            data: e.target.files[0],
-        };
-        setFile(file);
-    };
-
-    const [fileURL, setFileURL] = useState(null);
-    let urlfile;
     const [files, setFiles] = useState(null);
 
     const [tags, setTags] = useState([]);
 
-    const handleRead = async (id) => {
-        const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/627a644444f9c7fa0bb8ae64`,
+    // const handleRead = async (id) => {
+    //     const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/627a644444f9c7fa0bb8ae64`,
 
-            {
-                responseType: 'arraybuffer',
-                responseEncoding: 'binary',
+    //         {
+    //             responseType: 'arraybuffer',
+    //             responseEncoding: 'binary',
 
-                headers: {
-                    "Content-type": "application/pdf",
-                },
-            }
-        );
+    //             headers: {
+    //                 "Content-type": "application/pdf",
+    //             },
+    //         }
+    //     );
 
-        const blob = new Blob([pdf], {
-            type: 'application/pdf'
-        });
-        const fileURL = URL.createObjectURL(blob);
-        let params = URL.revokeObjectURL(fileURL);
+    //     const blob = new Blob([pdf], {
+    //         type: 'application/pdf'
+    //     });
+    //     const fileURL = URL.createObjectURL(blob);
+    //     let params = URL.revokeObjectURL(fileURL);
 
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', params)
+    //     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', params)
 
-        setFileURL(fileURL)
+    //     setFileURL(fileURL)
 
-        window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
+    //     window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
 
-        //  console.log(new Blob([new Uint8Array(pdf)]))
-        //  { console.log("eeeeeeeeeeeeeeeee", fileURL) }
-        //  urlfile=fileURL.slice(5,fileURL.length)
+    //     //  console.log(new Blob([new Uint8Array(pdf)]))
+    //     //  { console.log("eeeeeeeeeeeeeeeee", fileURL) }
+    //     //  urlfile=fileURL.slice(5,fileURL.length)
 
-        // console.log("urfdfdf",urlfile)
-    }
-    const [keyWords, setKeyWords] = useState([]);
-    const [isValidKeyWords, setIsValidKeyWords] = useState(false);
-    const [messageKeyWords, setMessageKeyWords] = useState('');
+    //     // console.log("urfdfdf",urlfile)
+    // }
+    // const [keyWords, setKeyWords] = useState([]);
+    // const [isValidKeyWords, setIsValidKeyWords] = useState(false);
+    // const [messageKeyWords, setMessageKeyWords] = useState('');
 
-    const handleKeyDown = (e) => {
-        if (e.key !== 'Enter') return
-        const value = e.target.value;
-        if (!value.trim()) return
+    // const handleKeyDown = (e) => {
+    //     if (e.key !== 'Enter') return
+    //     const value = e.target.value;
+    //     if (!value.trim()) return
 
-        if (tags.length ===5) 
-        {
-            setIsValidKeyWords(false);
-            setMessageKeyWords('Please enter only five keywords!');
-        
-        }
-          else{
-            setTags([...tags, value])
-            setKeyWords([...keyWords, value])
-            setIsValidKeyWords(true);
-            setMessageKeyWords('Your keywprds looks good!');
-      
-        }
-        //   setFormData({ ...formData, keyWords: value });
-        //   const { keyWords } = formData;
+    //     if (tags.length ===5) 
+    //     {
+    //         setIsValidKeyWords(false);
+    //         setMessageKeyWords('Please enter only five keywords!');
 
-        e.target.value = ''
-    }
+    //     }
+    //       else{
+    //         setTags([...tags, value])
+    //         setKeyWords([...keyWords, value])
+    //         setIsValidKeyWords(true);
+    //         setMessageKeyWords('Your keywprds looks good!');
 
-    const removeTags = (index) => {
-        setTags(tags.filter((el, i) => i !== index))
-    }
+    //     }
+    //     //   setFormData({ ...formData, keyWords: value });
+    //     //   const { keyWords } = formData;
 
-    console.log('tags', tags)
-    console.log('keyword', keyWords)
+    //     e.target.value = ''
+    // }
 
+    // const removeTags = (index) => {
+    //     setTags(tags.filter((el, i) => i !== index))
+    // }
 
-    const handleFiles = async (id) => {
-        const { data } = await axios.get(`http://localhost:5000/api/file/getfiles/627a644444f9c7fa0bb8ae64`,
+    // const handleFiles = async (id) => {
+    //     const { data } = await axios.get(`http://localhost:5000/api/file/getfiles/627a644444f9c7fa0bb8ae64`,
 
 
-        );
+    //     );
 
-        console.log("urfdfdf", data)
-    }
-
-
-    useEffect(() => {
-        //  handleRead()
-    },
-        [
-
-        ]);
+    //     console.log("urfdfdf", data)
+    // }
 
     return (
 
         <>
-                 <div className="row">
+        
+        <div className="card mb-3">
+
+<div className="card-body">
+
+    <div className="row">
+        <h1 style={{ color: '#B91736' }}>Search With Theme:::::::::::::::::::::::::::::::::::::::::::::
+        </h1>   
+    </div>
+    <br />
+
+    <h4 style={{ color: '#B91736' }}> Found {}</h4>
+    <div className="row">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
+
+                            <div class="card card-margin">
+                                <div class="card-header no-border">
+                                    <h5 class="card-title" style={{ textTransform: "uppercase" }}>
+                                        <b>
+                                            Copmony</b>
+                                    </h5>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="widget-49">
+                                        <div class="widget-49-title-wrapper">
+                                            <div class="widget-49-meeting-info">
+                                             Comparable Value with EBITDA
+                                            </div>
+                                        </div>
+
+                                        <div className='widget-49-meeting-points'>
+                                            <span > Comparable Value with SALES :
+                                             </span>
+                                            <br />
+                                            
+
+                                        </div>
+                                        </div>
+                                        </div>
+                                        
+                            </div>
+                      
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+            {/* <form onSubmit={handleSubmit} >
+            <div className="row">
+                       <div className="col-6">
+                            <label >Title</label>
+                            <input type="text" onChange={(e) => setTitle(e.target.value) } placeholder="enter title for your gallery" className="form-control"/>
+                       </div>
+                     </div>  
+                <input
+                    type="text"
+                    name="pathFile"
+                    defaultValue={pathFile}
+                    onChange={(e) => setFilePath(e.target.value)}
+                />
+                {console.log('filepath 719',pathFile)}
+                <br />
+                <input type="file" name="imagename"
+                    onChange={(e) => postDetails(e.target.files[0])}
+                ></input>
+                <br />
+                <button className="btn btn-primary"
+
+                >
+                    Submit post
+                </button>
+                <br />
+                <button type="submit">Submit</button>
+
+            </form>
+            <div>
+                <h1>vdsflkdsfdslfdf {(pathFile)}</h1>
+                <img src={pathFile} height="400px"width="100px" className="card-img-top img-responsive" alt="img" />     </div> */}
+            {/* <div className="row">
 
                                                             <div className="col-md-6" style={{ margin: "auto", marginTop: "50px" }}>
                                                                 <div style={{ textAlign: "center" }}>
@@ -694,9 +812,11 @@ export default function AddFile(props) {
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
       />
-      <div className="preview" dangerouslySetInnerHTML={createMarkup(convertedContent)}></div>
+      <div className="preview " style={{backgroundColor:'white'}} dangerouslySetInnerHTML={createMarkup(convertedContent)}></div>
       </div>
       </div>
+
+      {console.log('convert',createMarkup(convertedContent))} */}
             {/*         
             <button type='submit' className='primary'
                 onClick={() => handleFiles()}>
@@ -716,7 +836,7 @@ export default function AddFile(props) {
       <button type="submit">Submit</button>
     </form> */}
 
-                       
+
             <br />
             {/*       
         <div>

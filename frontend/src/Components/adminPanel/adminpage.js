@@ -41,7 +41,8 @@ export default function AdminPage() {
 
     return (
         <>
-            {userInfo.roleuser === "Reader" ?
+          {!userInfo ? history('/'):
+            userInfo.roleuser === "Reader" ?
 
 
                 <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
