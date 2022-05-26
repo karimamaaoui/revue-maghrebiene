@@ -42,30 +42,69 @@ const uploadFile = multer({
 
 });
 
-router.route('/add').post(uploadFile.single('files'),async (req, res) => {
+router.route('/add').post(async (req, res) => {
+  console.log("req file single");
 
-  console.log("req file single", req.files.fileArticle.name);
+  if (!req.files) {
+    return res.status(400).json({ message: "no file uploaded" })
+  }
+  try {
 
-  req.files.fileArticle.mv('./uploads/' + req.files.fileArticle.name);
-  data.push({
-    name: req.files.fileArticle.name,
-    mimetype: req.files.fileArticle.mimetype,
-    size: req.files.fileArticle.size
-  });
-  console.log("data", data)
-  const titre=req.body.titre;
+  let datas=[]
+  req.files.imagename.mv('./uploads/' + req.files.imagename.name);
 
+  // datas.push({
+  //   name: req.files.imagename.name,
+  //   mimetype: req.files.imagename.mimetype,
+  //   size: req.files.imagename.size,
+  // });
+
+  const title = req.body.title;
+  const pathFile = req.body.pathFile;
+  const imagename=req.files.imagename.name;
+  console.log("data", req.body.pathFile)
+  
   const articleFile = await new Post({
-    fileArticle: data,
-    titre
+    imagename,
+    pathFile, 
+    title
   });
+  
+  console.log("file article", articleFile);
   articleFile
     .save(articleFile)
     .then(data => {
-      console.log("data file ", articleFile.fileArticle.length)
       res.send(data);
+    })
+  } catch (err) {
+    console.log("inside file catch  ");
+
+    res.status(500).send({
+      message:
+        err.message
     });
-  console.log("file article", articleFile);
+  }
+
+});
+
+
+router.route('/get').get(async (req, res) => {
+  console.log("req file single");
+
+  try {
+
+ 
+  const files =  await Post.find({}).sort({ _id: 1 });
+  return res.status(200).json(files);
+
+  } catch (err) {
+    console.log("inside file catch  ");
+
+    res.status(500).send({
+      message:
+        err.message
+    });
+  }
 
 });
 

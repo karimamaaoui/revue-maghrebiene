@@ -3,7 +3,7 @@ const User = require('../model/user');
 
 
 const createFeedback = async (req, res) => {
-    console.log('inside  create  feedbacl');
+    console.log('inside  create  feedback');
 
     const userId = await User.findOne({ _id: req.decoded.id });
     //  console.log('inside  create  Demand',userId);
@@ -18,7 +18,9 @@ const createFeedback = async (req, res) => {
         star: star,
         message: message,
         user: userId.id,
-      });
+    });
+           
+    console.log('inside ', feedback);
 
 
 
@@ -40,6 +42,24 @@ const createFeedback = async (req, res) => {
 };
 
 
+
+const getAllFeedback = (
+    async (req, res) => {
+        console.log('inside get list of feedback');
+        try {
+            const feedback = await Feedback.find().populate('user', ['username']).sort({ _id: -1 }).limit(10);
+           // console.log('inside ', feedback);
+
+            return res.status(200).json(feedback);
+
+        } catch (err) {
+            return res.status(500).json({ msg: err });
+        }
+    });
+
+
+
 module.exports = {
     createFeedback,
+    getAllFeedback
 }

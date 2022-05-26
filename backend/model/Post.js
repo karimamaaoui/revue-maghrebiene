@@ -5,15 +5,24 @@ const PostSchema = mongoose.Schema;
 
 const Post = PostSchema({
 
-    titre: {
-        type: String,
+    imagename:{
+        type:String,
+        required: true,
+
     },
 
-    bio: {
-        type: String,
+    pathFile: {
+        type:String,
+        required: true,
     },
-    fileArticle:[],
+    title: {
+        type:String,
+        required: true,
 
+    }
+
+
+   
 
 },
     { timestamps: true }

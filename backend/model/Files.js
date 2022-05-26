@@ -1,11 +1,12 @@
-const mongoose= require("mongoose");
+const mongoose = require("mongoose");
 
-const FilesSchema =mongoose.Schema;
+const FilesSchema = mongoose.Schema;
 
 const Files = FilesSchema({
-    
-    multiple_files:[],
 
+    multiple_files: [],
+
+   
     title: {
         type: String,
     },
@@ -18,43 +19,45 @@ const Files = FilesSchema({
 
     keyWords: {
         type: [String],
-        required:true
+        required: true
     },
 
     abbreviations: {
         type: String,
-        required:true
+        required: true
 
     },
-    
-    authors: {
+
+    authors: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
 
-    },
-    
-    like:[ {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        
     }],
 
-    
-    view:[ {
+    like: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        
+
     }],
 
-    comments:[{
-        text:String,
-        postedBy:[{ type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'}],
-        
+
+    view: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+
     }],
-    
-    
+
+    comments: [{
+        text: String,
+        postedBy: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+
+    }],
+
+
 
     status: {
         type: String,
@@ -66,7 +69,7 @@ const Files = FilesSchema({
         type: Boolean,
         default: false
     },
-    
+
     typeArticle: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Type',
@@ -74,8 +77,8 @@ const Files = FilesSchema({
 
     }],
 
-    
-    attributesAticle:[ {
+
+    attributesAticle: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Attributes',
         required: true,
@@ -84,17 +87,27 @@ const Files = FilesSchema({
     read: {
         type: Boolean,
         default: false,
-      },
+    },
 
-      rulesChecked: [
+    rulesChecked: [
         {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Rule',
-    }]
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Rule',
+        }],
+        imagename: {
+            type: String,
+            required: true,
+    
+        },
+    
+        pathFile: {
+            type: String,
+            required: true,
+        },
+    
 
-   
 },
-    {timestamps: true}
+    { timestamps: true }
 );
 
-module.exports = mongoose.model("Files",Files);
+module.exports = mongoose.model("Files", Files);

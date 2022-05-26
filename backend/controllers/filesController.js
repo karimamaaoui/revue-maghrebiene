@@ -140,13 +140,15 @@ const multipleUpload = async (req, res) => {
       const status = req.body.status;
       const typeArticle = req.body.typeArticle;
       const attributesAticle = req.body.attributesAticle;
-      const userId = await User.findOne(req.decoded);
+      const userId = await User.findById(req.decoded.id);
       const like = req.body.like;
       const authors = userId.id;
       const comments = req.body.comments;
       const rulesChecked = req.body.rulesChecked;
       const view = req.body.view;
-
+      const pathFile = req.body.pathFile;
+      const imagename=req.files.imagename.name;
+     
 
       //   const readerRole = await Role.findOne({name:'Reader'});
       // // console.log("readerRole is ",readerRole);
@@ -172,7 +174,9 @@ const multipleUpload = async (req, res) => {
         like,
         comments,
         rulesChecked,
-        view
+        view,
+        pathFile,
+        imagename
       });
 
       let ids = []
@@ -313,17 +317,22 @@ const getAllArticleByAttribute = (
     const limit = 5;
     const skip = (currentPage - 1) * limit;
 
-    console.log('inside get list of files', skip);
+
+    console.log('inside get list of getAllArticleByAttribute', skip);
     try {
-      articles = await Files.find({ attributesAticle: req.query.attribut }).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      articles = await Files.find({ attributesAticle: req.params.attribut })
+                                  .populate('attributesAticle', ['label'])
+                                  .populate('typeArticle', ['label'])
+                                  .populate('authors', ['username','email'])
+                                  .sort({ createdAt: -1 }).limit(limit).skip(skip);
 
-      console.log('eeeeeeeeeeeeeeeeeeee', req.query.attribut)
+      console.log('getAllArticleByAttribute', req.params.attribut)
 
 
-      if (!articles.length > 0) {
-        articles = await Files.find({}).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      // if (!articles.length > 0) {
+      //   articles = await Files.find({}).populate('attributesAticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
-      }
+      // }
       return res.status(200).json(articles);
 
 

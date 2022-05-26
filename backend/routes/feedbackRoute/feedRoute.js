@@ -8,7 +8,7 @@ const verifyToken = require('../../middleware/verifyToken');
 
 router.post("/add",verifyToken.verifyUserToken  ,feedbackController.createFeedback);
 
-//router.get("/",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.getAllDemands);
+router.get("/getFeedback",feedbackController.getAllFeedback);
 
 //router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.deleteDemand);
 

@@ -19,7 +19,7 @@ router.post("/drive", filesController.createFile);
 router.get("/convert/:id", filesController.convertFile);
 
 router.get("/getallfiles",verifyToken.verifyUserToken,filesController.getAllArticle);
-router.get("/getallfile",verifyToken.verifyUserToken,filesController.getAllArticleByAttribute);
+router.get("/getarticle/:attribut",verifyToken.verifyUserToken,filesController.getAllArticleByAttribute);
 
 router.get("/stats", filesController.getStats);
 router.get("/:id", filesController.download);

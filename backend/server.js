@@ -136,6 +136,7 @@ app.use(
 app.use(
   fileUpload()
 );
+
 // routes 
 app.use('/api/auth/', userRegister);
 app.use('/api/auth/', userLogin);
@@ -146,7 +147,7 @@ app.use('/api/attribute', attributeRoute);
 app.use('/api/file', filesRoute);
 app.use('/api/rule', rulesRoute);
 app.use('/api/author', authorRoute);
-app.use('/api/post', postRoute);
+app.use('/api/post', postRoute,express.static('./uploads'));
 app.use('/api/demand', demandRoute);
 app.use('/api/feedback', feedbackRoute);
 app.use('/api/favorite', favoriteRoute);
