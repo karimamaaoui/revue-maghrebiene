@@ -40,7 +40,7 @@ import DemandAuthor from './Components/DemandAuthor/demandAuthor';
 import AcceptDemand from './Components/DemandAuthor/AcceptDemand'
 import AddPost from './Components/Home/addPost'
 
-import ShowPost from './Components/Home/showPost'
+import MostRead from './Components/MostRead/MostRead'
 
 
 export default function RoutesList() {
@@ -53,7 +53,7 @@ export default function RoutesList() {
       <div>
         <Routes>
         <Route path="/a" element={<SideBar />} />
-        <Route path="/c" element={<ShowPost />} />
+        <Route path="/mostread" element={<MostRead />} />
 
         <Route path="/b" element={<AddPost />} />
 

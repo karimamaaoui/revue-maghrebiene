@@ -21,6 +21,7 @@ export default function SearchWithAttribute() {
     const getAllArticle = useSelector((state) => state.getAllArticle);
     const { loadingGetAllArticle, errorGetAllArticle, articles } = getAllArticle;
     const [attributeName, setAttributeName] = useState('')
+    const [noOfElement, setNoOfElement] = useState(3);
 
     const id = useParams();
     const updatedAttributeIds = id.id
@@ -43,6 +44,7 @@ export default function SearchWithAttribute() {
             }))
             setArticleByAttribute(data)
 
+
         } catch (error) {
             console.log(error)
         }
@@ -58,7 +60,12 @@ export default function SearchWithAttribute() {
             userInfo,
 
         ]);
+console.log('setArticleByAttribute',articleByAttribute)
+const loadMore = () => {
+    setNoOfElement(noOfElement + noOfElement)
 
+  }
+  const slice = articleByAttribute?.slice(0, noOfElement)
 
     return (
         <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
@@ -87,7 +94,7 @@ export default function SearchWithAttribute() {
                                                 <div class="row justify-content-center">
 
                                                     <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
-                                                        {articleByAttribute?.map((atrib) => {
+                                                        {slice.map((atrib) => {
                                                             return (
 
                                                                 <div class="card card-margin">
@@ -129,6 +136,9 @@ export default function SearchWithAttribute() {
                                                                                 <br />
 
                                                                                 <span>{atrib.keyWords}</span>
+                                                                                <br/>
+                                                                                <span>view {atrib.view.length}</span>
+
                                                                             </div>
                                                                             <ol class="widget-49-meeting-points">
 
@@ -146,10 +156,18 @@ export default function SearchWithAttribute() {
                                                         }
 
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
 
                                         </div>
+                                        <div className="row">
+                                <div className="col-sm-12">
+                                  <button className="btn btn-dark " style={{ textAlign: "center" }} onClick={loadMore}  >
+                                    Show More Articles
+                                  </button>
+                                </div>
+                              </div>
                                     </div>
                                 </div>
                             </div>

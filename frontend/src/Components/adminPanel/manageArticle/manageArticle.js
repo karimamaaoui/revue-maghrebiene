@@ -254,15 +254,7 @@ export default function ManageArticle() {
                               <ReactPaginate 
                                 previousLabel={'previous'}
                                 nextLabel={"next"}
-                                b
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                reakLabel={'...'}
+                                breakLabel={'...'}
                                 pageCount={25}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={3}

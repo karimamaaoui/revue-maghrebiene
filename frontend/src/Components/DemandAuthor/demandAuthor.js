@@ -82,7 +82,7 @@ export default function DemandAuthor() {
                                     <div className="card mb-3" style={{ backgroundColor: 'white' }}>
                                         <div class="card-body">
                                             <div className="row">
-                                                <h1 style={{ color: 'rgb(151, 213, 230)' }}>Demand To Be An Author:::::::::::::::::::::::::::::::::::::::::</h1>
+                                                <h1 style={{ color: '#B91736' }}>Demand To Be An Author:::::::::::::::::::::::::::::::::::::::::</h1>
                                             </div>
 
                                             <div class="row">

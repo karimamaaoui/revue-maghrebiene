@@ -299,6 +299,38 @@ export const getAllUsers = () => async (dispatch, getState) => {
 }
 
 
+
+export const getAllUserPaginate= (currentPage) => async (dispatch, getState) => {
+
+  try {
+    dispatch({ type: RETRIEVE_USER_REQUEST});
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+
+      },
+    };
+
+    const { data } = await axios.get(`http://localhost:5000/api/file/user/getAllUsers?currentPage=${currentPage}`, config);
+    dispatch({ type: RETRIEVE_USER_SUCCESS, payload: data });
+  
+  } catch (error) {
+    dispatch({
+      type: RETRIEVE_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+
+  }
+}
 // get all user
 export const listNewArrivals = () => async (dispatch, getState) => {
 

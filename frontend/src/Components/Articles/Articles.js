@@ -452,7 +452,7 @@ function Article() {
 
                                                                                                 }
                                                                                             />
-                                                                                            <label className='col' id="check" style={{ fontSize: '17px' }}  >{item.label}  </label>
+                                                                                            <label className='col' id="check" style={{ fontSize: '17px', }}  >{item.label}  </label>
 
 
                                                                                         </div>
@@ -743,14 +743,16 @@ function Article() {
                                                                         <div className='card'>
 
                                                                             <label>{t("profile:articleRequirements")} </label>
-                                                                            <p style={{ fontSize: '10px' }}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
-                                                                            <div style={{ display: "inline-flex" }}>
+                                                                            <p style={{ fontSize: '17px' }}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
+                                                                                        <br/>
+
+                                                                            <div style={{color:'red' }}>
 
                                                                                 {rules?.map((item, i) => (
 
                                                                                     <div key={i}>
 
-                                                                                        <input type="checkbox" className='checkbox'
+                                                                                        <input type="checkbox" className='checkbox' 
                                                                                             value={item._id}
                                                                                             name={rulesChecked}
                                                                                             required
@@ -767,7 +769,7 @@ function Article() {
                                                                                             }
                                                                                             }
                                                                                         />
-                                                                                        <label className='col' id="check" style={{ fontSize: '10px' }}  >{item.label}  </label>
+                                                                                        <label className='col' id="check" style={{ fontSize: '15px',top:'-4px' }}  >{item.label}  </label>
                                                                                     </div>
                                                                                 ))
                                                                                 }

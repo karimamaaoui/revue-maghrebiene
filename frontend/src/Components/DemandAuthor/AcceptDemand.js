@@ -141,10 +141,10 @@ export default function AcceptDemand() {
                                     <div class="card-body" >
                                            
                                         <div className="row">
-                                            <h1 style={{ color: 'rgb(151, 213, 230)' }}>List Of Demands::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                            <h1 style={{ color: '#B91736' }}>List Of Demands::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
                                         </div>
                                         <div class="row" >
-                                            {
+                                            { demandList.length!=0 ?
                                                 demandList.map((demand, i) => {
                                                     return (
 
@@ -203,6 +203,7 @@ export default function AcceptDemand() {
                                                         </div>
                                                     )
                                                 })
+                                                : <h2>No Demand Found </h2>
                                             }
                                         </div>
                                     </div>

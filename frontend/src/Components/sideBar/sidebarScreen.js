@@ -122,59 +122,103 @@ export default function SidebarScreen() {
 
       <nav id="sidebar" >
 
-    <div className="p-6 pt-5 " style={{backgroundColor:'#FEE5CF',position:"sticky",height:"100%"}}>
-              <ul class="">
-              <h2 >
-                Menu
-              </h2>
+        <div className="p-6 pt-5 " style={{ backgroundColor: '#FEE5CF', position: "sticky", height: "100%" }}>
+          <ul class="">
+            <h2 >
+              Menu
+            </h2>
 
-              <li className="list-unstyled components mb-2">
-                <a href="/search" className="inline-block ">
-                  <i className="bi bi-search "></i>
-                  {' '}
-                  Search Article</a>
-              </li>
-              <li className="list-unstyled components mb-2">
-                <a href="#" className="inline-block">
-                  <i className="bi bi-newspaper "></i>
-                  {' '}
-                  Recent Article</a>
-              </li>
+            <li className="list-unstyled components mb-2">
+              <a href="/search" className="inline-block ">
+                <i className="bi bi-search "></i>
+                {' '}
+                Search Article</a>
+            </li>
+            <li className="list-unstyled components mb-2">
+              <a href="#" className="inline-block">
+                <i className="bi bi-newspaper "></i>
+                {' '}
+                Recent Article</a>
+            </li>
 
-              <li className="list-unstyled components mb-2">
-                <a href="#" className="inline-block">
-                  <i className="bi bi-book"></i>
-                  {' '}
-                  Most Read</a>
-              </li>
-              {userInfo.roleuser === "Reader" ?
+            <li className="list-unstyled components mb-2">
+              <a href="/mostread" className="inline-block">
+                <i className="bi bi-book"></i>
+                {' '}
+                Most Read</a>
+            </li>
+
+            <li className="list-unstyled components mb-2">
+              <a href="/feedback" className="inline-block ">
+                <i className="bi bi-search "></i>
+                {' '}
+                Add Feedback</a>
+            </li>
+          
+            {userInfo.roleuser === "Reader" ?
               <>
-              
+
                 <li className="list-unstyled components mb-2">
                   <a href="/users" className="inline-block">
                     <i className="bi bi-book"></i>
                     {' '}
                     Users List</a>
                 </li>
-                
+
                 <li className="list-unstyled components mb-2">
                   <a href="/managearticles" className="inline-block">
                     <i className="bi bi-book"></i>
                     {' '}
                     Articles List</a>
                 </li>
+                <li className="list-unstyled components mb-2">
+                  <a href="/accept" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Demand To be Author</a>
+                </li>
 
-                </>
-                : <></>
+              </>
+              : <></>
 
-              }
+            }
+
+{userInfo.roleuser === "User" ?
+              <>
+
+                <li className="list-unstyled components mb-2">
+                  <a href="/demand" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Want to be Author </a>
+                </li>
+
+  
+              </>
+              : <></>
+
+            }
+
+            {userInfo.roleuser === "Author" ?
+              <>
+
+                <li className="list-unstyled components mb-2">
+                  <a href="/article" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Add Article </a>
+                </li>
 
 
-            </ul>
-         
-             
+              </>
+              : <></>
+            }
 
-      {/* <div className="list-unstyled components mb-2">
+          </ul>
+
+
+
+          {/* <div className="list-unstyled components mb-2">
 
 
 
@@ -215,7 +259,7 @@ export default function SidebarScreen() {
         
    </div> */}
 
-    </div>
+        </div>
       </nav>
     </>
 

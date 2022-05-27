@@ -53,10 +53,10 @@ export default function SearchPahe() {
     const [items, setItems] = useState([])
     const handlePageClick = (data) => {
 
-        console.log("efefef", data.selected);
+        //console.log("efefef", data.selected);
         let currentPage = data.selected + 1;
         dispatch(getAllArticlePaginate(currentPage));
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
+      //  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
 
     }
 
@@ -64,11 +64,8 @@ export default function SearchPahe() {
 
     useEffect(() => {
         dispatch(getAllArticles());
-        console.log('articme', articles)
         dispatch(listTypes());
-        // dispatch(listAttribute());
 
-        //console.log("articles", types)
 
         if (!userInfo) {
             history("/");
@@ -129,7 +126,7 @@ export default function SearchPahe() {
             }
         )
             .then((response) => {
-                console.log("resp", articles);
+               // console.log("resp", articles);
 
                 if (response.data.type.includes('pdf')) {
 
@@ -166,9 +163,9 @@ export default function SearchPahe() {
         return await axios.put(`http://localhost:5000/api/file/comment/${id}`, user, config)
             .then((res) => {
 
-                console.log(res.data);
+               // console.log(res.data);
 
-                console.log('article => ' + JSON.stringify(user));
+                //console.log('article => ' + JSON.stringify(user));
 
             }).catch(err => {
                 console.log(err)
@@ -184,16 +181,16 @@ export default function SearchPahe() {
         };
         let userId = userInfo.user._id;
         let user = { userId }
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+    //    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
 
 
         return await axios.put(`http://localhost:5000/api/file/like/${id}`, user, config)
             .then((res) => {
 
-                console.log(res.data);
+             //   console.log(res.data);
                 setLikeArticle(res.data)
 
-                console.log('article => ' + JSON.stringify(res.data));
+             //   console.log('article => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
@@ -211,7 +208,7 @@ export default function SearchPahe() {
         };
         let userId = userInfo.user._id;
         let user = { userId, article }
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+       // console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
 
 
         return await axios.post(`http://localhost:5000/api/favorite/add/`, user, config)
@@ -249,7 +246,7 @@ export default function SearchPahe() {
         };
         let userId = userInfo.user._id;
         let user = { userId }
-        console.log('view', user)
+   //     console.log('view', user)
 
 
         return await axios.put(`http://localhost:5000/api/file/view/${id}`, user, config)
@@ -257,9 +254,9 @@ export default function SearchPahe() {
 
                 console.log(res.data);
                 setViewArticle(res.data)
-                console.log('vvvvvvvvvvvvvvvvvvvvvvvvv', viewArticle)
+               // console.log('vvvvvvvvvvvvvvvvvvvvvvvvv', res.data)
 
-                console.log('view => ' + JSON.stringify(res.data));
+             //   console.log('view => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
@@ -267,7 +264,7 @@ export default function SearchPahe() {
 
     }
     const [fileURL, setFileURL] = useState('');
-    console.log('fileURL', fileURL)
+    //console.log('fileURL', fileURL)
 
     // const handleRead = async (id) => {
     //     const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
@@ -319,7 +316,7 @@ export default function SearchPahe() {
         if (indexFound === -1) {
             // add
             updatedCategoryIds = [...typeIds, currentCategoryChecked];
-            console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
+           // console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
 
             setTypeIds(updatedCategoryIds);
         } else {
@@ -335,7 +332,7 @@ export default function SearchPahe() {
         setTypeIds('')
 
     };
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
+   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
 
     
     const handleAttribute = e => {
@@ -472,7 +469,7 @@ export default function SearchPahe() {
 
                                                         >
 
-                                                            <option >chooseatheme</option>
+                                                            <option >Choose Theme</option>
 
                                                             {types &&
                                                             types.map((type, key) => {

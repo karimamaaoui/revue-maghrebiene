@@ -1,7 +1,7 @@
 import { Card, CardBody, CardTitle, CardSubtitle, Table } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteUser, getAllUsers } from '../../../redux/Actions/actions';
+import { deleteUser, getAllUserPaginate, getAllUsers } from '../../../redux/Actions/actions';
 import React, { useState, useEffect } from 'react'
 import { userDeleteReducer } from "../../../redux/reducers/userReducer";
 import { Button, Col, Row } from "react-bootstrap";
@@ -22,7 +22,6 @@ export default function ManageUser() {
 
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [noOfElement, setNoOfElement] = useState(1);
 
   const getAllUser = useSelector((state) => state.getAllUser);
   const { loadingGetAllUser, errorGetAllUser, users } = getAllUser;
@@ -52,13 +51,7 @@ export default function ManageUser() {
     successDelete
   ]);
 
-  const loadMore = () => {
-    setNoOfElement(noOfElement + noOfElement)
 
-  }
-
-  const slice = users?.slice(0, noOfElement)
-  console.log("slice", slice)
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
       dispatch(deleteUser(id));
@@ -71,35 +64,45 @@ export default function ManageUser() {
   const filterContent = (articleFilter, searchTerm) => {
     if (searchTerm !== '') {
 
-        const result = users.filter((user) => {
-            return (user.username.toLowerCase().startsWith(searchTerm) ||
-            user.firstname.toLowerCase().startsWith(searchTerm) ||
-            user.lastname.toLowerCase().startsWith(searchTerm) ||
-            user.email.toLowerCase().startsWith(searchTerm) ||
-            user.isVerified.toLowerCase().startsWith(searchTerm)||
-            user.isApproved.toLowerCase().startsWith(searchTerm)||
-            user.roles.toLowerCase().startsWith(searchTerm) 
-            );
-        }
+      const result = users.filter((user) => {
+        return (user.username.toLowerCase().startsWith(searchTerm) ||
+          user.firstname.toLowerCase().startsWith(searchTerm) ||
+          user.lastname.toLowerCase().startsWith(searchTerm) ||
+          user.email.toLowerCase().startsWith(searchTerm) ||
+          user.isVerified.toLowerCase().startsWith(searchTerm) ||
+          user.isApproved.toLowerCase().startsWith(searchTerm) ||
+          user.roles.toLowerCase().startsWith(searchTerm)
         );
-        setSearchResult(result);
+      }
+      );
+      setSearchResult(result);
     }
     else {
-        setSearchResult(users);
+      setSearchResult(users);
     }
     console.log("searchResult", searchResult)
-}
+  }
 
-const handleSearch = async (e) => {
+  const handleSearch = async (e) => {
 
-  const searchTerm = e.currentTarget.value;
-  setSearchInput(searchTerm)
+    const searchTerm = e.currentTarget.value;
+    setSearchInput(searchTerm)
 
-  //dispatch(getArticleByFilter(userFilter,searchTerm));
+    //dispatch(getArticleByFilter(userFilter,searchTerm));
 
     //filterContent(userFilter, searchTerm)
 
-}
+  }
+
+  const handlePageClick = (data) => {
+
+    console.log("efefef", data.selected);
+    let currentPage = data.selected + 1;
+    dispatch(getAllUserPaginate(currentPage));
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
+
+  }
+
   return (
     <>
 
@@ -143,7 +146,7 @@ const handleSearch = async (e) => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {slice?.map((tdata, index) => (
+                                  {users?.map((tdata, index) => (
                                     <tr key={index} className="border-top">
                                       <td>
                                         <div className="d-flex align-items-center p-2">
@@ -212,39 +215,31 @@ const handleSearch = async (e) => {
                                 </tbody>
                               </Table>
                               <div className="row">
-                                <div className="col-sm-12">
-                                  <button className="btn btn-dark " style={{ textAlign: "center" }} onClick={loadMore}  >
-                                    Load More
-                                  </button>
+                                <div className="col-sm-12"  >
+
+                                  <ReactPaginate
+                                    previousLabel={'previous'}
+                                    nextLabel={"next"}
+                                    breakLabel={'...'}
+                                    pageCount={25}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={3}
+                                    onPageChange={handlePageClick}
+                                    containerClassName={'pagination justofy-content-center'}
+                                    pageClassName={'page-item'}
+                                    pageLinkClassName={'page-link'}
+                                    previousClassName={'page-item'}
+                                    previousLinkClassName={'page-link'}
+                                    nextClassName={'page-item'}
+                                    nextLinkClassName={'page-link'}
+                                    breakClassName={'page-item'}
+                                    breakLinkClassName={'page-link'}
+                                    activeClassName={'active '}
+
+                                  />
                                 </div>
                               </div>
-                              <div className="row">
-                            <div className="col-sm-12"  >
-                              
-                              <ReactPaginate 
-                                previousLabel={'previous'}
-                                nextLabel={"next"}
-                                breakLabel={'...'}
-                                pageCount={25}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                // onPageChange={handlePageClick}
-                                containerClassName={'pagination justofy-content-center'}
-                                pageClassName={'page-item'}
-                                pageLinkClassName={'page-link'}
-                                previousClassName={'page-item'}
-                                previousLinkClassName={'page-link'}
-                                nextClassName={'page-item'}
-                                nextLinkClassName={'page-link'}
-                                breakClassName={'page-item'}
-                                breakLinkClassName={'page-link'}
-                                activeClassName={'active '}
 
-                                
-                              />
-                            </div>
-                          </div>
-                        
                             </CardBody>
                           </Card>
                         </Col>

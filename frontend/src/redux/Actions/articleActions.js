@@ -61,7 +61,7 @@ export const getAllArticles= () => async (dispatch, getState) => {
    // console.log("user token", config)
 
     const { data } = await axios.get('http://localhost:5000/api/file/getallfiles', config);
-    //console.log("user data", data)
+    console.log("user data", data)
 
 
     dispatch({ type: RETRIEVE_ARTICLE_SUCCESS, payload: data });
