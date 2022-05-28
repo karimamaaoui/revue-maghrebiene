@@ -57,10 +57,19 @@ const getUser = (async (req, res) => {
 
 const getAllUsers = (verifyToken.verifyUserToken,
     async (req, res) => {
-        const query = req.query.new;
+        const currentPage = req.query.currentPage;
+        const total = await User.countDocuments({});
+        console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
+
+        const limit = 2;
+        const skip = (currentPage - 1) * limit;
+
+        console.log('inside get list of files', skip);
+
         console.log('inside get list of users');
         try {
-            const users = await query ? await User.find().populate('roles', ['name']).sort({ _id: -1 }).limit(10) : await User.find().populate('roles', ['name']);
+            const users = await User.find().populate('roles', ['name']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+
             return res.status(200).json(users);
 
         } catch (err) {
@@ -179,7 +188,7 @@ const updateUser = (async (req, res) => {
         user.username = req.body.username || user.username;
         user.firstname = req.body.firstname || user.firstname;
         user.lastname = req.body.lastname || user.lastname;
-        
+
         //   user.university = req.body.university || user.university;
         //   user.placeofpractice = req.body.placeofpractice || user.placeofpractice;
 
@@ -316,16 +325,16 @@ const changePictureProfile = (async (req, res, next) => {
 
             //Use the name of the input field (i.e. "profilePic") to retrieve the uploaded file
             let profilePic = req.files.profilePic;
-          
+
 
             if (user) {
-                
+
                 user.profilePic = req.files.profilePic.name || user.profilePic;
 
                 console.log("connect", user.profilePic)
                 //Use the mv() method to place the file in upload directory (i.e. "uploads")
                 profilePic.mv('./uploads/' + profilePic.name);
-    
+
                 const updatedUser = await user.save();
 
                 /*   res.json({
@@ -359,297 +368,297 @@ const changePictureProfile = (async (req, res, next) => {
         }
 
 
-        } catch (error) {
-            res.status(500).send(error.message);
+    } catch (error) {
+        res.status(500).send(error.message);
 
-        }
-    });
-
-
-    const logOut = async (req, res) => {
-        console.log("insidie logout ")
-        try {
-            req.session = null;
-            return res.status(200).send({ message: "You've been signed out!" });
-        } catch (err) {
-            this.next(err);
-        }
     }
-
-    // forgot password
-    const forgotPassword = async (req, res) => {
-        const { email } = req.body;
-        await User.find({ email })
-            .then((result) => {
-                if (result.length > 0) {
-                    const user = result[0]._id;
-
-                    console.log("user id", req.body);
-                    console.log('show data inside reset request ', user)
-
-                    const payload = {
-                        user: { id: user._id },
-                    };
-                    // show user id
-                    console.log("payload", payload);
+});
 
 
-                    jwt.sign(
-                        payload,
-                        process.env.SECRET_Key,
-                        {
-                            expiresIn: '1m',
-                        },
+const logOut = async (req, res) => {
+    console.log("insidie logout ")
+    try {
+        req.session = null;
+        return res.status(200).send({ message: "You've been signed out!" });
+    } catch (err) {
+        this.next(err);
+    }
+}
 
-                        async (err, resetToken) => {
-                            if (err) throw err;
-                            await User.findOneAndUpdate({ email: email },
-                                { $set: { resetToken: resetToken } })
+// forgot password
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    await User.find({ email })
+        .then((result) => {
+            if (result.length > 0) {
+                const user = result[0]._id;
 
-                            const mailOptions = {
-                                from: "scongresses@gmail.com",
-                                to: email,
-                                subject: "Password Reset",
-                                html: `<p>verify account <a href="http://localhost:5000/api/auth/${user._id}/${resetToken}"> here </a> to procced. </p>`,
-                            };
-                            transporter.sendMail(mailOptions, function (error, info) {
-                                if (error) {
-                                    console.log(error);
-                                    res.status(404).send({
-                                        error: 'The email address ' + req.body.email +
-                                            ' is not associated with any account. Double-check your email address and try again.'
-                                    });
-                                } else {
-                                    console.log('Email sent: ' + info.response);
-                                    res.status(200).send({ result });
-                                }
+                console.log("user id", req.body);
+                console.log('show data inside reset request ', user)
+
+                const payload = {
+                    user: { id: user._id },
+                };
+                // show user id
+                console.log("payload", payload);
+
+
+                jwt.sign(
+                    payload,
+                    process.env.SECRET_Key,
+                    {
+                        expiresIn: '1m',
+                    },
+
+                    async (err, resetToken) => {
+                        if (err) throw err;
+                        await User.findOneAndUpdate({ email: email },
+                            { $set: { resetToken: resetToken } })
+
+                        const mailOptions = {
+                            from: "scongresses@gmail.com",
+                            to: email,
+                            subject: "Password Reset",
+                            html: `<p>verify account <a href="http://localhost:5000/api/auth/${user._id}/${resetToken}"> here </a> to procced. </p>`,
+                        };
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log(error);
+                                res.status(404).send({
+                                    error: 'The email address ' + req.body.email +
+                                        ' is not associated with any account. Double-check your email address and try again.'
+                                });
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                                res.status(200).send({ result });
                             }
-                            );
                         }
-                    )
-                }
-            })
-    };
-
-    const sendTemporaryPassword = async (req, res) => {
-        console.log(req.body)
-        var randomstring = Math.random().toString(36).slice(-8);
-        let salt = crypto.randomBytes(16).toString('base64');
-        const pass = CryptoJs.AES.encrypt(randomstring, process.env.SECRET_Key).toString()
-        let hash = crypto.createHmac('sha512', salt).update(randomstring).digest("base64");
-
-        let password = salt + "$" + hash;
-        let user;
-        const { email } = req.body;
-        console.log("find by id")
-        await User.find({ email })
-            .then((result) => {
-                if (result.length > 0) {
-
-                    console.log("user id", req.body);
-                    user = result[0]._id;
-                    console.log('show data inside reset request ', user)
-                    const payload = {
-                        user: { id: user._id },
-                    };
-                    console.log(payload);
-                    jwt.sign(
-                        payload,
-                        process.env.SECRET_Key,
-                        {
-                            expiresIn: '1m',
-                        },
-                        async (err, token) => {
-                            if (err) throw err;
-
-                            const mailOptions = {
-                                from: "scongresses@gmail.com",
-                                to: email,
-                                subject: 'Temporary Password',
-                                html: `<h3>Your Temporary Password is '${randomstring}'\n\n'</h3>
-                            <p>Please click on the following link, or paste this into your browser to complete the process: <a href="http://google.com:5000/api/login/${user._id}/${token}"> here </a> to procced. </p>`,
-                            };
-
-                            transporter.sendMail(mailOptions, function (error, info) {
-                                if (error) {
-                                    console.log(error);
-                                } else {
-                                    console.log('Email sent: ' + info.response);
-                                    console.log("randomstring", randomstring)
-                                    console.log("randomstring", pass)
-                                    console.log("pass 2", user._id)
-
-                                    return res.json(result);
-
-                                }
-                            })
-                            await User.findOneAndUpdate(
-                                { _id: user._id },
-                                { $set: { password: pass } });
-
-
-                        }
-                    )
-                }
-            })
-    }
-
-
-    //testing success
-
-    transporter.transporter.verify(function (error, success) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(success);
-        }
-    });
-
-    // add user to author
-    const AddToAuthor = async (req, res) => {
-
-        console.log("inside add to entity author ");
-        const _id = req.params.id;
-        console.log("user id", _id);
-
-        try {
-
-            let user = await User.findById(_id);
-            // let userId = await User.findOne({ user: req.decoded.id })
-            // console.log("user id from add author", user)
-
-
-            if (!user) {
-                res.status(404).json({ msg: 'User does not exist' });
+                        );
+                    }
+                )
             }
-            let role = await Role.findById(user.roles);
-            console.log(user.email)
+        })
+};
 
-            Role.findOne({ name: "Author" }, (err, role) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-                user.role = [role._id];
-                // console.log("user role role user role", user.role)
+const sendTemporaryPassword = async (req, res) => {
+    console.log(req.body)
+    var randomstring = Math.random().toString(36).slice(-8);
+    let salt = crypto.randomBytes(16).toString('base64');
+    const pass = CryptoJs.AES.encrypt(randomstring, process.env.SECRET_Key).toString()
+    let hash = crypto.createHmac('sha512', salt).update(randomstring).digest("base64");
 
-            })
+    let password = salt + "$" + hash;
+    let user;
+    const { email } = req.body;
+    console.log("find by id")
+    await User.find({ email })
+        .then((result) => {
+            if (result.length > 0) {
 
+                console.log("user id", req.body);
+                user = result[0]._id;
+                console.log('show data inside reset request ', user)
+                const payload = {
+                    user: { id: user._id },
+                };
+                console.log(payload);
+                jwt.sign(
+                    payload,
+                    process.env.SECRET_Key,
+                    {
+                        expiresIn: '1m',
+                    },
+                    async (err, token) => {
+                        if (err) throw err;
 
-            Demand.findOneAndRemove({ user: _id }, (err, demand) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-                console.log("user demand", demand)
+                        const mailOptions = {
+                            from: "scongresses@gmail.com",
+                            to: email,
+                            subject: 'Temporary Password',
+                            html: `<h3>Your Temporary Password is '${randomstring}'\n\n'</h3>
+                            <p>Please click on the following link, or paste this into your browser to complete the process: <a href="http://google.com:5000/api/login/${user._id}/${token}"> here </a> to procced. </p>`,
+                        };
 
-            })
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                                console.log("randomstring", randomstring)
+                                console.log("randomstring", pass)
+                                console.log("pass 2", user._id)
 
-            const isApproved = true;
-            await User.findOneAndUpdate(
+                                return res.json(result);
 
-                { _id: req.params.id },
-                {
-                    $pop: { "roles": 1 }
+                            }
+                        })
+                        await User.findOneAndUpdate(
+                            { _id: user._id },
+                            { $set: { password: pass } });
 
-                });
-
-            //console.log("useer role after", user.role)
-
-            user.save();
-            res.json({ msg: 'Approved', user });
-
-            await User.findOneAndUpdate(
-
-                { _id: req.params.id },
-                {
-                    $push: {
-                        roles:
-                            [
-                                user.role
-                            ]
 
                     }
+                )
+            }
+        })
+}
 
-                });
 
-            console.log("user roles after updating", user._id)
+//testing success
+
+transporter.transporter.verify(function (error, success) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log(success);
+    }
+});
+
+// add user to author
+const AddToAuthor = async (req, res) => {
+
+    console.log("inside add to entity author ");
+    const _id = req.params.id;
+    console.log("user id", _id);
+
+    try {
+
+        let user = await User.findById(_id);
+        // let userId = await User.findOne({ user: req.decoded.id })
+        // console.log("user id from add author", user)
 
 
-            await User.findOneAndUpdate(
+        if (!user) {
+            res.status(404).json({ msg: 'User does not exist' });
+        }
+        let role = await Role.findById(user.roles);
+        console.log(user.email)
 
-                { _id: req.params.id },
-                {
-                    $set: { isApproved: isApproved }
-                });
-            const author = new Author({
-                author: user._id,
+        Role.findOne({ name: "Author" }, (err, role) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            user.role = [role._id];
+            // console.log("user role role user role", user.role)
+
+        })
+
+
+        Demand.findOneAndRemove({ user: _id }, (err, demand) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            console.log("user demand", demand)
+
+        })
+
+        const isApproved = true;
+        await User.findOneAndUpdate(
+
+            { _id: req.params.id },
+            {
+                $pop: { "roles": 1 }
 
             });
 
-            await author.save();
+        //console.log("useer role after", user.role)
 
+        user.save();
+        res.json({ msg: 'Approved', user });
 
-            const mailOptions = {
-                from: "scongresses@gmail.com",
-                to: user.email,
-                subject: "Your  Demand To Be An Author Is Accepted ",
-                html: `<p>verify account  here  to procced. </p>`,
-            };
-            console.log(req.body.email)
-            transporter.sendMail(mailOptions, function (error, response) {
-                if (error) {
-                    console.log(error);
-                }
-                else {
-                    console.log("msg sent");
+        await User.findOneAndUpdate(
+
+            { _id: req.params.id },
+            {
+                $push: {
+                    roles:
+                        [
+                            user.role
+                        ]
 
                 }
-            })
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ msg: err });
-        }
+
+            });
+
+        console.log("user roles after updating", user._id)
 
 
+        await User.findOneAndUpdate(
+
+            { _id: req.params.id },
+            {
+                $set: { isApproved: isApproved }
+            });
+        const author = new Author({
+            author: user._id,
+
+        });
+
+        await author.save();
 
 
+        const mailOptions = {
+            from: "scongresses@gmail.com",
+            to: user.email,
+            subject: "Your  Demand To Be An Author Is Accepted ",
+            html: `<p>verify account  here  to procced. </p>`,
+        };
+        console.log(req.body.email)
+        transporter.sendMail(mailOptions, function (error, response) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                console.log("msg sent");
+
+            }
+        })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: err });
     }
 
 
-    const getNewArrivals = (
-        async (req, res) => {
-
-            const total = await User.countDocuments({});
-            console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
-
-            const limit = 5;
-
-            try {
-                // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
-                //   sort({ createdAt: -1 }).limit(limit).skip(skip);
-                articles = await User.find({}).sort({ createdAt: -1 }).limit(limit);
-
-                console.log('eeeeeeeeeeeeeeeeeeee', articles)
-
-                return res.status(200).json(articles);
 
 
-            } catch (err) {
-                return res.status(500).json({ msg: err });
-            }
-        });
+}
 
-    module.exports = {
-        getUser,
-        getAllUsers,
-        updatePassword,
-        AddToAuthor,
-        updateUser,
-        logOut,
-        forgotPassword,
-        changePictureProfile,
-        sendTemporaryPassword,
-        deleteUser,
-        getNewArrivals
-    };
+
+const getNewArrivals = (
+    async (req, res) => {
+
+        const total = await User.countDocuments({});
+        console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
+
+        const limit = 5;
+
+        try {
+            // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
+            //   sort({ createdAt: -1 }).limit(limit).skip(skip);
+            articles = await User.find({}).sort({ createdAt: -1 }).limit(limit);
+
+            console.log('eeeeeeeeeeeeeeeeeeee', articles)
+
+            return res.status(200).json(articles);
+
+
+        } catch (err) {
+            return res.status(500).json({ msg: err });
+        }
+    });
+
+module.exports = {
+    getUser,
+    getAllUsers,
+    updatePassword,
+    AddToAuthor,
+    updateUser,
+    logOut,
+    forgotPassword,
+    changePictureProfile,
+    sendTemporaryPassword,
+    deleteUser,
+    getNewArrivals
+};

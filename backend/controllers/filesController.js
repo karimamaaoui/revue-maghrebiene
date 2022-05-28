@@ -10,68 +10,29 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 
-const getFiles =async (req, res) => {
-  const directoryPath = path.join(__dirname, "../uploads");
-  console.log("directoryPath", directoryPath)
- const filesss= await Files.findById(req.params.id);
-  console.log('fdfddfdf',filesss)
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      res.status(500).send({
-        message: "Unable to scan files!",
-      });
-    }
-    else { res.status(200).send(files); }
+const getFiles = async (req, res) => {
+  // const directoryPath = path.join(__dirname, "../uploads");
+  // console.log("directoryPath", directoryPath)
+  // const filesss = await Files.findById(req.params.id);
+  // console.log('fdfddfdf', filesss)
+  // fs.readdir(directoryPath, function (err, files) {
+  //   if (err) {
+  //     res.status(500).send({
+  //       message: "Unable to scan files!",
+  //     });
+  //   }
+  //   else { res.status(200).send(filesss); }
 
 
-  });
+  // });
+  article = await Files.findById(req.params.id).populate('typeArticle', ['label']);
+  res.status(200).send(article);
 };
 
-// create file 
-const createFile = async (req, res) => {
-
-  const data = []
-  uploadFile.uploadFileMiddleware(req, res);
-  if (!req.files) {
-
-    res.send({
-      status: false,
-      message: 'No file uploaded'
-    });
-  }
-
-  let file = req.files.multiple_files;
-
-  //console.log("req file 20", file);
-
-  /*
-  if (file.mimetype != "image/png" && file.mimetype != "image/jpg" && file.mimetype != "image/jpeg") {
-    return res.status(500).send({ message: "file type invalid" });
-
-  }/
-  else {*/
-  // console.log("req file name", req.files);
-
-  file.mv('./uploads/' + file.name);
-  data.push({
-    name: file.name,
-    mimetype: file.mimetype,
-    size: file.size
-  });
-  // console.log("data",data)
-  const articleFile = await new Files({
-    multiple_files: data,
-  });
-  articleFile
-    .save(articleFile)
-    .then(data => {
-      res.send(data);
-    });
-}
 
 /*** create multiple files */
 
-const multipleUpload = async (req, res) => {
+const createArticle = async (req, res) => {
   console.log("inside file ");
 
 
@@ -147,17 +108,8 @@ const multipleUpload = async (req, res) => {
       const rulesChecked = req.body.rulesChecked;
       const view = req.body.view;
       const pathFile = req.body.pathFile;
-      const imagename=req.files.imagename.name;
-     
-
-      //   const readerRole = await Role.findOne({name:'Reader'});
-      // // console.log("readerRole is ",readerRole);
-
-      //   const readerUser=await User.findOne({roles:readerRole})
-
-
-      //   console.log("readerUser is ",readerUser);
-
+      const filepassword = req.body.filepassword;
+      const imagename = req.files.imagename.name;
 
       const articleFile = await new Files({
         multiple_files: data,
@@ -176,7 +128,8 @@ const multipleUpload = async (req, res) => {
         rulesChecked,
         view,
         pathFile,
-        imagename
+        imagename,
+        filepassword,
       });
 
       let ids = []
@@ -194,7 +147,24 @@ const multipleUpload = async (req, res) => {
       console.log('article2', fileName2)
 
       const directoryPath = path.join(__dirname, "../uploads/");
-      //console.log("directoryPath from downolad", directoryPath)
+      console.log("directoryPath from downolad", filepassword)
+      const options = {
+        userPassword: filepassword
+      }
+
+      const doc = new pdfkit(options);
+      let dataBuffer = fs.readFileSync(directoryPath + fileName);
+      console.log('directoryPath +fileName', dataBuffer)
+
+      PdfParse(dataBuffer).then(function (data) {
+
+        const filetext = data.text
+        doc.text(filetext)
+        doc.pipe(fs.createWriteStream(directoryPath + fileName));
+        doc.end()
+      })
+
+
 
       if (ids.length > 1) {
         forEach(keysIn(ids), (key) => {
@@ -204,61 +174,23 @@ const multipleUpload = async (req, res) => {
       }
       const rules = await Rule.find({ _id: req.body.rulesChecked });
 
-      if (fileName.includes('pdf') || fileName.includes('docx')) {
-        articleFile
-          .save(articleFile)
-          .then(data => {
-            const ruleRespected = RuleRespected({
-              rule: rules,
-              article: articleFile._id,
-              checked: true
+      articleFile
+        .save(articleFile)
+        .then(data => {
+          const ruleRespected = RuleRespected({
+            rule: rules,
+            article: articleFile._id,
+            checked: true
 
-            })
-            ruleRespected.save()
-
-            console.log("data file ", articleFile)
-            res.send(data);
-          });
-
-      }
-
-      else {
-        doc = new PDFDocument
-        doc.pipe(fs.createWriteStream(directoryPath + `${fileName}.pdf`))
-        doc.image(directoryPath + fileName, {
-          fit: [500, 400],
-          align: 'center',
-          valign: 'center'
-        });
-        if (ids.length > 1) {
-          doc.addPage().image(directoryPath + fileName2, {
-            fit: [500, 400],
-            align: 'center',
-            valign: 'center'
           })
-        }
+          ruleRespected.save()
 
-        doc.end()
-        const type = await Type.findById(req.body.typeArticle);
-        const typearti = type.label;
-        const rules = await Rule.find({ _id: req.body.rulesChecked });
+          console.log("data file ", articleFile)
+          res.send(data);
+        });
 
-        articleFile
-          .save(articleFile)
-          .then(data => {
-            // console.log("data file ", articleFile)
-            const ruleRespected = RuleRespected({
-              rule: rules,
-              article: articleFile._id,
-              checked: true
 
-            })
-            ruleRespected.save()
 
-            res.send(data);
-          });
-
-      }
     }
   } catch (err) {
     console.log("inside file catch  ");
@@ -279,14 +211,17 @@ const getAllArticle = (
 
     const currentPage = req.query.currentPage;
     const total = await Files.countDocuments({});
-    console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
+    console.log("total ddd", total)
 
     const query = req.query.new;
     const limit = 5;
     const skip = (currentPage - 1) * limit;
 
     console.log('inside get list of files', skip);
+
+
     try {
+
       // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
       //   sort({ createdAt: -1 }).limit(limit).skip(skip);
       articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
@@ -321,10 +256,10 @@ const getAllArticleByAttribute = (
     console.log('inside get list of getAllArticleByAttribute', skip);
     try {
       articles = await Files.find({ attributesAticle: req.params.attribut })
-                                  .populate('attributesAticle', ['label'])
-                                  .populate('typeArticle', ['label'])
-                                  .populate('authors', ['username','email'])
-                                  .sort({ createdAt: -1 }).limit(limit).skip(skip);
+        .populate('attributesAticle', ['label'])
+        .populate('typeArticle', ['label'])
+        .populate('authors', ['username', 'email'])
+        .sort({ createdAt: -1 }).limit(limit).skip(skip);
 
       console.log('getAllArticleByAttribute', req.params.attribut)
 
@@ -405,7 +340,7 @@ const retrieveAllFiles = (async (req, res) => {
 
   }
 });
-//download an article
+//downloaded an article
 const download = async (req, res) => {
 
   //const fileName = req.params.name;
@@ -435,55 +370,49 @@ const download = async (req, res) => {
       const fileName2 = ids[1];
       // console.log('article',article)
       const directoryPath = path.join(__dirname, "../uploads/");
-      console.log("directoryPath from downolad", fileName);
 
-      if (fileName.includes('pdf') || fileName.includes('docx')) {
-        res.download(directoryPath + `${fileName}`, fileName, (err) => {
-          if (err) {
-            res.status(500).send({
-              message: "Could not download the file. " + err,
-            }).clone().catch(function (err) { console.log(err) })
-
-          }
-        })
-      }
-
-      else {
-
-        res.download(directoryPath + `${fileName}.pdf`, fileName, (err) => {
-          if (err) {
-            res.status(500).send({
-              message: "Could not download the file. " + err,
-            }).clone().catch(function (err) { console.log(err) })
-
-          }
-        })
+      res.download(directoryPath + `${fileName}`, fileName, (err) => {
 
 
-      }
+        if (err) {
+          res.status(500).send({
+            message: "Could not download the file. " + err,
+          }).clone().catch(function (err) { console.log(err) })
+
+        }
+
+      })
+
     })
 };
 
-const PDFParse = require('pdf2json');
+const PDFParse = require('pdf-parse');
 const Rule = require('../model/Rule');
 const RuleRespected = require('../model/ruleRespected');
+const { PdfReader } = require('pdfreader');
+const crypto = require('crypto');
+const pdfkit = require('pdfkit')
 
-const readFiles = async (req, res) => {
+const readFiles = async (req, res,next) => {
 
   //const fileName = req.params.name;
   const id = req.params.id;
-  const file = Files.findById(id)
+  try{
+    
+    await Files.findById(id)
     .then(data => {
+
       if (!data) {
         res.status(404).send({
           message: `Cannot download Article with id=${id}. Maybe Article was not found!`
         });
       }
+
       else {
+        
         // res.send(data.multiple_files);
         let ids = []
         const cursor = data.multiple_files;
-
 
         cursor.forEach((doc) => {
           ids.push(
@@ -494,29 +423,41 @@ const readFiles = async (req, res) => {
           );
         });
 
-        // console.log("data.multiple_files.name", (ids))
-
+        const directoryPath = path.join(__dirname, "../uploads/")
         const fileName = ids[0];
-        //console.log('article', fileName)
-        const ext = ids[1];
-        // console.log('dfdfdkfdfldflfhnf', ext);
+        let dataBuffer = fs.readFileSync(directoryPath + fileName);
+//        console.log('directoryPath +fileName', dataBuffer)
+
+        PdfParse(dataBuffer).then(function ( data) {
+
+            // console.log('data text', data.text);
+  //          console.log('data text', data.numpages);
+ //           console.log('data text', data.info);
+
+            res.status(200).send(data)
+          
+        }
+        )
+
+        //PdfParse()
 
         //  console.log('article', fileName)
-        const directoryPath = path.join(__dirname, "../uploads/"+fileName);
-        console.log("directoryPath from downolad", directoryPath)
+        // const directoryPath = path.join(__dirname, "../uploads/"+fileName);
+        // console.log("directoryPath from downolad", directoryPath)
 
-        fs.readFile(directoryPath, {dencoding: 'Buffer'}, function (err, files) {
-          if (err) {
-            res.status(500).send({
-              message: "Unable to scan files!",
-            });
-          }
-          else {
-            console.log("fileInfo", files);
-            res.status(200).send(files)
-          }
+        // fs.readFile(directoryPath, {dencoding: 'Buffer'}, function (err, files) {
+        //   if (err) {
+        //     res.status(500).send({
+        //       message: "Unable to scan files!",
+        //     });
+        //   }
+        //   else {
+        //     console.log("fileInfo", files);
+        //     res.status(200).send(files)
+        //   }
 
-        })
+        // })
+
         //   fs.readFile(directoryPath,'utf-8', function (err, files) {
         //   if (err) {
         //     res.status(500).send({
@@ -549,6 +490,9 @@ const readFiles = async (req, res) => {
       }
     }
     )
+  } catch (err) {
+    throw erreur;
+  }
 };
 
 //GET ARTICLE STATS
@@ -869,7 +813,7 @@ const addView = (async (req, res) => {
         res.status(404).send({
           message: `Cannot update View with . Maybe Article was not found!`
         });
-      } else res.send({ message: `View was updated successfully.${data.view.length}` });
+      } else res.send({ message: data.view.length });
     })
 
     .catch(err => {
@@ -880,6 +824,23 @@ const addView = (async (req, res) => {
 
 
 })
+
+const getAllViews = (
+  async (req, res) => {
+
+    console.log('inside get All Views');
+    try {
+      // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
+      //   sort({ createdAt: -1 }).limit(limit).skip(skip);
+      articles = await (await Files.find({}).populate('view', ['username', 'email']));
+
+      return res.status(200).json(articles);
+
+
+    } catch (err) {
+      return res.status(500).json({ msg: err });
+    }
+  });
 
 
 
@@ -926,7 +887,7 @@ const getArticle = (async (req, res) => {
        console.log("inside get user",user)
        console.log("inside get user id ",req.decoded.id)
        */
-    const article = await Files.findById(req.params.id);
+    const article = await Files.findById({_id:req.params.id});
     console.log("inside get user", article)
 
     res.status(200).json(article);
@@ -939,98 +900,15 @@ const getArticle = (async (req, res) => {
 
 });
 
-// filter by date
-var moment = require('moment');
-const { file } = require('pdfkit');
+const PdfParse = require('pdf-parse');
 
-const fitlerByDate = (async (req, res) => {
-
-  try {
-
-    // var dateTimeTofilter = new Date() - week;
-    // console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd datetimetofilter",dateTimeTofilter);
-
-    // var filter = { "createdAt": { $lte: dateTimeTofilter } };
-
-    // console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd",filter);
-
-    // var dateTimeTofilter = moment().subtract(1, 'year');
-    // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',dateTimeTofilter)
-    // var filter = {
-    //     "createdAt": {
-    //         $gte: new Date(dateTimeTofilter._d)
-    //     }
-    // };
-    //  console.log("dddddddddddddddddddddddddddddddddddddddddddddddddd",filter);
-
-    // or $gte- depends on time windows
-    var query = req.query.createdAt;
-   // console.log('eeeeeeeeeeee',    moment(query).format("YYYY-MM-DD")    )
-
-
-    // let createdAt=moment(createdAt)
-
-      articles = await Files.find({createdAt:query})
-      console.log('created at', articles.map((art)=>{
-        const dat= new Date(moment(art.createdAt).format("YYYY-MM-DD"))
-        console.log('eeeeeeeeeeee', typeof(query))
-        console.log('dat', typeof(dat))
-
-        return query===dat
-      }))
-      
-      return res.status(200).json(articles);
-          //articles = await Files.find({ createdAt: query })
-    // .find({"OrderDateTime":{ $gte:ISODate("2019-02-10"), $lt:ISODate("2019-02-21") }
-
-
-    // let start = moment(req.query.createdAt)
-    //  console.log('eeeeeeeeeeee', (start))
-
-    // const query = { createdAt: { $gte: new Date("2022-05-06T15:11:44.909Z") } }
-    // console.log(query) //outputs { createdAt: { '$gte': '2018-01-01T02:00:00.000Z' } }
-    // const result = await Files.find(query)
-    //  articles= Files.aggregate(
-    //     [
-    //       {
-    //         $project:
-    //           {
-    //             birthYear: { $year: "$createdAt" }
-    //           }
-    //       }
-
-    //       // {
-    //       //   "$project":{
-    //       //       "year_month_day": {"$dateToString": { "format": "%Y-%m-%d", "date": "$tDate", "timezone": "America/Chicago"}}
-    //       //   },
-    //     ]
-    //   )
-
-    //   return res.status(200).json(articles);
-    // articles = await (await Files.find({ query })).map((c) => {
-    //   const datecreare = moment(c.createdAt).format("YYYY-MM-DD")
-    //   if (datecreare === query){
-        
-    //     return c.createdAt
-    //   }
-    // });
-    // console.log('title',articles)
-
-    // return res.status(200).json(articles);
-    
-
-  } catch (err) {
-    return res.status(500).json({ msg: err });
-  }
-});
 
 
 module.exports = {
   addLike,
   getArticle,
   getAllArticleByAttribute,
-  createFile,
-  multipleUpload,
+  createArticle,
   uploadArticleFile,
   retrieveAllFiles,
   getListFiles,
@@ -1046,5 +924,6 @@ module.exports = {
   convertFile,
   addComment,
   addView,
-  fitlerByDate
+
+  getAllViews
 }

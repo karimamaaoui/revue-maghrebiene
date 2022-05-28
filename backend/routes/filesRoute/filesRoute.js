@@ -9,12 +9,12 @@ const verifyToken = require('../../middleware/verifyToken');
 
 //router.post("/addfile",verifyToken.verifyUserToken,verifyRoles.isReader,filesController.createFile);
 //router.post("/notif",verifyToken.verifyUserToken,filesController.sendNotification);
-router.post("/multiple-upload",verifyToken.verifyUserToken,verifyRoles.isAuthor, filesController.multipleUpload);
+router.post("/multiple-upload",verifyToken.verifyUserToken,verifyRoles.isAuthor, filesController.createArticle);
 router.get("/retrievefiles", filesController.retrieveAllFiles);
 router.get("/get/:id", filesController.readFiles);
 
-router.post("/drive", filesController.createFile);
 
+router.get("/getview",verifyToken.verifyUserToken, filesController.getAllViews);
 
 router.get("/convert/:id", filesController.convertFile);
 
@@ -25,7 +25,6 @@ router.get("/stats", filesController.getStats);
 router.get("/:id", filesController.download);
 router.get("/getfiles/:id", filesController.getFiles);
 
-router.get("/filterbydate", filesController.fitlerByDate);
 
 
 router.put("/update/:id",verifyToken.verifyUserToken,[verifyRoles.isReader || verifyRoles.isAuthor],filesController.updateArticle);
@@ -39,7 +38,7 @@ router.put('/view/:id',verifyToken.verifyUserToken, filesController.addView);
 
 router.put('/comment/:id',verifyToken.verifyUserToken, filesController.addComment);
 
-router.get('/getsingle/:id',verifyToken.verifyUserToken, filesController.getArticle);
+router.get('/getsingle/:id',filesController.getArticle);
  
 
 module.exports = router;

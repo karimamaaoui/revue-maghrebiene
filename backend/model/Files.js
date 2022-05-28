@@ -28,6 +28,10 @@ const Files = FilesSchema({
 
     },
 
+    filepassword:{
+        type: String,
+        default:''        
+    },
     authors: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -104,7 +108,8 @@ const Files = FilesSchema({
             type: String,
             required: true,
         },
-    
+
+        
 
 },
     { timestamps: true }
