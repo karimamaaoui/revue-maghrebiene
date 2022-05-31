@@ -34,7 +34,7 @@ router.get('/filter/:key',verifyToken.verifyUserToken, filesController.getArticl
 
 router.put('/like/:id',verifyToken.verifyUserToken, filesController.addLike);
 
-router.put('/view/:id',verifyToken.verifyUserToken, filesController.addView);
+router.get('/view/:id',verifyToken.verifyUserToken, filesController.addView);
 
 router.put('/comment/:id',verifyToken.verifyUserToken, filesController.addComment);
 

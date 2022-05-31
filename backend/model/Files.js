@@ -47,17 +47,23 @@ const Files = FilesSchema({
 
 
     view: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        viewBy: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+    
+        name: String,
+        count: Number,
+    
 
     }],
 
     comments: [{
         text: String,
-        postedBy: [{
+        postedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }],
+        },
 
     }],
 

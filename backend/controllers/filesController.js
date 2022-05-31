@@ -224,13 +224,13 @@ const getAllArticle = (
 
       // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
       //   sort({ createdAt: -1 }).limit(limit).skip(skip);
-      articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).populate('like', ['username','email']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
       console.log('eeeeeeeeeeeeeeeeeeee', articles)
 
 
       if (!articles.length > 0) {
-        articles = await Files.find({}).populate('typeArticle', ['label']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+        articles = await Files.find({}).populate('typeArticle', ['label']).populate('like', ['username','email']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
       }
       return res.status(200).json(articles);
@@ -625,16 +625,14 @@ const updateArticle = async (req, res) => {
   }
 
   const datas = []
+  
 
-  // console.log("one file", req.files.multiple_files.length)
-  // console.log("data",data)
-
-  req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
-  datas.push({
-    name: req.files.multiple_files.name,
-    mimetype: req.files.multiple_files.mimetype,
-    size: req.files.multiple_files.size
-  });
+  // req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
+  // datas.push({
+  //   name: req.files.multiple_files.name,
+  //   mimetype: req.files.multiple_files.mimetype,
+  //   size: req.files.multiple_files.size
+  // });
 
   //const body=req.body;
   const id = req.params.id;
@@ -650,7 +648,7 @@ const updateArticle = async (req, res) => {
       status: req.body.status,
       typeArticle: req.body.typeArticle,
       attributesAticle: req.body.attributesAticle,
-      multiple_files: datas
+     // multiple_files: datas
     },
     updatedAt: Date.now()
   },
@@ -801,29 +799,122 @@ const addLike = (async (req, res) => {
 
 const addView = (async (req, res) => {
 
-  Files.findByIdAndUpdate(req.params.id, {
-    $push: { view: req.decoded.id }
-  },
-    {
-      new: true
+  
+//   Files.findByIdAndUpdate(req.params.id, {
+//     $push: { view: req.decoded.id }
+//   },
+//     {
+//       new: true
+//     })
+
+//     .then(data => {
+//       if (!data) {
+//         res.status(404).send({
+//           message: `Cannot update View with . Maybe Article was not found!`
+//         });
+//       } else res.send({ message: data.view.length });
+//     })
+
+//     .catch(err => {
+//       res.status(500).send({
+//         message: "Error updating View with id="
+//       });
+//     });
+
+
+// })
+  
+try {
+  const user= await User.findById({_id:req.decoded.id} );
+ // console.log("inside get user",user)
+  
+  let visi = await Files.findById({_id:req.params.id}).populate('view')
+    console.log('req.parsm',req.params.id)
+    
+  const visiteur=visi.view.map((a)=>{
+    return a.name
+  })
+  console.log('visiteur',visiteur)
+
+  const countt=visi.view.map((a)=>{
+    return a.count
+  })
+  console.log('count',(countt.length===0))
+  if(countt.length===0)
+  {
+    let c=countt
+    const data={
+      name : 'localhost',
+      count :  c+1,
+      viewBy: user,
+      article:req.params.id
+
+    }
+    console.log('c',(c))
+
+    // Creating a new default record
+    const beginCount = await Files.findByIdAndUpdate(
+     {_id: req.params.id},
+      $set={
+     view:data
     })
 
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update View with . Maybe Article was not found!`
-        });
-      } else res.send({ message: data.view.length });
-    })
+    console.log('beginCount 1',beginCount)
 
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating View with id="
-      });
-    });
+    // Saving in the database
+    beginCount.save()
+
+    // Sending thee count of visitor to the browser
+    res.send(`<h2>Counter: `+countt+'</h2>')
+
+    // Logging when the app is visited first time
+    console.log("First visitor arrived")
+  }
+ else{
+
+  // Incrementing the count of visitor by 1
+  let c=countt[0]+1
+  const data={
+    name : 'localhost',
+    count :  c,
+    viewBy: user,
+    article:req.params.id
+
+  }
+  console.log('codff',data)
+  // Creating a new default record
+  const beginCount = await Files.findByIdAndUpdate(
+    {_id: req.params.id},
+    
+    $push={
+   view:data
+  })
+
+  console.log('beginCount 2',beginCount)
+
+  // Saving in the database
+  beginCount.save()
+
+  
+  // Saving to the database
+
+  // Sending thee count of visitor to the browser
+  res.send(`<h2>Counter 2: `+c+'</h2>')
+
+  // Logging the visitor count in the console
+}
+} catch (err) {
+  console.log("inside file  ");
+
+  res.status(500).send({
+    message:
+      err.message
+  });
+}
+
+});
 
 
-})
 
 const getAllViews = (
   async (req, res) => {
@@ -832,7 +923,7 @@ const getAllViews = (
     try {
       // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
       //   sort({ createdAt: -1 }).limit(limit).skip(skip);
-      articles = await (await Files.find({}).populate('view', ['username', 'email']));
+      articles = await (await View.find({}).populate('view', ['username', 'email']));
 
       return res.status(200).json(articles);
 
@@ -856,7 +947,6 @@ const addComment = (async (req, res) => {
   }, {
     new: true
   })
-    //.populate("comments.postedBy","_id name")
     //.populate("postedBy","_id name")
 
     .then(data => {
@@ -865,6 +955,7 @@ const addComment = (async (req, res) => {
           message: `Cannot update Article with . Maybe Article was not found!`
         });
       } else res.send({ message: "Article was updated successfully." });
+
     })
     .catch(err => {
       res.status(500).send({
@@ -887,8 +978,12 @@ const getArticle = (async (req, res) => {
        console.log("inside get user",user)
        console.log("inside get user id ",req.decoded.id)
        */
-    const article = await Files.findById({_id:req.params.id});
-    console.log("inside get user", article)
+    const article = await Files.findById({_id:req.params.id}).populate('authors').populate('comments.postedBy',['email','username']);
+    // console.log("inside get user", article.map((a)=>{
+    //   return(
+    //     a
+    //   )
+    // }))
 
     res.status(200).json(article);
 
@@ -901,6 +996,8 @@ const getArticle = (async (req, res) => {
 });
 
 const PdfParse = require('pdf-parse');
+const user = require('../model/user');
+const View = require('../model/View');
 
 
 

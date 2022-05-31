@@ -16,7 +16,7 @@ const filesRoute = require('./routes/filesRoute/filesRoute')
 const rulesRoute = require('./routes/rulesRoute/rules')
 const authorRoute = require('./routes/authorsRoutes/authorsRoute')
 const bodyParser = require('body-parser')
-const postRoute = require('./routes/postRoute');
+const viewRoute = require('./routes/viewRoute');
 const demandRoute = require('./routes/demandRoute/demandRoute');
 const feedbackRoute=require('./routes/feedbackRoute/feedRoute')
 const favoriteRoute=require('./routes/favoriteRoute/favoriteRoute')
@@ -147,10 +147,10 @@ app.use('/api/attribute', attributeRoute);
 app.use('/api/file', filesRoute);
 app.use('/api/rule', rulesRoute);
 app.use('/api/author', authorRoute);
-app.use('/api/post', postRoute,express.static('./uploads'));
 app.use('/api/demand', demandRoute);
 app.use('/api/feedback', feedbackRoute);
 app.use('/api/favorite', favoriteRoute);
+app.use('/api/view', viewRoute);
 
 
 function initial() {
