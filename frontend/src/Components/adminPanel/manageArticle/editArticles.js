@@ -12,6 +12,8 @@ import '../../Articles/formArticle.css'
 import { io } from "socket.io-client";
 import 'antd/dist/antd.css';
 import axios from "axios";
+import { listRules } from "../../../redux/Actions/rulesActions";
+import Swal from "sweetalert2";
 const ENDPOINT = "http://localhost:5000";
 export const socket = io(ENDPOINT);
 
@@ -42,6 +44,7 @@ function EditArticle({match}) {
 
     const articleUpdate = useSelector((state) => state.articleUpdate);
     const { loadingArticle, errorArticle,successUpdate } = articleUpdate;
+    const [attributesAticle, setAttributesAticle] = useState([]);
 
 
     useEffect(() => {
@@ -51,7 +54,7 @@ function EditArticle({match}) {
         else{
         dispatch(listTypes());
         dispatch(listAttribute());
-        //  dispatch(listRules())
+        dispatch(listRules())
     }
     }, [
         dispatch,
@@ -92,54 +95,29 @@ function EditArticle({match}) {
         const { data } = await axios.get(`http://localhost:5000/api/file/getsingle/${articleId.id}`,config);
 
           console.log('data from get axios',data)
+          {console.log('files',data.multiple_files[0].name)}
+        //   setMultiple_files(data.multiple_files[0].name)
+
         setTitle(data.title);
         setBio(data.bio);
         setAbbreviations(data.abbreviations);
         setAbstract(data.abstract);
         setKeyWords(data.keyWords)
         setTypeArticle(data.typeArticle)
-        setAttributesAticle(data.attributeList)
+        setAttributesAticle(data.attributesAticle);
       };
   
       fetching();
     }, [articleId]);
 
-
-
-  //  const [authors, setAuthors] = useState([userInfo.user._id]);
     const [tags, setTags] = useState([]);
-    const [attributesAticle, setAttributesAticle] = useState([]);
-
-
-
-    // const handleKeyDown = (e) => {
-    //   if (e.key !== 'Enter') return
-    //   const value = e.target.value;
-    //   if (!value.trim()) return
-    //   setTags([...tags, value])
-
-    //   setFormData({ ...formData, keyWords: value });
-    //   const { keyWords } = formData;
-
-    //   setFormData({ ...formData, keyWords: [...keyWords, value] })
-
-
-
-    //   e.target.value = ''
-    // }
     const addFile = useSelector((state) => state.addFile);
     const { loading, error, files } = addFile;
 
-
-    // const removeTag = (index) => {
-    //   setTags(tags.filter((el, i) => i !== index))
-    // }
-
-
-    const handleSubmit = (e) => {
+    const handleEdit = async(e) => {
         console.log("inside handle submit");
-
         e.preventDefault();
+
         const formData = new FormData();
         formData.append('multiple_files', multiple_files);
         formData.append('title', title);
@@ -149,9 +127,6 @@ function EditArticle({match}) {
         formData.append('abbreviations', abbreviations);
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
-
-
-
         console.log(multiple_files.length);
         for (let i = 0; i < multiple_files.length; i++) {
             console.log(multiple_files[i]);
@@ -160,9 +135,29 @@ function EditArticle({match}) {
         }
          console.log("formdata",formData,title)
 
-        dispatch(addNewFile(formData));
+         const config = {
+                headers: {
+                    Accept: 'application/json',
+                    'content-type': 'multipart/form-data',
+                    Authorization: `Bearer ${userInfo.token}`,
+                
+        
+          }}
+          console.log('config',userInfo.token)
+          return  await axios.put(
+            `http://localhost:5000/api/file/update/${articleId.id}`, formData,config).then((res) => {
 
+                console.log(res.data);
+                Swal.fire({
+                    title: "Succces!",
+                    text: "Comment Added Successfully",
+                    icon: 'success',
+                    button: "OK!"
+                })})
 
+          .catch(err => {
+            console.log(err)
+        })
     }
     const handlePhoto = (e) => {
         setMultiple_files(e.target.files);
@@ -170,21 +165,6 @@ function EditArticle({match}) {
         console.log("handlephpoto")
 
     }
-
-    const handleChange = (e) => {
-        setTitle(e.target.value);
-
-        console.log(title)
-    }
-
-    const handleChangeBio = (e) => {
-        setBio(e.target.value);
-
-    }
-
-  
-
-
     return (
 
         <>
@@ -202,7 +182,7 @@ function EditArticle({match}) {
                                         <NavbarList />
                                         <div className="" style={{ backgroundColor: 'white' }}>
                                             <div class="card-body">
-                                            <form onSubmit={handleSubmit} encType='multipart/form-data' >
+                                            <form  onSubmit={handleEdit} encType='multipart/form-data' >
                                                     <div class="row mb-3">
                                                         <div class="sign-up-container">
 
@@ -228,6 +208,7 @@ function EditArticle({match}) {
                                                         </div>
                                                     </div>
                                                     <br/>
+                                                   
 
                                                     <div class="container">
                                                         <div className='row mb-3 '>
@@ -236,30 +217,45 @@ function EditArticle({match}) {
                                                                 <div class="sign-up-container">
                                                                     <br/>
                                                                     <label style={{ fontSize: '20px' }}>Choose A Theme</label>
-
+                                                                  
                                                                     <div style={{ display: "flex", fontSize: "50px", flexWrap:"wrap" }}>
 
                                                                         {attributes?.map((item, i) => (
 
                                                                             <div key={i}>
+                                                                                {(attributesAticle[0]===item._id) ? 
+                                                                                    <p>
+                                                                                    <input type="checkbox" className='checkbox__box'  checked
+                                                                                    defaultValue={item._id}
+                                                                                    name="attributesAticle"
+                                                                                    onChange={(e) => setAttributesAticle([e.target.value])}                                                              
 
-                                                                                <input type="checkbox" className='checkbox__box' 
-                                                                                    value={attributesAticle}
-                                                                                    name={attributesAticle}
+                                                                                   />
+                                                                                    </p>
+                                                                                    
+                                                                                    
+                                                                                    :
+                                                                                    <input type="checkbox" className='checkbox__box'  
+                                                                                    defaultValue={item._id}
+                                                                                    name="attributesAticle"
+                                                                                   
+                                                                                    
                                                                                     onChange={(e) => {
                                                                                         // Destructuring
                                                                                         const { value, checked } = e.target;
                                                                                         console.log(`${value} is ${checked}`);
-
+                
                                                                                         // Case 1 : The user checks the box
                                                                                         if (checked) {
                                                                                             setAttributesAticle([value])
-
+                
                                                                                         }
+                                                                                    }}
+                
+                                                                                    /> 
+                                                                              
                                                                                     }
 
-                                                                                    }
-                                                                                />
                                                                                 <label className='col' id="check" style={{ fontSize: '17px' }}  >{item.label}  </label>
 
 
@@ -284,7 +280,6 @@ function EditArticle({match}) {
                                                                 type="text"
                                                                 name="title"
                                                                 className="form-control"
-
                                                                 value={title}
                                                                 onChange={(e) => setTitle(e.target.value)}                                                              
                                                             />
@@ -370,7 +365,7 @@ function EditArticle({match}) {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div class="row mb-3">
+                                                    {/* <div class="row mb-3">
                                                         <div class="col-sm-3">
                                                             <h6 class="mb-0">Content</h6>
                                                         </div>
@@ -380,11 +375,10 @@ function EditArticle({match}) {
                                                                 name="multiple_files"
                                                                 className="file-uploader "
                                                                 multiple
-                                                                value={multiple_files}
                                                                 onChange={handlePhoto}
                                                             />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <div class="row">
                                                     <div class="col-sm-3"></div>
                                                     <div class="col-sm-9 text-secondary">
@@ -395,7 +389,7 @@ function EditArticle({match}) {
                                                                 <button 
                                                                     style={{ borderRadius: "15px" }}
                                                                 >
-                                                                    Add Article
+                                                                    Edit Article
                                                                 </button>
 
                                                             </div>

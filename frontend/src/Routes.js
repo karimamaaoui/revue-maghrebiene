@@ -55,7 +55,7 @@ export default function RoutesList() {
         <Route path="/a" element={<SideBar />} />
         <Route path="/mostread" element={<MostRead />} />
 
-        <Route path="/b" element={<AddPost />} />
+        <Route path="/b/:id" element={<AddPost />} />
 
         <Route path="/search" element={<Search />} />
         <Route path="/home" element={<PageAccueil />} />

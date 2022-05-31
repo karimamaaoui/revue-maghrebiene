@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { addNewFile, addNewPost } from '../../redux/Actions/fileActions';
 import { Viewer } from '@react-pdf-viewer/core'; // install this library
 // Plugins
+import Pdf from "react-to-pdf";
+
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'; // install this library
 // Import the styles
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+// import '@react-pdf-viewer/core/lib/styles/index.css';
+// import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 // Worker
+import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+import './HOME.css'
+import StripeCheckout from 'react-stripe-checkout'
 import { Worker } from '@react-pdf-viewer/core'; // install this library
 import FileViewer from "react-file-viewer";
 import { Helmet } from "react-helmet";
@@ -29,6 +35,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import axios from 'axios';
 import TextArea from 'antd/lib/input/TextArea';
 import { Alert } from 'reactstrap';
+import Swal from 'sweetalert2';
 
 export default function AddFile(props) {
 
@@ -143,35 +150,56 @@ export default function AddFile(props) {
     //       const decodeBase64 = decodeFileBase64(
     //         fileBase64String.substring(fileBase64String.indexOf(",") + 1)
     //       );
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    const id = useParams()
+    const idd = id.id
+    console.log('id', idd)
 
-    //     const handleRead = async () => {
-    //         // const { data } = await axios.get(`http://localhost:5000/api/file/${id}`);
-    //         // console.log("user data", data)
-    //         await axios.get(`http://localhost:5000/api/file/get/62706d3a50c1d16c7e27f8b2`,
-    //                 )
-    //             .then((response) => {
-    //                     console.log(response);
-
-    //                     let selectedFile =response.data.data ;
-    //                     if (selectedFile) {
-    //                         if (selectedFile ) {
-    //                             let reader = new FileReader();
-    //                             reader.readAsDataURL(selectedFile);
-    //                             reader.onloadend = () => {
-    //                                 setPdfFile(response.data.path);
-    //                                 setPdfFileError('');
-    //                             }
-    //                         }
-    //                     }
-
-    //                 }
+    const handleRead = async (id) => {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
 
 
+            },
+        };
 
-    //             )
-    //           //  setViewPdfAxios(viewPdfAxios)
 
-    //     }
+        await axios.get(`http://localhost:5000/api/view/add/${id}`, config
+        )
+            .then((response) => {
+                console.log(response);
+
+                // let selectedFile =response.data.data ;
+                // if (selectedFile) {
+                //     if (selectedFile ) {
+                //         let reader = new FileReader();
+                //         reader.readAsDataURL(selectedFile);
+                //         reader.onloadend = () => {
+                //             setPdfFile(response.data.path);
+                //             setPdfFileError('');
+                //         }
+                //     }
+                // }
+
+            }
+
+
+
+            )
+        //  setViewPdfAxios(viewPdfAxios)
+
+    }
+    useEffect(() => {
+        //    handleRead(idd)
+    },
+        [
+
+
+        ]);
+
 
 
     // return (
@@ -561,7 +589,7 @@ export default function AddFile(props) {
     //     )
     const addPost = useSelector((state) => state.addPost);
     const { loading, error, posts } = addPost;
-   
+
     const [url, setUrl] = useState("");
     const [imagename, setImagename] = useState("");
     const [pathFile, setFilePath] = useState('');
@@ -570,7 +598,7 @@ export default function AddFile(props) {
     const [profilePicMessage, setProfilePicMessage] = useState();
     const dispatch = useDispatch();
     const history = useNavigate();
-  
+
     const postDetails = (pics) => {
         setProfilePicMessage(null);
         if (pics.type === "image/jpeg" || pics.type === "image/png") {
@@ -596,39 +624,40 @@ export default function AddFile(props) {
         }
     };
 
-//    console.log("data.url.toString()", pathFile);
+    //    console.log("data.url.toString()", pathFile);
 
     const handleSubmit = async (e) => {
         try {
 
-        e.preventDefault();
-        // let formData = new FormData();
-        // formData.append("imagename", imagename);
-        // formData.append("pathFile", pathFile);
-        // formData.append("title", title);
-        const data={imagename,pathFile,title}
+            e.preventDefault();
+            // let formData = new FormData();
+            // formData.append("imagename", imagename);
+            // formData.append("pathFile", pathFile);
+            // formData.append("title", title);
+            const data = { imagename, pathFile, title }
 
-        // const config = {
-        //     headers: {
-        //       Accept: 'application/json',
-        //       'content-type': 'multipart/form-data',
-        //     },
-        //   };
-          
-        // const response = await axios.post("http://localhost:5000/api/post/add",
-        //  formData,config
-        // );
-        // console.log(response)
-       // setImagename(formData);
-       dispatch(addNewPost(data));
+            // const config = {
+            //     headers: {
+            //       Accept: 'application/json',
+            //       'content-type': 'multipart/form-data',
+            //     },
+            //   };
+
+            // const response = await axios.post("http://localhost:5000/api/post/add",
+            //  formData,config
+            // );
+            // console.log(response)
+            // setImagename(formData);
+            dispatch(addNewPost(data));
 
         }
         catch (error) {
             console.log(error)
-            
-          
-    };}
-  //  console.log('setImagename', imagename)
+
+
+        };
+    }
+    //  console.log('setImagename', imagename)
 
     const [fileURL, setFileURL] = useState(3);
 
@@ -707,62 +736,130 @@ export default function AddFile(props) {
 
     //     console.log("urfdfdf", data)
     // }
+    //const currentUrl = window.location.href;
 
+
+    let location = useLocation();
+    const currentUrl = window.location.href;
+    const notify = () => toast("Wow so easy!");
+    const [Company_Name, setCompanyName] = useState('');
+    console.log(Company_Name)
+    const [Client_Country, setClientCountry] = useState('');
+    console.log(Client_Country)
+    const [Client_Industry, setClientIndustry] = useState('');
+    console.log(Client_Industry)
+    const [Shares_Number, setSharesNumber] = useState('');
+    console.log(Shares_Number)
+    const [Share_Price, setSharePrice] = useState('');
+    console.log(Share_Price)
+    const [Net_Debt, setNetDebt] = useState('');
+    console.log(Net_Debt)
+    const [Gross_Profit, setGrossProfit] = useState('');
+    console.log(Gross_Profit)
+    const [EBIT, setEBIT] = useState('');
+    console.log(EBIT)
+    const [EBITDA, setEBITDA] = useState('');
+    console.log(EBITDA)
+    const [Total_Revenue, setTotalRevenue] = useState('');
+    console.log(Total_Revenue)
+    const [companyInfo, setCompanyInfo] = useState([])
+    const ref = React.createRef();
+
+ 
     return (
-
         <>
-        
+        <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <h3 class="text-center">Payment Details</h3>
+                            <div class="inlineimage"> 
+                            <img class="img-responsive images" 
+                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png"/> 
+                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png"/>
+                             <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png"/>
+                              <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png"/> </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group"> <label>CARD NUMBER</label>
+                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7 col-md-7">
+                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                </div>
+                                <div class="col-xs-5 col-md-5 pull-right">
+                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-xs-12"> <button class="btn btn-success btn-lg btn-block">Confirm Payment</button> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+            {/* <h1>{currentUrl}</h1>
+
         <div className="card mb-3">
 
 <div className="card-body">
 
-    <div className="row">
-        <h1 style={{ color: '#B91736' }}>Search With Theme:::::::::::::::::::::::::::::::::::::::::::::
-        </h1>   
+<div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+      </div>
+    <br/>
+
+
+    <div className='form-group container'>
+         <StripeCheckout 
+         
+         />
     </div>
+
+     <RWebShare
+        data={{
+          text: "Web Share - GfG",
+          url: currentUrl,
+          title: "GfG",
+        }}
+        onClick={() => console.log("shared successfully!")}
+      >
+        <button>Share on Web</button>
+      </RWebShare>
     <br />
 
-    <h4 style={{ color: '#B91736' }}> Found {}</h4>
-    <div className="row">
-        <div class="container">
-            <div class="row justify-content-center">
+    <br/>
 
-                <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
-
-                            <div class="card card-margin">
-                                <div class="card-header no-border">
-                                    <h5 class="card-title" style={{ textTransform: "uppercase" }}>
-                                        <b>
-                                            Copmony</b>
-                                    </h5>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="widget-49">
-                                        <div class="widget-49-title-wrapper">
-                                            <div class="widget-49-meeting-info">
-                                             Comparable Value with EBITDA
-                                            </div>
-                                        </div>
-
-                                        <div className='widget-49-meeting-points'>
-                                            <span > Comparable Value with SALES :
-                                             </span>
-                                            <br />
-                                            
-
-                                        </div>
-                                        </div>
-                                        </div>
-                                        
-                            </div>
-                      
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <FacebookShareButton
+                url={currentUrl}
+                quote={"CampersTribe - World is yours to explore"}
+                hashtag="#camperstribe"
+            >
+                <FacebookIcon size={36} />
+            </FacebookShareButton>
+          
 </div>
-</div>
+</div> */}
 
             {/* <form onSubmit={handleSubmit} >
             <div className="row">

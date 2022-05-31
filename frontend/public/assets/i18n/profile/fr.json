@@ -7,6 +7,9 @@
 	"keyWords": "Mots clés",
 	"content": "Conenu",
 	"articleRequirements":"Exigences de l’article",
-	"abbreviations":"Abréviations"
+	"abbreviations":"Abréviations",
+	"image":"Image",
+	"author":"Informations De L'Auteur"
+
 
 }

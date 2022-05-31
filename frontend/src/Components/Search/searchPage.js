@@ -13,6 +13,7 @@ import ReactPaginate from 'react-paginate'
 import { listAttribute } from '../../redux/Actions/attributeActions';
 import './search.css'
 import Swal from 'sweetalert2';
+import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import BG1 from "../../assets/Bannière Orange de Restaurant Reprise d'Activité Format Paysage.png"
 import BG2 from '../../assets/Jaune Professionnel Dégradé Application Développement Bannière Paysage.png'
@@ -22,7 +23,18 @@ export default function SearchPahe() {
 
     const dispatch = useDispatch();
     const history = useNavigate();
+    const handleShow = () => setShow(true);
+    const [show, setShow] = useState(false);
+    const [requiredItem, setRequiredItem] = useState(0);
 
+    const handleClose = () => setShow(false);
+
+    const replaceModalItem = (id) => {
+        handleShow()
+        setRequiredItem(id)
+    }
+
+  
 
     const getAllArticle = useSelector((state) => state.getAllArticle);
     const { loadingGetAllArticle, errorGetAllArticle, articles } = getAllArticle;
@@ -56,7 +68,7 @@ export default function SearchPahe() {
         //console.log("efefef", data.selected);
         let currentPage = data.selected + 1;
         dispatch(getAllArticlePaginate(currentPage));
-      //  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
+        //  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
 
     }
 
@@ -126,7 +138,7 @@ export default function SearchPahe() {
             }
         )
             .then((response) => {
-               // console.log("resp", articles);
+                // console.log("resp", articles);
 
                 if (response.data.type.includes('pdf')) {
 
@@ -163,7 +175,14 @@ export default function SearchPahe() {
         return await axios.put(`http://localhost:5000/api/file/comment/${id}`, user, config)
             .then((res) => {
 
-               // console.log(res.data);
+                console.log(res.data);
+                Swal.fire({
+                    title: "Succces!",
+                    text: "Comment Added Successfully",
+                    icon: 'success',
+                    button: "OK!"
+                });
+
 
                 //console.log('article => ' + JSON.stringify(user));
 
@@ -181,16 +200,16 @@ export default function SearchPahe() {
         };
         let userId = userInfo.user._id;
         let user = { userId }
-    //    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+        //    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
 
 
         return await axios.put(`http://localhost:5000/api/file/like/${id}`, user, config)
             .then((res) => {
 
-             //   console.log(res.data);
+                //   console.log(res.data);
                 setLikeArticle(res.data)
 
-             //   console.log('article => ' + JSON.stringify(res.data));
+                //   console.log('article => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
@@ -208,7 +227,7 @@ export default function SearchPahe() {
         };
         let userId = userInfo.user._id;
         let user = { userId, article }
-       // console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
+        // console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
 
 
         return await axios.post(`http://localhost:5000/api/favorite/add/`, user, config)
@@ -244,19 +263,16 @@ export default function SearchPahe() {
 
             },
         };
-        let userId = userInfo.user._id;
-        let user = { userId }
-   //     console.log('view', user)
 
 
-        return await axios.put(`http://localhost:5000/api/file/view/${id}`, user, config)
+        return await axios.get(`http://localhost:5000/api/view/add/${id}`, config)
             .then((res) => {
 
-                console.log(res.data);
+                //  console.log(res.data);
                 setViewArticle(res.data)
-               // console.log('vvvvvvvvvvvvvvvvvvvvvvvvv', res.data)
+                //  console.log('vvvvvvvvvvvvvvvvvvvvvvvvv', res.data)
 
-             //   console.log('view => ' + JSON.stringify(res.data));
+                //  console.log('view => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
@@ -316,7 +332,7 @@ export default function SearchPahe() {
         if (indexFound === -1) {
             // add
             updatedCategoryIds = [...typeIds, currentCategoryChecked];
-           // console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
+            // console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
 
             setTypeIds(updatedCategoryIds);
         } else {
@@ -332,9 +348,9 @@ export default function SearchPahe() {
         setTypeIds('')
 
     };
-   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
+    // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
 
-    
+
     const handleAttribute = e => {
 
         const currentAttributeChecked = e.target.value;
@@ -472,13 +488,13 @@ export default function SearchPahe() {
                                                             <option >Choose Theme</option>
 
                                                             {types &&
-                                                            types.map((type, key) => {
+                                                                types.map((type, key) => {
 
-                                                                return <option key={key} value={type._id}    selected={typeIds.includes(type._id)}
-                                                                > {type.label}</option>;
+                                                                    return <option key={key} value={type._id} selected={typeIds.includes(type._id)}
+                                                                    > {type.label}</option>;
 
 
-                                                            })}
+                                                                })}
 
                                                         </select>
 
@@ -569,6 +585,8 @@ export default function SearchPahe() {
                                                                                 <div key={index}>
                                                                                     <div class="card-body">
                                                                                         <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
+                                                                                        <img src={tdata.pathFile} alt="" height="140px" width="30px" />
+
                                                                                         <p>
                                                                                             Abstract :
                                                                                             {tdata.abstract}
@@ -590,34 +608,52 @@ export default function SearchPahe() {
                                                                                             }
 
                                                                                             <div className="footer">
-                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                                <div style={{ display: "inline-block" }}>
+                                                                                                    <form
+                                                                                                        onSubmit={(e) => {
+                                                                                                            e.preventDefault()
+                                                                                                            makeComment(tdata._id)
+                                                                                                        }}
+                                                                                                    >
+
+                                                                                                        <div class="card-header">
+                                                                                                            <div class="input-group">
+                                                                                                                <input
+                                                                                                                    type="text"
+                                                                                                                    placeholder="Message"
+                                                                                                                    name='text'
+                                                                                                                    onChange={(e) => {
+                                                                                                                        setText(e.target.value);
+
+                                                                                                                    }} />
+                                                                                                                {console.log('text', text)}
+                                                                                                                <div class="input-group-append">
+                                                                                                                    <button type="button" class="btn btn-outline-secondary" onClick={
+                                                                                                                        () => {
+
+                                                                                                                            makeComment(tdata._id)
+                                                                                                                        }}><i class="fa fa-send"></i></button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </form>
+
 
                                                                                                     <button type='submit' className='primary'
-                                                                                                        style={{ borderRadius: "10px" }}
+                                                                                                        style={{ borderRadius: "10px", }}
                                                                                                         onClick={async () => {
                                                                                                             handleView(tdata._id);
                                                                                                             const result = await Alert(
-                                                                                                                <div className="footer">
+                                                                                                                <div className="footer" >
 
-                                                                                                                    <div style={{ display: "inline-flex" }}>
+                                                                                                                    <div style={{ display: "inline-flex", }}>
 
                                                                                                                         <button type='submit' className='primary'
                                                                                                                             onClick={() => handleDownload(tdata._id)}>
                                                                                                                             download
                                                                                                                         </button>
                                                                                                                     </div>
-                                                                                                                    {/* <div style={{ display: "inline-flex" }}>
-    
-                                                                                                        <button type='submit' className='primary'
-                                                                                                            onClick={() => handleDownload(tdata._id)}>
-    
-    
-                                                                                                            Read
-                                                                                                        </button>
-    
-    
-                                                                                                    </div> */}
-                                                                                                                    <div style={{ display: "inline-flex", }}>
+                                                                                                                    <div style={{ display: "inline-block", }}>
                                                                                                                         <button className="bi bi-hand-thumbs-up-fill"
                                                                                                                             style={{ borderRadius: '10px', width: '100%' }}
                                                                                                                             onClick={() => handleLike(tdata._id)}
@@ -652,7 +688,7 @@ export default function SearchPahe() {
                                                                                                                     {tdata.abstract}
 
                                                                                                                 </div>,
-                                                                                                                'Load More'
+                                                                                                                'Read More'
                                                                                                             );
 
                                                                                                             if (result) {
@@ -663,28 +699,10 @@ export default function SearchPahe() {
                                                                                                         }}
                                                                                                     >
 
-                                                                                                        Load More
+                                                                                                        Read More
                                                                                                     </button>
                                                                                                     <br />
-                                                                                                    <form
-                                                                                                        onSubmit={(e) => {
-                                                                                                            e.preventDefault()
-                                                                                                            makeComment(tdata._id)
-                                                                                                        }}
-                                                                                                    >  <input type="text"
-                                                                                                        name='text'
 
-                                                                                                        onChange={(e) => {
-                                                                                                            setText(e.target.value);
-
-                                                                                                        }} style={{
-                                                                                                            borderLeftColor: 'transparent',
-                                                                                                            borderTopColor: 'transparent',
-                                                                                                            borderRightColor: 'transparent',
-
-                                                                                                        }} placeholder="add a comment" />
-
-                                                                                                    </form>
 
                                                                                                 </div>
                                                                                             </div>
@@ -773,36 +791,53 @@ export default function SearchPahe() {
                                                                                                         )
                                                                                                     })
                                                                                                 }
-                                                                                                {/* <button type='submit' className='primary'
-                                                                                                    onClick={() => handleRead(tdata._id)}>
-
-
-                                                                                                    Read
-                                                                                                </button> */}
-
+                                                                                                <br />
                                                                                                 <div className="footer">
-                                                                                                    <div style={{ display: "inline-flex" }}>
+                                                                                                    <div style={{ display: "inline-block" }}>
+
+                                                                                                        <form
+                                                                                                            onSubmit={(e) => {
+                                                                                                                e.preventDefault()
+                                                                                                                makeComment(tdata._id)
+                                                                                                            }}
+                                                                                                        >                <div class="card-header">
+                                                                                                                <div class="input-group">
+                                                                                                                    <input
+                                                                                                                        type="text"
+                                                                                                                        placeholder="Message"
+                                                                                                                        name='text'
+                                                                                                                        onChange={(e) => {
+                                                                                                                            setText(e.target.value);
+
+                                                                                                                        }} />
+                                                                                                                    {console.log('text', text)}
+                                                                                                                    <div class="input-group-append">
+                                                                                                                        <button type="button" class="btn btn-outline-secondary" onClick={
+                                                                                                                            () => {
+
+                                                                                                                                makeComment(tdata._id)
+                                                                                                                            }}><i class="fa fa-send"></i></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </form>
 
                                                                                                         <button type='submit' className='primary'
                                                                                                             style={{ borderRadius: "10px" }}
                                                                                                             onClick={async () => {
-                                                                                                                handleView(tdata._id);
+                                                                                                                //   handleView(tdata._id);
 
 
                                                                                                                 const result = await Alert(
 
-                                                                                                                    <div className="footer">
+                                                                                                                    <div className="footer" style={{ height: '70%' }}>
                                                                                                                         <div style={{ display: "inline-flex" }}>
 
                                                                                                                             <button type='submit' className='primary'
                                                                                                                                 onClick={() => handleDownload(tdata._id)}>
                                                                                                                                 download
                                                                                                                             </button>
-                                                                                                                        </div>
-                                                                                                                        <div style={{ display: "inline-flex" }}>
-
-
-
                                                                                                                         </div>
                                                                                                                         <div style={{ display: "inline-flex", }}>
 
@@ -823,10 +858,12 @@ export default function SearchPahe() {
                                                                                                                         </div>
 
                                                                                                                         {(tdata.like.length) > 0 ?
+                                                                                                                            <div>
+                                                                                                                                <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                    {tdata.like.length} like(s)
 
-                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                {tdata.like.length} like(s)
-                                                                                                                            </h6>
+                                                                                                                                </h6>
+                                                                                                                            </div>
                                                                                                                             : <h6> </h6>
                                                                                                                         }
                                                                                                                         {(tdata.view.length) > 0 ?
@@ -838,12 +875,24 @@ export default function SearchPahe() {
                                                                                                                             </h6>
                                                                                                                             : <h6> </h6>
                                                                                                                         }
-
                                                                                                                         Abstract :
                                                                                                                         {tdata.abstract}
 
+                                                                                                                        <button onClick={
+                                                                                                                           async () => {
+                                                                                                                            {
+                                                                                                                                tdata.filepassword.length != 0 ?
+                                                                                                                                <div>
+                                                                                                                                    {replaceModalItem(tdata._id)}
+                                
+                                                                                                                                </div>
+                                                                                                                                :
+                                                                                                                                history(`/b/${tdata._id}`)
+                                                                                                                            }
+                                                                                                                        }}> read all article</button>
+
                                                                                                                     </div>,
-                                                                                                                    'Load More'
+                                                                                                                    'Read More'
 
 
                                                                                                                 );
@@ -857,28 +906,65 @@ export default function SearchPahe() {
 
                                                                                                         >
 
-                                                                                                            Load More
+                                                                                                            Read More
                                                                                                         </button>
-                                                                                                        <br />
-                                                                                                        <form
-                                                                                                            onSubmit={(e) => {
-                                                                                                                e.preventDefault()
-                                                                                                                makeComment(tdata._id)
-                                                                                                            }}
-                                                                                                        >  <input type="text"
-                                                                                                            name='text'
-                                                                                                            required
-                                                                                                            onChange={(e) => {
-                                                                                                                setText(e.target.value);
+                                                                                                        <Modal show={show} onHide={handleClose}>
+                                                                                    <Modal.Header closeButton >
+                                                                                    </Modal.Header>
+                                                                                    <Modal.Body>
 
-                                                                                                            }} style={{
-                                                                                                                borderLeftColor: 'transparent',
-                                                                                                                borderTopColor: 'transparent',
-                                                                                                                borderRightColor: 'transparent',
 
-                                                                                                            }} placeholder="add a comment" />
-
+                                                                                        <div class="row">
+                                                                                            <div class="col">
+                                                                                                <div class="panel panel-default">
+                                                                                                    <div class="panel-heading">
+                                                                                                        <div class="row">
+                                                                                                            <h3 class="text-center">Payment Details</h3>
+                                                                                                            <div class="inlineimage">
+                                                                                                                <img class="img-responsive images"
+                                                                                                                    src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="panel-body">
+                                                                                                        <form role="form">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-xs-12">
+                                                                                                                    <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-xs-7 col-md-7">
+                                                                                                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-xs-12">
+                                                                                                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                </div>
+                                                                                                            </div>
                                                                                                         </form>
+                                                                                                    </div>
+                                                                                                    <div class="footer">
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </Modal.Body>
+
+                                                                                </Modal>
+                                                                            
+                                                                                                        <br />
 
                                                                                                     </div>
                                                                                                 </div>

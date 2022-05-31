@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { listRules } from '../../redux/Actions/rulesActions';
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const ref = React.createRef();
 
@@ -93,6 +94,7 @@ const PDF = (props) => {
     history,
     userInfo,
   ]);
+  const { t } = useTranslation(["common", "profile"]);
 
 
 
@@ -109,7 +111,7 @@ const PDF = (props) => {
             <div class="col-md-12">
               <div class="invoice-wrapper">
                 <div class="intro">
-                  Title: <strong>{props.title}</strong>,
+                {t("profile:title")} : <strong>{props.title}</strong>,
                   <br />
                   Author : {userInfo.user.username}
                 </div>
@@ -129,32 +131,47 @@ const PDF = (props) => {
                 <div class="payment-details">
                   <div class="row">
                     <div class="col-sm-5">
-                      <span> FileName : </span>
+                      <span> {t("profile:content")} : </span>
                       <p>
                       {props.filesname} <br />
                       </p>
                     </div>
                     <div class="col-sm-4 text-right">
-                      <span>KeyWords :</span>
+                      <span>{t("profile:keyWords")} :</span>
                       <p>
                         {props.keyWords}
 
                       </p>
                     </div>
+                  
+                 
                   </div>
+                </div>
+                <div class="payment-details">
+
+                <div class="row">
+                <div class="col-sm-5">
+                      <span>File Password :</span>
+                      <p>
+                        {props.filepassword}
+
+                      </p>
+                    </div>
+                 
+                </div>
                 </div>
                 <div class="line-items">
                   <div class="headers clearfix">
                     <div class="row">
-                      <div class="col-xs-4">Bio : {props.bio}</div>
-                      <div class="col-xs-3"> Abbreviations:
+                      <div class="col-xs-4" style={{fontSize:'16px'}}>Bio : {props.bio}</div>
+                      <div class="col-xs-3" style={{fontSize:'16px'}}> {t("profile:abbreviations")} :
                         {props.abbreviations}
                       </div>
                     </div>
                   </div>
                   <div class="total text-right">
-                    <p class="extra-notes col-sm-12">
-                      <strong>Abstract :</strong>
+                    <p class="extra-notes col-sm-12" >
+                      <strong>{t("profile:abstract")} : </strong>
                       {props.abstract} 
                     </p>
 
@@ -171,7 +188,7 @@ const PDF = (props) => {
               </div>
 
               <div class="footer">
-                Copyright © 2022. company name
+                Copyright © 2022. Revue Maghrebine
               </div>
             </div>
           </div>

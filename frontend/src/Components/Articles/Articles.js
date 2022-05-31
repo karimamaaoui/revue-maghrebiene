@@ -48,6 +48,8 @@ function Article() {
     const [bio, setBio] = useState('');
     const [abstract, setAbstract] = useState('');
     const [keyWords, setKeyWords] = useState('');
+    const [filepassword, setFilePassword] = useState('');
+
     const [abbreviations, setAbbreviations] = useState('');
     const [postSubmitted, setPostSubmitted] = useState(false);
     const [isValidKeyWords, setIsValidKeyWords] = useState(false);
@@ -272,9 +274,7 @@ function Article() {
         formData.append('rulesChecked', rulesChecked);
         formData.append('pathFile', pathFile);
         formData.append('imagename', imagename);
-
-
-
+        formData.append('filepassword', filepassword);
 
 
         console.log(multiple_files.length);
@@ -335,58 +335,11 @@ function Article() {
                                                 {!postSubmitted ?
 
                                                     <div class="card-body">
-                                                        {/* <div className="row">
-                                                            <div className="col-md-6" style={{ margin: "auto", marginTop: "50px" }}>
-                                                                <div style={{ textAlign: "center" }}>
-                                                                    <h3>Rich Text Editor</h3>
-                                                                </div>
-                                                                {/* <Editor
-                                                                    editorState={editorState}
-                                                                    onEditorStateChange={handleEditorChange}
-                                                                    wrapperClassName="wrapper-class"
-                                                                    editorClassName="editor-class"
-                                                                    toolbarClassName="toolbar-class"
-                                                                    name="abstract"
-                                                                
-                                                                /> */}
-
-                                                        {/* <RichTextEditor initialValue="" getValue={getValue}
-                                                                    name="abstract"
-                                                                    value={abstract}
-                                                                    
-
-                                                                />
-                                                                <div className="preview" dangerouslySetInnerHTML={createMarkup(value)}
-
-                                                                ></div>
-
-                                                                <br /> 
-                                                                <div>
-
-                                                                </div>
-
-
-                                                            </div>
-
-                                                        </div> */}
-                                                        {/* <div className="headText">
-                                                            <span className="Control">
-                                                                <button className="btnText" onClick={onBoldClick}><strong>B</strong></button>
-                                                                <button className="btnText" onClick={onItalicsClick}><em>I</em></button>
-                                                                <button className="btnText" onClick={onUnderlineClick}><u>U</u></button>
-                                                            </span>
-                                                            <textarea rows="5" className="Text" />
-                                                        </div> */}
-
+                                                      
                                                         <div className="row">
                                                             <h1 style={{ color: '#B91736' }}>Add New Article::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
                                                         </div>
                                                         <br />
-
-             
-
-
-
 
                                                         <form onSubmit={handleSubmit} encType='multipart/form-data' >
                                                             <div class="row mb-3">
@@ -497,6 +450,9 @@ function Article() {
                                                                     />
                                                                 </div>
                                                             </div>
+                                                         
+                                                         
+                                                         
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:abstract")}</h6>
@@ -528,9 +484,10 @@ function Article() {
 
                                                                 </div>
                                                             </div>
+                                                        
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">image</h6>
+                                                                    <h6 class="mb-0">{t("profile:image")} </h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input
@@ -549,6 +506,7 @@ function Article() {
                                                                     : <></>}
 
                                                             </div>
+                                                            {console.log('pathfile',pathFile)}
 
                                                             <input
                                                                 type="text"
@@ -584,12 +542,14 @@ function Article() {
                                                                             className="tags-input"
                                                                             onKeyDown={handleKeyDown}
                                                                         />
+                                                                   
                                                                     </div>
                                                                     <div className={`message ${isValidKeyWords ? 'success' : 'error'}`}>
                                                                         {messageKeyWords}
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:abbreviations")}</h6>
@@ -607,7 +567,23 @@ function Article() {
                                                                     />
                                                                 </div>
                                                             </div>
+                                                            <div class="row mb-3">
+                                                                <div class="col-sm-3">
+                                                                    <h6 class="mb-0"> file Password</h6>
+                                                                </div>
+                                                                <div class="col-sm-9 text-secondary">
 
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        name="filepassword"
+                                                                        
+                                                                        onChange={(e) => {
+                                                                            setFilePassword(e.target.value)}}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                    
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:content")}</h6>
@@ -630,20 +606,10 @@ function Article() {
                                                                         <div className='card'>
                                                                             <div class="">
 
-                                                                                <label style={{ fontSize: '20px' }}>author</label>
+                                                                                <label style={{ fontSize: '20px' }}>{t("profile:author")}</label>
                                                                                 <br />
                                                                                 <div style={{ display: "inline-flex", fontSize: "50px", flexWrap: "wrap" }}>
                                                                                     <p>
-                                                                                        {/* <div className="col-sm-6">
-                                                                                            <OverlayTrigger 
-                                                                                                overlay={
-                                                                                                    <Tooltip id={`tooltip-top`}>
-                                                                                                        Edit 
-                                                                                                    </Tooltip>
-                                                                                                }>
-                                                                                                <button onClick={handleShow} className="btn text-warning btn-act" data-toggle="modal"><i className="material-icons">&#xE254;</i></button>
-                                                                                            </OverlayTrigger>
-                                                                                            </div> */}
                                                                                         Email: {userInfo.user.email} username: {userInfo.user.username}
                                                                                         {authorList?.map((auth, key) => {
 
@@ -673,6 +639,8 @@ function Article() {
                                                                                                                 </Modal.Title>
                                                                                                             </Modal.Header>
                                                                                                             <Modal.Body>
+                                                                                                  
+    
                                                                                                                 <Form >
                                                                                                                     <Form.Group>
                                                                                                                         <Form.Label>
@@ -818,6 +786,7 @@ function Article() {
                                                         abbreviations={abbreviations}
                                                         bio={bio}
                                                         author={authorList}
+                                                        filepassword={filepassword}
 
                                                     />}
 

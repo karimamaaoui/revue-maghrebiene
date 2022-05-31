@@ -1,3 +1,8 @@
+
+.inlineimage{max-width:270px;
+  margin-right: 8px;
+  margin-left: 10px}
+  .images{display: inline-block;max-width: 98%;height: auto;width: 22%;margin: 1%;left:20px;text-align: center}
 /*
   .sticky-header {
     background-color: #000;
