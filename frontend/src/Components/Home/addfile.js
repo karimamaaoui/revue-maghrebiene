@@ -768,53 +768,27 @@ export default function AddFile(props) {
  
     return (
         <>
-        <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <h3 class="text-center">Payment Details</h3>
-                            <div class="inlineimage"> 
-                            <img class="img-responsive images" 
-                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png"/> 
-                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png"/>
-                             <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png"/>
-                              <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png"/> </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group"> <label>CARD NUMBER</label>
-                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-7 col-md-7">
-                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
-                                </div>
-                                <div class="col-xs-5 col-md-5 pull-right">
-                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-xs-12"> <button class="btn btn-success btn-lg btn-block">Confirm Payment</button> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class=""></div>
+<div class="contentt">
+    <h1>Read more about us!</h1>
+    <p>For what reason would it be advisable for me to think about business content?
+         That might be little bit risky to have crew member like them. For what reason would
+          it be advisable for me to think about business content? That might be little bit risky to have
+           crew member like them. For what reason would it be advisable for me to think about business content?
+            That might be little bit risky to have crew member like them.</p><br/><br/>
+    <h1>Read something more about us!</h1>
+    <p>For what reason would it be advisable for me to think about business content? That 
+        might be little bit risky to have crew member like them. For what reason would it be advisable for
+         me to think about business content? That might be little bit risky to have crew member like them. 
+         For what reason would it be advisable for me to think about business content? That might be little bit risky
+          to have crew member like them.For what reason would it be advisable for me to think about business content?
+           That might be little bit risky to have crew member like them. For what reason would it be advisable for me to
+            think about business content? That might be little bit risky to have crew member like them. For what reason would
+             it be advisable for me to think about business content? That might be little bit risky to have crew member like them.
+             For what reason would it be advisable for me to think about business content? That might be little bit risky to have crew member
+              like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to have 
+              crew member like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to 
+              have crew member like them.</p>
 </div>
 
             {/* <h1>{currentUrl}</h1>

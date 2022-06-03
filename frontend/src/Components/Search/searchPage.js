@@ -13,7 +13,7 @@ import ReactPaginate from 'react-paginate'
 import { listAttribute } from '../../redux/Actions/attributeActions';
 import './search.css'
 import Swal from 'sweetalert2';
-import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, Card, Form, Modal, OverlayTrigger, Tab, Tabs, Tooltip } from "react-bootstrap";
 
 import BG1 from "../../assets/Bannière Orange de Restaurant Reprise d'Activité Format Paysage.png"
 import BG2 from '../../assets/Jaune Professionnel Dégradé Application Développement Bannière Paysage.png'
@@ -34,7 +34,7 @@ export default function SearchPahe() {
         setRequiredItem(id)
     }
 
-  
+
 
     const getAllArticle = useSelector((state) => state.getAllArticle);
     const { loadingGetAllArticle, errorGetAllArticle, articles } = getAllArticle;
@@ -588,9 +588,6 @@ export default function SearchPahe() {
                                                                                         <img src={tdata.pathFile} alt="" height="140px" width="30px" />
 
                                                                                         <p>
-                                                                                            Abstract :
-                                                                                            {tdata.abstract}
-                                                                                            <br />
                                                                                             KeyWords :
                                                                                             {tdata.keyWords}
                                                                                             <br />
@@ -638,70 +635,165 @@ export default function SearchPahe() {
                                                                                                         </div>
                                                                                                     </form>
 
-
                                                                                                     <button type='submit' className='primary'
-                                                                                                        style={{ borderRadius: "10px", }}
-                                                                                                        onClick={async () => {
-                                                                                                            handleView(tdata._id);
-                                                                                                            const result = await Alert(
-                                                                                                                <div className="footer" >
+                                                                                                            style={{ borderRadius: "10px" }}
+                                                                                                            onClick={async () => {
+                                                                                                                //   handleView(tdata._id);
 
-                                                                                                                    <div style={{ display: "inline-flex", }}>
 
-                                                                                                                        <button type='submit' className='primary'
-                                                                                                                            onClick={() => handleDownload(tdata._id)}>
-                                                                                                                            download
-                                                                                                                        </button>
-                                                                                                                    </div>
-                                                                                                                    <div style={{ display: "inline-block", }}>
-                                                                                                                        <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                            onClick={() => handleLike(tdata._id)}
-                                                                                                                        ></button>
+                                                                                                                const result = await Alert(
 
-                                                                                                                        <br />
-                                                                                                                    </div>
-                                                                                                                    <div style={{ display: "inline-flex", }}>
+                                                                                                                    <div className="footer" style={{ height: '70%' }}>
+                                                                                                                        <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
 
-                                                                                                                        <button className="bi bi-star-fill"
-                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                            onClick={() => handleFavoris(tdata._id)}
-                                                                                                                        ></button>
-                                                                                                                        <br />
-                                                                                                                    </div>
+                                                                                                                            <Tab eventKey="first" title="Aboutus">
+                                                                                                                                {(tdata.view.length) > 0 ?
 
-                                                                                                                    {(tdata.like.length) > 0 ?
+                                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                        <i class="bi bi-eye"></i>
 
-                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                            {tdata.like.length} like(s)
-                                                                                                                        </h6>
-                                                                                                                        : <h6> </h6>
-                                                                                                                    }
-                                                                                                                    {(tdata.view.length) > 0 ?
+                                                                                                                                        {tdata.view.length} view(s)
+                                                                                                                                    </h6>
+                                                                                                                                    : <h6> </h6>
+                                                                                                                                }
+                                                                                                                                Abstract :
+                                                                                                                                {tdata.abstract}
+                                                                                                                                <button onClick={
+                                                                                                                                async () => {
+                                                                                                                                    {
+                                                                                                                                        tdata.filepassword.length != 0 ?
+                                                                                                                                            <div>
+                                                                                                                                                {replaceModalItem(tdata._id)}
 
-                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                            {tdata.view.length} view(s)
-                                                                                                                        </h6>
-                                                                                                                        : <h6> </h6>
-                                                                                                                    }
-                                                                                                                    Abstract :
-                                                                                                                    {tdata.abstract}
+                                                                                                                                            </div>
+                                                                                                                                            :
+                                                                                                                                            history(`/b/${tdata._id}`)
+                                                                                                                                    }
+                                                                                                                                }}> read all article</button>
 
-                                                                                                                </div>,
-                                                                                                                'Read More'
-                                                                                                            );
+                                                                                                                            </Tab>
 
-                                                                                                            if (result) {
-                                                                                                                //  this.handleBooking(item.id);
-                                                                                                                { console.log("id", tdata._id) }
+                                                                                                                           
 
-                                                                                                            }
-                                                                                                        }}
-                                                                                                    >
+                                                                                                                            <Tab eventKey="second" title="Dashboard">
+                                                                                                                                <div style={{ display: "inline-flex" }}>
 
-                                                                                                        Read More
-                                                                                                    </button>
+
+                                                                                                                                    <button type='submit' className='primary'
+                                                                                                                                        onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                        download
+                                                                                                                                    </button>
+                                                                                                                                </div>
+
+                                                                                                                                <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                    <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                        onClick={() => handleLike(tdata._id)}
+                                                                                                                                    ></button>
+                                                                                                                                    <br />
+                                                                                                                                </div>
+
+                                                                                                                                <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                    <button className="bi bi-star-fill"
+                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                        onClick={() => handleFavoris(tdata._id)}
+                                                                                                                                    ></button>
+                                                                                                                                    <br />
+                                                                                                                                </div>
+
+                                                                                                                                {(tdata.like.length) > 0 ?
+                                                                                                                                    <div>
+                                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                            {tdata.like.length} like(s)
+
+                                                                                                                                        </h6>
+                                                                                                                                    </div>
+                                                                                                                                    : <h6> </h6>
+                                                                                                                                }
+
+                                                                                                                            </Tab>
+                                                                                                                        </Tabs>
+
+
+                                                                                                                    </div>,
+                                                                                                                    'Read More'
+
+
+                                                                                                                );
+
+                                                                                                                if (result) {
+                                                                                                                    //  this.handleBooking(item.id);
+                                                                                                                    { console.log("id", tdata._id) }
+
+                                                                                                                }
+                                                                                                            }}
+
+                                                                                                        >
+
+                                                                                                            Read More
+                                                                                                        </button>
+                                                                                                        
+                                                                                                      
+                                                                                                    
                                                                                                     <br />
+                                                                                                    <Modal show={show} onHide={handleClose}>
+                                                                                                            <Modal.Header closeButton >
+                                                                                                            </Modal.Header>
+                                                                                                            <Modal.Body>
+
+
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col">
+                                                                                                                        <div class="panel panel-default">
+                                                                                                                            <div class="panel-heading">
+                                                                                                                                <div class="row">
+                                                                                                                                    <h3 class="text-center">Payment Details</h3>
+                                                                                                                                    <div class="inlineimage">
+                                                                                                                                        <img class="img-responsive images"
+                                                                                                                                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="panel-body">
+                                                                                                                                <form role="form">
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-12">
+                                                                                                                                            <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                                                <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-7 col-md-7">
+                                                                                                                                            <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                                            <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-12">
+                                                                                                                                            <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </form>
+                                                                                                                            </div>
+                                                                                                                            <div class="footer">
+                                                                                                                                <div class="row">
+                                                                                                                                    <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </Modal.Body>
+
+                                                                                                        </Modal>
+
 
 
                                                                                                 </div>
@@ -773,9 +865,6 @@ export default function SearchPahe() {
                                                                                             <img src={tdata.pathFile} alt="" height="140px" width="30px" />
 
                                                                                             <p>
-                                                                                                Abstract :
-                                                                                                {tdata.abstract}
-                                                                                                <br />
                                                                                                 KeyWords :
                                                                                                 {tdata.keyWords}
 
@@ -832,64 +921,78 @@ export default function SearchPahe() {
                                                                                                                 const result = await Alert(
 
                                                                                                                     <div className="footer" style={{ height: '70%' }}>
-                                                                                                                        <div style={{ display: "inline-flex" }}>
+                                                                                                                        <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
 
-                                                                                                                            <button type='submit' className='primary'
-                                                                                                                                onClick={() => handleDownload(tdata._id)}>
-                                                                                                                                download
-                                                                                                                            </button>
-                                                                                                                        </div>
-                                                                                                                        <div style={{ display: "inline-flex", }}>
+                                                                                                                            <Tab eventKey="first" title="Aboutus">
+                                                                                                                                {(tdata.view.length) > 0 ?
 
-                                                                                                                            <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                onClick={() => handleLike(tdata._id)}
-                                                                                                                            ></button>
-                                                                                                                            <br />
-                                                                                                                        </div>
+                                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                        <i class="bi bi-eye"></i>
 
-                                                                                                                        <div style={{ display: "inline-flex", }}>
+                                                                                                                                        {tdata.view.length} view(s)
+                                                                                                                                    </h6>
+                                                                                                                                    : <h6> </h6>
+                                                                                                                                }
+                                                                                                                                Abstract :
+                                                                                                                                {tdata.abstract}
+                                                                                                                                <button onClick={
+                                                                                                                                async () => {
+                                                                                                                                    {
+                                                                                                                                        tdata.filepassword.length != 0 ?
+                                                                                                                                            <div>
+                                                                                                                                                {replaceModalItem(tdata._id)}
 
-                                                                                                                            <button className="bi bi-star-fill"
-                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                onClick={() => handleFavoris(tdata._id)}
-                                                                                                                            ></button>
-                                                                                                                            <br />
-                                                                                                                        </div>
+                                                                                                                                            </div>
+                                                                                                                                            :
+                                                                                                                                            history(`/b/${tdata._id}`)
+                                                                                                                                    }
+                                                                                                                                }}> read all article</button>
 
-                                                                                                                        {(tdata.like.length) > 0 ?
-                                                                                                                            <div>
-                                                                                                                                <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                    {tdata.like.length} like(s)
+                                                                                                                            </Tab>
 
-                                                                                                                                </h6>
-                                                                                                                            </div>
-                                                                                                                            : <h6> </h6>
-                                                                                                                        }
-                                                                                                                        {(tdata.view.length) > 0 ?
+                                                                                                                           
 
-                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                <i class="bi bi-eye"></i>
+                                                                                                                            <Tab eventKey="second" title="Dashboard">
+                                                                                                                                <div style={{ display: "inline-flex" }}>
 
-                                                                                                                                {tdata.view.length} view(s)
-                                                                                                                            </h6>
-                                                                                                                            : <h6> </h6>
-                                                                                                                        }
-                                                                                                                        Abstract :
-                                                                                                                        {tdata.abstract}
 
-                                                                                                                        <button onClick={
-                                                                                                                           async () => {
-                                                                                                                            {
-                                                                                                                                tdata.filepassword.length != 0 ?
-                                                                                                                                <div>
-                                                                                                                                    {replaceModalItem(tdata._id)}
-                                
+                                                                                                                                    <button type='submit' className='primary'
+                                                                                                                                        onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                        download
+                                                                                                                                    </button>
                                                                                                                                 </div>
-                                                                                                                                :
-                                                                                                                                history(`/b/${tdata._id}`)
-                                                                                                                            }
-                                                                                                                        }}> read all article</button>
+
+                                                                                                                                <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                    <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                        onClick={() => handleLike(tdata._id)}
+                                                                                                                                    ></button>
+                                                                                                                                    <br />
+                                                                                                                                </div>
+
+                                                                                                                                <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                    <button className="bi bi-star-fill"
+                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                        onClick={() => handleFavoris(tdata._id)}
+                                                                                                                                    ></button>
+                                                                                                                                    <br />
+                                                                                                                                </div>
+
+                                                                                                                                {(tdata.like.length) > 0 ?
+                                                                                                                                    <div>
+                                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                            {tdata.like.length} like(s)
+
+                                                                                                                                        </h6>
+                                                                                                                                    </div>
+                                                                                                                                    : <h6> </h6>
+                                                                                                                                }
+
+                                                                                                                            </Tab>
+                                                                                                                        </Tabs>
+
 
                                                                                                                     </div>,
                                                                                                                     'Read More'
@@ -909,61 +1012,61 @@ export default function SearchPahe() {
                                                                                                             Read More
                                                                                                         </button>
                                                                                                         <Modal show={show} onHide={handleClose}>
-                                                                                    <Modal.Header closeButton >
-                                                                                    </Modal.Header>
-                                                                                    <Modal.Body>
+                                                                                                            <Modal.Header closeButton >
+                                                                                                            </Modal.Header>
+                                                                                                            <Modal.Body>
 
 
-                                                                                        <div class="row">
-                                                                                            <div class="col">
-                                                                                                <div class="panel panel-default">
-                                                                                                    <div class="panel-heading">
-                                                                                                        <div class="row">
-                                                                                                            <h3 class="text-center">Payment Details</h3>
-                                                                                                            <div class="inlineimage">
-                                                                                                                <img class="img-responsive images"
-                                                                                                                    src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="panel-body">
-                                                                                                        <form role="form">
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-12">
-                                                                                                                    <div class="form-group"> <label>CARD NUMBER</label>
-                                                                                                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col">
+                                                                                                                        <div class="panel panel-default">
+                                                                                                                            <div class="panel-heading">
+                                                                                                                                <div class="row">
+                                                                                                                                    <h3 class="text-center">Payment Details</h3>
+                                                                                                                                    <div class="inlineimage">
+                                                                                                                                        <img class="img-responsive images"
+                                                                                                                                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="panel-body">
+                                                                                                                                <form role="form">
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-12">
+                                                                                                                                            <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                                                <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-7 col-md-7">
+                                                                                                                                            <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                                            <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-12">
+                                                                                                                                            <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </form>
+                                                                                                                            </div>
+                                                                                                                            <div class="footer">
+                                                                                                                                <div class="row">
+                                                                                                                                    <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
                                                                                                                     </div>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-7 col-md-7">
-                                                                                                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-xs-5 col-md-5 pull-right">
-                                                                                                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-12">
-                                                                                                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    </div>
-                                                                                                    <div class="footer">
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </Modal.Body>
+                                                                                                            </Modal.Body>
 
-                                                                                </Modal>
-                                                                            
+                                                                                                        </Modal>
+
                                                                                                         <br />
 
                                                                                                     </div>

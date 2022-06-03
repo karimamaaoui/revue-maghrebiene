@@ -62,6 +62,8 @@ export default function Feedback() {
         ]);
 
     return (
+        <>
+
         <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
             <div className="main-body" >
                 <div className="row gutters-sm" style={{ maxWidth: "100%" }}>
@@ -130,6 +132,10 @@ export default function Feedback() {
                 </div >
             </div >
         </div >
+
+    
+        </>
+
 
     )
 }

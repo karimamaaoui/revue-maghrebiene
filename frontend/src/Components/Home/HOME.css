@@ -1,8 +1,107 @@
 
+.contentt
+{
+    margin: 100px auto;
+    width: 1000px;
+    background-color: white;
+}
+.contentt h1
+{
+    margin: 0 0 20px;
+    padding: 0;
+    color: #000;
+    transition: 0.5s;
+}
+.contentt p
+{
+    margin: 0;
+    padding: 0;
+    color: #000;
+    transition: 0.5s;
+    font-size: 18px;
+}
+
+
+
+
+
 .inlineimage{max-width:270px;
   margin-right: 8px;
   margin-left: 10px}
   .images{display: inline-block;max-width: 98%;height: auto;width: 22%;margin: 1%;left:20px;text-align: center}
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+
+
+.container .carddd
+{
+    max-width: 300px;
+    height: 215px;
+    margin: 30px 10px;
+    padding: 20px 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    transition: 0.3s ease-in-out;
+}
+.container .carddd:hover
+{
+    height: 450px;
+}
+.container .carddd .imgContainer
+{
+    position: relative;
+    width:250px;
+    height:250px;
+    top:-50px;
+    left:10px;
+    z-index: 1;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+.container .carddd .imgContainer img
+{
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.wrapp {
+  border: 1px solid #cccccc;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.container .carddd .content
+{
+    position: relative;
+    margin-top: -140px;
+    padding: 10px 15px;
+    text-align: center;
+    color:#111;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease-in-out;
+}
+.container .carddd:hover .content
+{
+    visibility: visible;
+    opacity: 1;
+    margin-top: -40px;
+    transition-delay: 0.3s;
+    color: #111;
+}
+
+.content p{
+  color: #8d40fb;
+  margin-left: 2%;
+}
+@media (max-width: 330px){
+    .container .carddd .imgContainer{
+        left: -2px;
+    }
+}
 /*
   .sticky-header {
     background-color: #000;

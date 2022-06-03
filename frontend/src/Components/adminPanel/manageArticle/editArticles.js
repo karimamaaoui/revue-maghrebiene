@@ -14,12 +14,17 @@ import 'antd/dist/antd.css';
 import axios from "axios";
 import { listRules } from "../../../redux/Actions/rulesActions";
 import Swal from "sweetalert2";
+
 const ENDPOINT = "http://localhost:5000";
 export const socket = io(ENDPOINT);
 
+
+
 function EditArticle({match}) {
 
-
+    const [imagename, setImagename] = useState("");
+    const [pathFile, setFilePath] = useState('');
+    
     
     const dispatch = useDispatch();
     const history = useNavigate();
@@ -95,7 +100,7 @@ function EditArticle({match}) {
         const { data } = await axios.get(`http://localhost:5000/api/file/getsingle/${articleId.id}`,config);
 
           console.log('data from get axios',data)
-          {console.log('files',data.multiple_files[0].name)}
+          {console.log('files',data.multiple_files)}
         //   setMultiple_files(data.multiple_files[0].name)
 
         setTitle(data.title);
@@ -105,6 +110,9 @@ function EditArticle({match}) {
         setKeyWords(data.keyWords)
         setTypeArticle(data.typeArticle)
         setAttributesAticle(data.attributesAticle);
+        setFilePath(data.pathFile)
+        setImagename(data.imagename);
+        setMultiple_files(data.multiple_files)
       };
   
       fetching();
@@ -113,11 +121,43 @@ function EditArticle({match}) {
     const [tags, setTags] = useState([]);
     const addFile = useSelector((state) => state.addFile);
     const { loading, error, files } = addFile;
+    const [profilePicMessage, setProfilePicMessage] = useState();
+
+    const postDetails = (pics) => {
+        setProfilePicMessage(null);
+        if (pics.type === "image/jpeg" || pics.type === "image/png") {
+            const data = new FormData();
+            data.append("file", pics);
+            setImagename(pics)
+            data.append("upload_preset", "notezipper");
+            data.append("cloud_name", "piyushproj");
+            fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
+                method: "post",
+                body: data,
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setFilePath(data.url.toString());
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            return setProfilePicMessage("Please Select an Image");
+        }
+
+    };
+    
+    const handlePhoto = (e) => {
+        setMultiple_files(e.target.files);
+        setFilename(e.target.files[0].names);
+        console.log("handlephpoto")
+
+    }
 
     const handleEdit = async(e) => {
         console.log("inside handle submit");
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('multiple_files', multiple_files);
         formData.append('title', title);
@@ -127,13 +167,16 @@ function EditArticle({match}) {
         formData.append('abbreviations', abbreviations);
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
-        console.log(multiple_files.length);
+        formData.append('pathFile',pathFile)
+        formData.append('imagename',imagename)
+        console.log('imagename',imagename)
+
         for (let i = 0; i < multiple_files.length; i++) {
             console.log(multiple_files[i]);
 
             formData.append('multiple_files', multiple_files[i]);
         }
-         console.log("formdata",formData,title)
+         console.log("formdata",formData)
 
          const config = {
                 headers: {
@@ -143,14 +186,15 @@ function EditArticle({match}) {
                 
         
           }}
-          console.log('config',userInfo.token)
           return  await axios.put(
             `http://localhost:5000/api/file/update/${articleId.id}`, formData,config).then((res) => {
 
                 console.log(res.data);
+                history('/managearticles')
+
                 Swal.fire({
                     title: "Succces!",
-                    text: "Comment Added Successfully",
+                    text: "Article Updated Successfully",
                     icon: 'success',
                     button: "OK!"
                 })})
@@ -158,12 +202,6 @@ function EditArticle({match}) {
           .catch(err => {
             console.log(err)
         })
-    }
-    const handlePhoto = (e) => {
-        setMultiple_files(e.target.files);
-        setFilename(e.target.files[0].names);
-        console.log("handlephpoto")
-
     }
     return (
 
@@ -306,15 +344,6 @@ function EditArticle({match}) {
                                                             <h6 class="mb-0">Abstract</h6>
                                                         </div>
                                                         <div class="col-sm-9 text-secondary">
-                                                            {/* <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="abstract"
-                                                                onChange={(e) => {
-                                                                    setAbstract(e.target.value);
-
-                                                                }}
-                                                            /> */}
 
                                                             <textarea name="abstract"
                                                                 rows="5" cols="33"
@@ -365,6 +394,48 @@ function EditArticle({match}) {
                                                             />
                                                         </div>
                                                     </div>
+
+                                                    <div class="row mb-3">
+                                                                <div class="col-sm-3">
+                                                                    <h6 class="mb-0">Content</h6>
+                                                                </div>
+                                                                <div class="col-sm-9 text-secondary">
+                                                                    <input
+                                                                        type="file"
+                                                                        name="multiple_files"
+                                                                        className="file-uploader "
+                                                                        multiple
+                                                                        onChange={handlePhoto}
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                    <div class="row mb-3">
+                                                                <div class="col-sm-3">
+                                                                    <h6 class="mb-0">image </h6>
+                                                                </div>
+                                                                <div class="col-sm-9 text-secondary">
+                                                                    <input
+                                                                        type="file"
+                                                                        
+                                                                        name="imagename"
+                                                                        className="file-uploader "
+                                                                        onChange={(e) => postDetails(e.target.files[0])}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <img src={pathFile} alt="" height="140px" width="30px" />
+
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="pathFile"
+                                                                defaultValue={pathFile}
+                                                                onChange={(e) => setFilePath(e.target.value)}
+                                                                 style={{ visibility: 'hidden' }}
+                                                            />
+
+
                                                     {/* <div class="row mb-3">
                                                         <div class="col-sm-3">
                                                             <h6 class="mb-0">Content</h6>
