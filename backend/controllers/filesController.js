@@ -627,48 +627,191 @@ const updateArticle = async (req, res) => {
   const datas = []
   
 
-  // req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
-  // datas.push({
-  //   name: req.files.multiple_files.name,
-  //   mimetype: req.files.multiple_files.mimetype,
-  //   size: req.files.multiple_files.size
-  // });
-
   //const body=req.body;
+  console.log('      imagename:req.files.imagename', req.files  )
   const id = req.params.id;
+  
 
-  Files.findByIdAndUpdate(id, {
-    $set: {
-      title: req.body.title,
-      bio: req.body.bio,
-      abstract: req.body.abstract,
-      keyWords: req.body.keyWords,
-      abbreviations: req.body.abbreviations,
-      published: req.body.published,
-      status: req.body.status,
-      typeArticle: req.body.typeArticle,
-      attributesAticle: req.body.attributesAticle,
-     // multiple_files: datas
+    
+  if(!req.files){
+    Files.findByIdAndUpdate(id, {
+      $set: {
+        title: req.body.title,
+        bio: req.body.bio,
+        abstract: req.body.abstract,
+        keyWords: req.body.keyWords,
+        abbreviations: req.body.abbreviations,
+        published: req.body.published,
+        status: req.body.status,
+        typeArticle: req.body.typeArticle,
+        attributesAticle: req.body.attributesAticle,
+        // imagename:req.files.imagename.name,
+        // pathFile:req.body.pathFile,
+        //multiple_files: datas
+       
+      },
+      updatedAt: Date.now()
     },
-    updatedAt: Date.now()
-  },
-    {
-      new: true
-    }
-  )
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+      {
+        new: true
+      }
+    )
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+          });
+        } else res.send(
+          { message: "Article was updated successfully." });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Article with id=" + id
         });
-      } else res.send({ message: "Article was updated successfully." });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Article with id=" + id
       });
-    });
+    }
+ 
+   else{ 
+     if(req.files.imagename){
+      Files.findByIdAndUpdate(id, {
+        $set: {
+          title: req.body.title,
+          bio: req.body.bio,
+          abstract: req.body.abstract,
+          keyWords: req.body.keyWords,
+          abbreviations: req.body.abbreviations,
+          published: req.body.published,
+          status: req.body.status,
+          typeArticle: req.body.typeArticle,
+          attributesAticle: req.body.attributesAticle,
+          imagename:req.files.imagename.name,
+          pathFile:req.body.pathFile,
+          //multiple_files: datas
+         
+        },
+        updatedAt: Date.now()
+      },
+        {
+          new: true
+        }
+      )
+        .then(data => {
+          if (!data) {
+            res.status(404).send({
+              message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+            });
+          } else res.send(
+            { message: "Article was updated successfully." });
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: "Error updating Article with id=" + id
+          });
+        });
+      } 
+    
 
+    else{ 
+      if(req.files.multiple_files){
+
+      
+  req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
+  datas.push({
+    name: req.files.multiple_files.name,
+    mimetype: req.files.multiple_files.mimetype,
+    size: req.files.multiple_files.size
+  });
+
+      Files.findByIdAndUpdate(id, {
+        $set: {
+          title: req.body.title,
+          bio: req.body.bio,
+          abstract: req.body.abstract,
+          keyWords: req.body.keyWords,
+          abbreviations: req.body.abbreviations,
+          published: req.body.published,
+          status: req.body.status,
+          typeArticle: req.body.typeArticle,
+          attributesAticle: req.body.attributesAticle,
+          // imagename:req.files.imagename.name,
+          // pathFile:req.body.pathFile,
+          multiple_files: datas
+         
+        },
+        updatedAt: Date.now()
+      },
+        {
+          new: true
+        }
+      )
+        .then(data => {
+          if (!data) {
+            res.status(404).send({
+              message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+            });
+          } else res.send(
+            { message: "Article was updated successfully." });
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: "Error updating Article with id=" + id
+          });
+        });
+      } 
+
+      
+  else {
+    if(req.files){
+
+      
+      req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
+      datas.push({
+        name: req.files.multiple_files.name,
+        mimetype: req.files.multiple_files.mimetype,
+        size: req.files.multiple_files.size
+      });
+    
+          Files.findByIdAndUpdate(id, {
+            $set: {
+              title: req.body.title,
+              bio: req.body.bio,
+              abstract: req.body.abstract,
+              keyWords: req.body.keyWords,
+              abbreviations: req.body.abbreviations,
+              published: req.body.published,
+              status: req.body.status,
+              typeArticle: req.body.typeArticle,
+              attributesAticle: req.body.attributesAticle,
+               imagename:req.files.imagename.name,
+               pathFile:req.body.pathFile,
+              multiple_files: datas
+             
+            },
+            updatedAt: Date.now()
+          },
+            {
+              new: true
+            }
+          )
+            .then(data => {
+              if (!data) {
+                res.status(404).send({
+                  message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+                });
+              } else res.send(
+                { message: "Article was updated successfully." });
+            })
+            .catch(err => {
+              res.status(500).send({
+                message: "Error updating Article with id=" + id
+              });
+            });
+          } 
+    
+  }
+    }
+    
+  }
 }
 
 
