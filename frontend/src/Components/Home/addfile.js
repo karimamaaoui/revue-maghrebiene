@@ -763,34 +763,232 @@ export default function AddFile(props) {
     const [Total_Revenue, setTotalRevenue] = useState('');
     console.log(Total_Revenue)
     const [companyInfo, setCompanyInfo] = useState([])
-    const ref = React.createRef();
+    
+    const ReadingProgress = ({ target }) => {
+        const [readingProgress, setReadingProgress] = useState(0);
+        const scrollListener = () => {
+          if (!target.current) {
+            return;
+          }
+      
+          const element         = target.current;
+          const totalHeight     = element.clientHeight - element.offsetTop - (window.innerHeight);
+          const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      
+          if (windowScrollTop === 0) {
+            return setReadingProgress(0);
+          }
+      
+          if (windowScrollTop > totalHeight) {
+            return setReadingProgress(100);
+          }
+         
+          setReadingProgress((windowScrollTop / totalHeight) * 100);
+        };
+        
+        useEffect(() => {
+          window.addEventListener("scroll", scrollListener);
+          return () => window.removeEventListener("scroll", scrollListener);
+        });
+      
+        return <div className={`reading-progress-bar`} style={{width: `${readingProgress}%`}} />;
+      };
+        const target = React.createRef();
 
- 
+   
     return (
         <>
-    <div class=""></div>
-<div class="contentt">
-    <h1>Read more about us!</h1>
-    <p>For what reason would it be advisable for me to think about business content?
-         That might be little bit risky to have crew member like them. For what reason would
-          it be advisable for me to think about business content? That might be little bit risky to have
-           crew member like them. For what reason would it be advisable for me to think about business content?
-            That might be little bit risky to have crew member like them.</p><br/><br/>
-    <h1>Read something more about us!</h1>
-    <p>For what reason would it be advisable for me to think about business content? That 
-        might be little bit risky to have crew member like them. For what reason would it be advisable for
-         me to think about business content? That might be little bit risky to have crew member like them. 
-         For what reason would it be advisable for me to think about business content? That might be little bit risky
-          to have crew member like them.For what reason would it be advisable for me to think about business content?
-           That might be little bit risky to have crew member like them. For what reason would it be advisable for me to
-            think about business content? That might be little bit risky to have crew member like them. For what reason would
-             it be advisable for me to think about business content? That might be little bit risky to have crew member like them.
-             For what reason would it be advisable for me to think about business content? That might be little bit risky to have crew member
-              like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to have 
-              crew member like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to 
-              have crew member like them.</p>
+                                    <div class="container">
+<div class="col-md-7">
+<div class="well">
+    <form accept-charset="UTF-8" action="" method="POST">
+        <textarea class="form-control" id="text" name="text" placeholder="Type in your message" rows="5"></textarea>
+        <h6 class="pull-right" id="count_message"></h6>
+        <button class="btn btn-info" type="submit">Post New Message</button>
+    </form>
+</div>
+</div>
 </div>
 
+        <div class="container">
+        <div class="table-wrap">
+            <table class="table table-borderless table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="text-muted fw-600">Email</th>
+                        <th class="text-muted fw-600">Username</th>
+                        <th class="text-muted fw-600">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle alert" role="alert">
+                        <td>
+                            <input type="checkbox" id="check"/>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="img-container">
+                                    <img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                                        alt=""/>
+                                </div>
+                                <div class="ps-3">
+                                    <div class="fw-600 pb-1">mark@gmail.com</div>
+                                    <p class="m-0 text-grey fs-09">Added: 03/02/2012</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-600">Markov98</div>
+                        </td>
+                        <td>
+                            <div class="d-inline-flex align-items-center active">
+                                <div class="circle"></div>
+                                <div class="ps-2">Active</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn p-0" data-bs-dismiss="alert">
+                                <span class="fas fa-times"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="align-middle alert" role="alert">
+                        <td>
+                            <input type="checkbox" id="check" checked/>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="img-container">
+                                    <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                                        alt=""/>
+                                </div>
+                                <div class="ps-3">
+                                    <div class="fw-600 pb-1">harry@gmail.com</div>
+                                    <p class="m-0 text-grey fs-09">Added: 03/02/2012</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-600">Harry2020</div>
+                        </td>
+                        <td>
+                            <div class="d-inline-flex align-items-center waiting">
+                                <div class="circle"></div>
+                                <div class="ps-2">Waiting for Reassignment</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn p-0" data-bs-dismiss="alert">
+                                <span class="fas fa-times"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="align-middle alert" role="alert">
+                        <td>
+                            <input type="checkbox" id="check"/>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="img-container">
+                                    <img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                                        alt=""/>
+                                </div>
+                                <div class="ps-3">
+                                    <div class="fw-600 pb-1">mark@gmail.com</div>
+                                    <p class="m-0 text-grey fs-09">Added: 03/02/2012</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-600">Markov98</div>
+                        </td>
+                        <td>
+                            <div class="d-inline-flex align-items-center active">
+                                <div class="circle"></div>
+                                <div class="ps-2">Active</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn p-0" data-bs-dismiss="alert">
+                                <span class="fas fa-times"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="align-middle alert" role="alert">
+                        <td>
+                            <input type="checkbox" id="check"/>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="img-container">
+                                    <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                                        alt="" />
+                                </div>
+                                <div class="ps-3">
+                                    <div class="fw-600 pb-1">harry@gmail.com</div>
+                                    <p class="m-0 text-grey fs-09">Added: 03/02/2012</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-600">Harry2020</div>
+                        </td>
+                        <td>
+                            <div class="d-inline-flex align-items-center waiting">
+                                <div class="circle"></div>
+                                <div class="ps-2">Waiting for Reassignment</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn p-0" data-bs-dismiss="alert">
+                                <span class="fas fa-times"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+            {/* <ReadingProgress target={target} />
+      <div className={`post`} ref={target}>
+            <div class="contentt">
+                <h1>Read more about us!</h1>
+                <p>For what reason would it be advisable for me to think about business content?
+                    That might be little bit risky to have crew member like them. For what reason would
+                    it be advisable for me to think about business content? That might be little bit risky to have
+                    crew member like them. For what reason would it be advisable for me to think about business content?
+                    That might be little bit risky to have crew member like them.</p><br /><br />
+                <h1>Read something more about us!</h1>
+                <p>For what reason would it be advisable for me to think about business content? That
+                    might be little bit risky to have crew member like them. For what reason would it be advisable for
+                    me to think about business content? That might be little bit risky to have crew member like them.
+                    For what reason would it be advisable for me to think about business content? That might be little bit risky
+                    to have crew member like them.For what reason would it be advisable for me to think about business content?
+                    That might be little bit risky to have crew member like them. For what reason would it be advisable for me to
+                    think about business content? That might be little bit risky to have crew member like them. For what reason would
+                    it be advisable for me to think about business content? That might be little bit risky to have crew member like them.
+                    For what reason would it be advisable for me to think about business content? That might be little bit risky to have crew member
+                    like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to have
+                    crew member like them. For what reason would it be advisable for me to think about business content? That might be little bit risky to
+                    have crew member like them.</p>
+            </div>
+
+            <br />
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <hr/>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+        At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+         consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et 
+         justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <hr/>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+         At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <hr/>
+      </div> */}
             {/* <h1>{currentUrl}</h1>
 
         <div className="card mb-3">

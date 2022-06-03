@@ -8,13 +8,13 @@ import NavbarList from "../views/navbarList";
 import SidebarScreen from "../../sideBar/sidebarScreen";
 import axios from "axios";
 import ReactPaginate from 'react-paginate'
-
+import './manageArticle.css'
 export default function ManageArticle() {
 
   const dispatch = useDispatch();
   const history = useNavigate();
   const [noOfElement, setNoOfElement] = useState(4);
-  const [pageCount, setPageCount] = useState(1); 
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setcurrentPage] = useState(0);
 
 
@@ -69,38 +69,38 @@ export default function ManageArticle() {
   const filterContent = (articleFilter, searchTerm) => {
     if (searchTerm !== '') {
 
-        const result = articles.filter((article) => {
-            return (article.title.toLowerCase().startsWith(searchTerm) ||
-                article.abstract.toLowerCase().startsWith(searchTerm) ||
-                article.abbreviations.toLowerCase().startsWith(searchTerm) ||
-                article.status.toLowerCase().startsWith(searchTerm)
+      const result = articles.filter((article) => {
+        return (article.title.toLowerCase().startsWith(searchTerm) ||
+          article.abstract.toLowerCase().startsWith(searchTerm) ||
+          article.abbreviations.toLowerCase().startsWith(searchTerm) ||
+          article.status.toLowerCase().startsWith(searchTerm)
 
 
-            );
-        }
         );
-        setSearchResult(result);
+      }
+      );
+      setSearchResult(result);
 
     }
     else {
-        setSearchResult(articles);
+      setSearchResult(articles);
 
     }
 
     console.log("searchResult", searchResult)
 
 
-}
+  }
 
   // paginate function
-  const [items,setItems]=useState([])
-  const handlePageClick=(data)=>{
+  const [items, setItems] = useState([])
+  const handlePageClick = (data) => {
 
-      console.log("efefef",data.selected);
-      let currentPage=data.selected +1;
-      dispatch(getAllArticlePaginate(currentPage));
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",currentPage);
-      
+    console.log("efefef", data.selected);
+    let currentPage = data.selected + 1;
+    dispatch(getAllArticlePaginate(currentPage));
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", currentPage);
+
   }
   // search function
   const handleSearch = async (e) => {
@@ -108,139 +108,196 @@ export default function ManageArticle() {
     const searchTerm = e.currentTarget.value;
     setSearchInput(searchTerm)
 
-    dispatch(getArticleByFilter(articleFilter,searchTerm));
+    dispatch(getArticleByFilter(articleFilter, searchTerm));
 
-      filterContent(articleFilter, searchTerm)
+    filterContent(articleFilter, searchTerm)
 
   }
-  
+
   return (
     <>
-    {!userInfo ? history('/'):
-            userInfo.roleuser === "Reader" ?
+      {!userInfo ? history('/') :
+        userInfo.roleuser === "Reader" ?
 
-      <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
-        <div className="main-body">
-          <div className="row gutters-sm">
-            <SidebarScreen />
-            <div className="col-md-9" style={{ marginTop: '50px' }}>
-              <div className='container'>
-
-
-                <div id="content" className="p-6 p-md-10 pt-12">
-
-                  <NavbarList />
-                  <Row id="articlesList">
-                    <Col lg="12">
-                      <Card id="articlesList">
-                        <CardBody>
-                          <CardTitle tag="h5">Articles List</CardTitle>
-                          <input className="mr-sm-2"
-                            type="search"
-                            name="key"
-                            placeholder="Search"
-                            aria-label="Search"
-                            onChange={handleSearch}
-                          />
+          <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
+            <div className="main-body">
+              <div className="row gutters-sm">
+                <SidebarScreen />
+                <div className="col-md-9" style={{ marginTop: '50px' }}>
+                  <div className='container'>
 
 
-                          <Table className="no-wrap mt-3 align-middle" responsive borderless>
-                            <thead>
-                              <tr>
-                                <th>title</th>
-                                <th>abstract</th>
-                                <th>content</th>
-                                <th>key words</th>
-                                <th>abbreviations</th>
-                                <th>status</th>
-                                <th></th>
+                    <div id="content" className="p-6 p-md-10 pt-12">
 
-                                <th>Action</th>
-                              
-                              </tr>
-                            </thead>
+                      <NavbarList />
+                      <Row id="articlesList">
+                        <Col lg="12">
+                          <Card id="articlesList">
+                            <CardBody>
+                              <CardTitle tag="h5">Articles List</CardTitle>
+                              <input className="mr-sm-2"
+                                type="search"
+                                name="key"
+                                placeholder="Search"
+                                aria-label="Search"
+                                onChange={handleSearch}
+                              />
 
-                         
-                            {searchInput.length > 1 ? (
-                              searchResult.map((tdata, index) => {
-                                return (
-                                  <tbody>
+                              <Table className="no-wrap " responsive borderless>
+                                <thead>
+                                  <tr>
+                                    <th>title</th>
+                                    <th>content</th>
+                                    <th>key words</th>
+                                    <th>abbreviations</th>
+                                    <th>status</th>
+                                    <th></th>
 
-                                    <tr key={index} className="border-top">
-                                      <td>
-                                        <div className="d-flex align-items-center p-2">
-                                          <div className="ms-3">
-                                            <h6 className="mb-0">{tdata.title}</h6>
-                                          </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <span className="text-muted">{tdata.abstract}</span>
-                                      </td>
-                                      <td>{tdata.content}</td>
-                                      <td>
-                                        {tdata.keyWords}
-                                      </td>
-                                      <td>{tdata.abbreviations}</td>
-                                      <td>{tdata.status}</td>
-                                      <td>
-                                      </td>
-                                      <Button variant="outline-danger">
-                                        <i class="bi bi-pencil-square"></i>
-                                      </Button>
-                                      <Button variant="outline-warning"
-                                        className="mx-2"
-                                        onClick={() => deleteHandler(tdata._id)}>
-                                        <i class="bi bi-trash3"></i>
-                                      </Button>
-                                    </tr>
-                                  </tbody>
+                                    <th>Action</th>
 
-                                )
-                              })
-                            ) : (
-                              articles?.map((tdata, index) => {
+                                  </tr>
+                                </thead>
 
 
-                                return (
-                                  <tbody>
+                                {searchInput.length > 1 ? (
+                                  searchResult.map((tdata, index) => {
+                                    return (
+                                      <tbody>
 
-                                    <tr key={index} className="border-top">
-                                      <td>
-                                        <div className="d-flex align-items-center p-2">
-                                          <div className="ms-3">
-                                            <h6 className="mb-0">{tdata.title}</h6>
-                                          </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                        <span className="text-muted">{tdata.abstract}</span>
-                                      </td>
-                                      <td>{tdata.content}</td>
-                                      <td>
-                                        {tdata.keyWords}
-                                      </td>
-                                      <td>{tdata.abbreviations}</td>
-                                      <td>{tdata.status}</td>
-                                      <td>
-                                      </td>
-                                      <Button variant="outline-danger" href={`/editarticle/${tdata._id}`}>
-                                        <i class="bi bi-pencil-square"></i>
-                                      </Button>
-                                      <Button variant="outline-warning"
-                                        className="mx-2"
-                                        onClick={() => deleteHandler(tdata._id)}>
-                                        <i class="bi bi-trash3"></i>
-                                      </Button>
-                                    </tr>
-                                  </tbody>
+                                        <tr key={index} className="border-top">
+                                          <td>
+                                            <div className="d-flex align-items-center p-2">
+                                              <div className="ms-3">
+                                                <h6 className="mb-0">{tdata.title}</h6>
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>{tdata.content}</td>
+                                          <td>
+                                            {tdata.keyWords}
+                                          </td>
 
-                                )
-                              })
-                            )}
+                                          <td>{tdata.abbreviations}</td>
+                                          {tdata.status === "accepted" ?
+                                            <div>
+                                              <td>
+                                                <div class="d-inline-flex align-items-center active">
+                                                  <div class="circle"></div>
+                                                  <div class="ps-2">{tdata.status}</div>
+                                                </div>
 
-                          </Table>
-                          {/* <div className="row">
+                                              </td>
+                                            </div> :
+                                            <div>
+                                              {tdata.status === "loading" ?
+                                                <div>
+                                                  <td>
+
+                                                    <div class="d-inline-flex align-items-center waiting">
+                                                      <div class="circle"></div>
+                                                      <div class="ps-2">{tdata.status}</div>
+                                                    </div>
+                                                  </td>
+
+
+                                                </div> :
+                                                <div>
+
+                                                </div>
+                                              }
+
+
+                                            </div>
+                                          }
+
+                                          <td>
+                                          </td>
+
+                                          <Button variant="outline-danger">
+                                            <i class="bi bi-pencil-square"></i>
+                                          </Button>
+                                          <Button variant="outline-warning"
+                                            className="mx-2"
+                                            onClick={() => deleteHandler(tdata._id)}>
+                                            <i class="bi bi-trash3"></i>
+                                          </Button>
+                                        </tr>
+                                      </tbody>
+
+                                    )
+                                  })
+                                ) : (
+                                  articles?.map((tdata, index) => {
+
+
+                                    return (
+                                      <tbody>
+
+                                        <tr key={index} className="border-top">
+                                          <td>
+                                            <div className="d-flex align-items-center p-2">
+                                              <div className="ms-3">
+                                                <h6 className="mb-0">{tdata.title}</h6>
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>{tdata.content}</td>
+                                          <td>
+                                            {tdata.keyWords}
+                                          </td>
+                                          <td>{tdata.abbreviations}</td>
+                                          {tdata.status === "accepted" ?
+                                            <div>
+                                              <td>
+                                                <div class="d-inline-flex align-items-center active">
+                                                  <div class="circle"></div>
+                                                  <div class="ps-2">{tdata.status}</div>
+                                                </div>
+
+                                              </td>
+                                            </div> :
+                                            <div>
+                                              {tdata.status === "loading" ?
+                                                <div>
+                                                  <td>
+
+                                                    <div class="d-inline-flex align-items-center waiting">
+                                                      <div class="circle"></div>
+                                                      <div class="ps-2">{tdata.status}</div>
+                                                    </div>
+                                                  </td>
+
+
+                                                </div> :
+                                                <div>
+
+                                                </div>
+                                              }
+
+
+                                            </div>
+                                          }
+
+
+                                          <td>
+                                          </td>
+                                          <Button variant="outline-danger" href={`/editarticle/${tdata._id}`}>
+                                            <i class="bi bi-pencil-square"></i>
+                                          </Button>
+                                          <Button variant="outline-warning"
+                                            className="mx-2"
+                                            onClick={() => deleteHandler(tdata._id)}>
+                                            <i class="bi bi-trash3"></i>
+                                          </Button>
+                                        </tr>
+                                      </tbody>
+
+                                    )
+                                  })
+                                )}
+
+                              </Table>
+                              {/* <div className="row">
                             <div className="col-sm-12">
                               <button className="btn btn-dark " style={{ textAlign: "center" }} onClick={loadMore}  >
                                 Load More
@@ -248,45 +305,46 @@ export default function ManageArticle() {
                             </div>
                           </div> */}
 
-                          <div className="row">
-                            <div className="col-sm-12"  >
-                              
-                              <ReactPaginate 
-                                previousLabel={'previous'}
-                                nextLabel={"next"}
-                                breakLabel={'...'}
-                                pageCount={25}
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={3}
-                                onPageChange={handlePageClick}
-                                containerClassName={'pagination justofy-content-center'}
-                                pageClassName={'page-item'}
-                                pageLinkClassName={'page-link'}
-                                previousClassName={'page-item'}
-                                previousLinkClassName={'page-link'}
-                                nextClassName={'page-item'}
-                                nextLinkClassName={'page-link'}
-                                breakClassName={'page-item'}
-                                breakLinkClassName={'page-link'}
-                                activeClassName={'active '}
+                              <div className="row">
+                                <div className="col-sm-12"  >
 
-                                
-                              />
-                            </div>
-                          </div>
-                        </CardBody>
+                                  <ReactPaginate
+                                    previousLabel={'previous'}
+                                    nextLabel={"next"}
+                                    breakLabel={'...'}
+                                    pageCount={25}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={3}
+                                    onPageChange={handlePageClick}
+                                    containerClassName={'pagination justofy-content-center'}
+                                    pageClassName={'page-item'}
+                                    pageLinkClassName={'page-link'}
+                                    previousClassName={'page-item'}
+                                    previousLinkClassName={'page-link'}
+                                    nextClassName={'page-item'}
+                                    nextLinkClassName={'page-link'}
+                                    breakClassName={'page-item'}
+                                    breakLinkClassName={'page-link'}
+                                    activeClassName={'active '}
 
-                      </Card>
-                    </Col>
-                  </Row>
+
+                                  />
+                                </div>
+                              </div>
+                            </CardBody>
+
+
+                          </Card>
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-                      : "Not Authorized"
-                    }
+          : "Not Authorized"
+      }
 
     </>
 

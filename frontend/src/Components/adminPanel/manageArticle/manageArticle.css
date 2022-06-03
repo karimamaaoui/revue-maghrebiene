@@ -1,0 +1,30 @@
+
+.table tbody,
+.table thead {
+    background-color: #fff;
+}
+
+.table tbody td .active,
+.table tbody td .waiting {
+    background-color: #B9F6CA;
+    color: #388E3C;
+    border-radius: 15px;
+}
+
+.table tbody td .waiting {
+    background-color: #FFECB3;
+    color: #FFA000;
+}
+
+.table tbody td .active .circle,
+.table tbody td .waiting .circle {
+    border-radius: 50%;
+    background-color: #388E3C;
+}
+
+.table tbody td .waiting .circle {
+    background-color: #FFA000;
+}
+
+
+

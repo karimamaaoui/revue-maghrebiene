@@ -25,45 +25,52 @@ export default function Features() {
 
     return (
         <>
-        {feedbacks?.map((fe, index) => {
-                            return (
+            {feedbacks?.map((fe, index) => {
+                return (
 
-        <div class="wrapp">
-      <div class="container " >
-       
-            
-       <div class="carddd" >
-           <div class='imgContainer'>
-               <img src='https://1.bp.blogspot.com/-zns4HmbO1-w/X1-hFV4hviI/AAAAAAAAApI/02Nnirxu5ZkZ8Ny2DvHo3AOiyOWcyBm6QCLcBGAsYHQ/s1280/feedback%2B2.jpg'/>
-           </div>
-           <div class="content">
-           {fe.user.map((u, index) => {
-                                       return (
-                                           <>
-                                               <h5>
-                                                   {u.username}
-                                               </h5>
-                                           </>
-                                       )
-                                   })}
-               <p >{fe.message}
-               <br/>
-               <div style={{ display: "inline-flex" }}>
-                                       {fe.star}<img src='https://th.bing.com/th/id/R.2302034bd53bd826ceea20e837f883b1?rik=CEJhbZUU6AGaPQ&pid=ImgRaw&r=0'
-                                           style={{ height: '20px' }} />
+                    <div class="wrapp">
+                        <div class="container " >
 
-                                   </div>
-                                                         
-               
-               </p> 
-           </div>
-       </div>
-          
-   </div>
-     
-    </div>
-                            )})}
-        {/* <div style={{ display: "inline-flix",}}>
+
+                            <div class="carddd" >
+                                <div class='imgContainer'>
+                                    <img src='https://1.bp.blogspot.com/-zns4HmbO1-w/X1-hFV4hviI/AAAAAAAAApI/02Nnirxu5ZkZ8Ny2DvHo3AOiyOWcyBm6QCLcBGAsYHQ/s1280/feedback%2B2.jpg' />
+                                </div>
+                                <div class="content">
+                                    {fe.user.map((u, index) => {
+                                        return (
+                                            <>
+                                                <h5>
+                                                    {u.username}
+                                                </h5>
+                                            </>
+                                        )
+                                    })}
+                                    <img class="img-fluid quotes" src="https://i.imgur.com/U20aFIt.png"
+                                        style={{width:'25px',height:'25px'}} />
+                                    <p >{fe.message}
+                                    <br />
+
+                                        <img class="img-fluid quotes" src="https://i.imgur.com/U20aFIt.png"
+                                            style={{width:'25px',height:'25px'}} />
+                                        <br />
+                                        <div style={{ display: "inline-flex" }}>
+                                            {fe.star}<img src='https://th.bing.com/th/id/R.2302034bd53bd826ceea20e837f883b1?rik=CEJhbZUU6AGaPQ&pid=ImgRaw&r=0'
+                                                style={{ height: '20px' }} />
+
+                                        </div>
+
+
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                )
+            })}
+            {/* <div style={{ display: "inline-flix",}}>
 
         {feedbacks?.map((fe, index) => {
                             return (

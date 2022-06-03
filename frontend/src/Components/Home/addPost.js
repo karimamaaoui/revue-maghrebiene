@@ -15,6 +15,7 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import './addPost.css'
+import FileDownload from "js-file-download"
 
 export default function AddPost() {
 
@@ -138,6 +139,34 @@ export default function AddPost() {
 
     }
 
+    
+    const handleDownload = async (id) => {
+        // const { data } = await axios.get(`http://localhost:5000/api/file/${id}`);
+        // console.log("user data", data)
+        await axios.get(`http://localhost:5000/api/file/${id}`
+            , {
+                responseType: 'blob',
+            }
+        )
+            .then((response) => {
+                // console.log("resp", articles);
+
+                if (response.data.type.includes('pdf')) {
+
+                    FileDownload(response.data, 'downloaded.pdf')
+                }
+                else {
+                    if (response.data.type.includes('document')) {
+
+                        FileDownload(response.data, 'downloaded.docx')
+                    }
+                   }
+
+
+            }
+
+            )
+    }
 
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', viewArticle)
 
@@ -311,9 +340,19 @@ export default function AddPost() {
                                                                     
                                                                         <button class="btn btn-outline-dark btn-sm" style={{ textAlign: 'left' }} 
                                                                           data-toggle="modal" data-target="#exampleModal"
-                                                                          onClick={() => {
-                                                                              replaceModalItem(datas._id)}}
-                                                                        > Read All Article</button>
+                                                                            onClick={
+                                                                            async () => {
+                                                                                {
+                                                                                    datas.filepassword.length != 0 ?
+                                                                                        <div>
+                                                                                            {replaceModalItem(datas._id)}
+
+                                                                                        </div>
+                                                                                        :
+                                                                                        handleDownload(datas._id)
+                                                                                }
+                                                                            }}>
+                                                                         Read All Article</button>
                                                                         
                                                                         <Modal show={show} onHide={handleClose}>
                                                                             <Modal.Header closeButton >
