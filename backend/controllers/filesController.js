@@ -91,7 +91,14 @@ const createArticle = async (req, res) => {
         mimetype: req.files.multiple_files.mimetype,
         size: req.files.multiple_files.size
       });
-      //    console.log("data", data)
+
+      let rule=[]
+    rule.push(
+      req.body.rulesChecked
+    )
+      console.log("RULE 99", rule)
+
+
       const title = req.body.title;
       const bio = req.body.bio;
       const abstract = req.body.abstract;
@@ -105,7 +112,6 @@ const createArticle = async (req, res) => {
       const like = req.body.like;
       const authors = userId.id;
       const comments = req.body.comments;
-      const rulesChecked = req.body.rulesChecked;
       const view = req.body.view;
       const pathFile = req.body.pathFile;
       const filepassword = req.body.filepassword;
@@ -125,7 +131,7 @@ const createArticle = async (req, res) => {
         attributesAticle,
         like,
         comments,
-        rulesChecked,
+        rulesChecked :req.body.rulesChecked,
         view,
         pathFile,
         imagename,
@@ -139,22 +145,22 @@ const createArticle = async (req, res) => {
           doc.name,
         );
       });
-      console.log("data.multiple_files.name", (ids))
+      // console.log("data.multiple_files.name", (ids))
       const fileName = ids[0];
       const fileName2 = ids[1];
 
-      console.log('article1', fileName)
-      console.log('article2', fileName2)
+      // console.log('article1', fileName)
+      // console.log('article2', fileName2)
 
       const directoryPath = path.join(__dirname, "../uploads/");
-      console.log("directoryPath from downolad", filepassword)
+      // console.log("directoryPath from downolad", filepassword)
       const options = {
         userPassword: filepassword
       }
 
       const doc = new pdfkit(options);
       let dataBuffer = fs.readFileSync(directoryPath + fileName);
-      console.log('directoryPath +fileName', dataBuffer)
+      console.log('directoryPath +fileName 161', dataBuffer)
 
       PdfParse(dataBuffer).then(function (data) {
 
@@ -172,20 +178,25 @@ const createArticle = async (req, res) => {
           console.log("file", file)
         })
       }
-      const rules = await Rule.find({ _id: req.body.rulesChecked });
+      console.log("data rulesChecked 179 ", req.body.rulesChecked)
+     // console.log("data rule ", rule)
+
+      // const rules = await Rule.find( {} );
+      // console.log("data rule ", rules)
 
       articleFile
         .save(articleFile)
         .then(data => {
-          const ruleRespected = RuleRespected({
-            rule: rules,
-            article: articleFile._id,
-            checked: true
+          // const ruleRespected = Rule({
+          //  // rule: rule,
+          //   article: articleFile._id,
+          //   checked: true
 
-          })
-          ruleRespected.save()
+          // })
+          // ruleRespected.save()
 
           console.log("data file ", articleFile)
+          
           res.send(data);
         });
 
@@ -222,15 +233,37 @@ const getAllArticle = (
 
     try {
 
-      // const articles = await query ? await Files.find().populate('typeArticle', ['label']) : await Files.find().populate('typeArticle', ['label']).
-      //   sort({ createdAt: -1 }).limit(limit).skip(skip);
-      articles = await Files.find({ typeArticle: req.query.types }).populate('typeArticle', ['label']).populate('like', ['username','email']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+      articles = await Files.find({ typeArticle: req.query.types })
+        .populate('typeArticle', ['label'])
+        .populate('like', ['username', 'email'])
+        .populate('authors')
+        .populate('comments')
+        .populate('rulesChecked')
+
+        .sort({ createdAt: -1 }).limit(limit).skip(skip);
 
       console.log('eeeeeeeeeeeeeeeeeeee', articles)
 
+      const rulesChecked=await Files
+      .aggregate([
+            { "$lookup": {
+               "from": "Files",
+               "let": { "rulesChecked": "$rulesChecked" },
+             "pipeline": [
+                { "$match": { "$expr": { "$in": [ "$_id", "$$rulesChecked" ] } } }
+               ],
+             "as": "output"
+          }}
+       ])
 
       if (!articles.length > 0) {
-        articles = await Files.find({}).populate('typeArticle', ['label']).populate('like', ['username','email']).sort({ createdAt: -1 }).limit(limit).skip(skip);
+        articles = await Files.find({}).populate('typeArticle', ['label']).populate('like', ['username', 'email'])
+          .populate('authors')
+          .populate('comments')
+          .populate('rulesChecked')
+
+
+          .sort({ createdAt: -1 }).limit(limit).skip(skip);
 
       }
       return res.status(200).json(articles);
@@ -393,103 +426,103 @@ const { PdfReader } = require('pdfreader');
 const crypto = require('crypto');
 const pdfkit = require('pdfkit')
 
-const readFiles = async (req, res,next) => {
+const readFiles = async (req, res, next) => {
 
   //const fileName = req.params.name;
   const id = req.params.id;
-  try{
-    
+  try {
+
     await Files.findById(id)
-    .then(data => {
+      .then(data => {
 
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot download Article with id=${id}. Maybe Article was not found!`
-        });
-      }
+        if (!data) {
+          res.status(404).send({
+            message: `Cannot download Article with id=${id}. Maybe Article was not found!`
+          });
+        }
 
-      else {
-        
-        // res.send(data.multiple_files);
-        let ids = []
-        const cursor = data.multiple_files;
+        else {
 
-        cursor.forEach((doc) => {
-          ids.push(
-            doc.name,
-            doc.mimetype
+          // res.send(data.multiple_files);
+          let ids = []
+          const cursor = data.multiple_files;
+
+          cursor.forEach((doc) => {
+            ids.push(
+              doc.name,
+              doc.mimetype
 
 
-          );
-        });
+            );
+          });
 
-        const directoryPath = path.join(__dirname, "../uploads/")
-        const fileName = ids[0];
-        let dataBuffer = fs.readFileSync(directoryPath + fileName);
-//        console.log('directoryPath +fileName', dataBuffer)
+          const directoryPath = path.join(__dirname, "../uploads/")
+          const fileName = ids[0];
+          let dataBuffer = fs.readFileSync(directoryPath + fileName);
+          //        console.log('directoryPath +fileName', dataBuffer)
 
-        PdfParse(dataBuffer).then(function ( data) {
+          PdfParse(dataBuffer).then(function (data) {
 
             // console.log('data text', data.text);
-  //          console.log('data text', data.numpages);
- //           console.log('data text', data.info);
+            //          console.log('data text', data.numpages);
+            //           console.log('data text', data.info);
 
             res.status(200).send(data)
-          
+
+          }
+          )
+
+          //PdfParse()
+
+          //  console.log('article', fileName)
+          // const directoryPath = path.join(__dirname, "../uploads/"+fileName);
+          // console.log("directoryPath from downolad", directoryPath)
+
+          // fs.readFile(directoryPath, {dencoding: 'Buffer'}, function (err, files) {
+          //   if (err) {
+          //     res.status(500).send({
+          //       message: "Unable to scan files!",
+          //     });
+          //   }
+          //   else {
+          //     console.log("fileInfo", files);
+          //     res.status(200).send(files)
+          //   }
+
+          // })
+
+          //   fs.readFile(directoryPath,'utf-8', function (err, files) {
+          //   if (err) {
+          //     res.status(500).send({
+          //       message: "Unable to scan files!",
+          //     });
+          //   }
+          //   else {
+          //      res.writeHead(200, { "Content-type": `application/pdf` });
+          //    res.end(files)
+          //   //   console.log(files)
+
+          //     //  res.status(200).send(files);
+
+          //   }
+          // }
+          // );
+
+          // let fileSync = fs.readdirSync(directoryPath);
+          // console.log('fileSync: ', fileSync)
+
+          // let pdfParser = new PDFParse(fileSync)
+
+          // //let pdfParser=new PDFParse (this,1);
+          // pdfParser.loadPDF(directoryPath + fileName)
+          // console.log('Parse: ', pdfParser)
+          // console.log('PDF pages: ', pdfParser.numpages)
+
+          // console.log('File content: ', pdfParser.info)
+
         }
-        )
-
-        //PdfParse()
-
-        //  console.log('article', fileName)
-        // const directoryPath = path.join(__dirname, "../uploads/"+fileName);
-        // console.log("directoryPath from downolad", directoryPath)
-
-        // fs.readFile(directoryPath, {dencoding: 'Buffer'}, function (err, files) {
-        //   if (err) {
-        //     res.status(500).send({
-        //       message: "Unable to scan files!",
-        //     });
-        //   }
-        //   else {
-        //     console.log("fileInfo", files);
-        //     res.status(200).send(files)
-        //   }
-
-        // })
-
-        //   fs.readFile(directoryPath,'utf-8', function (err, files) {
-        //   if (err) {
-        //     res.status(500).send({
-        //       message: "Unable to scan files!",
-        //     });
-        //   }
-        //   else {
-        //      res.writeHead(200, { "Content-type": `application/pdf` });
-        //    res.end(files)
-        //   //   console.log(files)
-
-        //     //  res.status(200).send(files);
-
-        //   }
-        // }
-        // );
-
-        // let fileSync = fs.readdirSync(directoryPath);
-        // console.log('fileSync: ', fileSync)
-
-        // let pdfParser = new PDFParse(fileSync)
-
-        // //let pdfParser=new PDFParse (this,1);
-        // pdfParser.loadPDF(directoryPath + fileName)
-        // console.log('Parse: ', pdfParser)
-        // console.log('PDF pages: ', pdfParser.numpages)
-
-        // console.log('File content: ', pdfParser.info)
-
       }
-    }
-    )
+      )
   } catch (err) {
     throw erreur;
   }
@@ -625,15 +658,15 @@ const updateArticle = async (req, res) => {
   }
 
   const datas = []
-  
+
 
   //const body=req.body;
-  console.log('      imagename:req.files.imagename', req.files  )
+  console.log('      imagename:req.files.imagename', req.files)
   const id = req.params.id;
-  
 
-    
-  if(!req.files){
+
+
+  if (!req.files) {
     Files.findByIdAndUpdate(id, {
       $set: {
         title: req.body.title,
@@ -648,7 +681,7 @@ const updateArticle = async (req, res) => {
         // imagename:req.files.imagename.name,
         // pathFile:req.body.pathFile,
         //multiple_files: datas
-       
+
       },
       updatedAt: Date.now()
     },
@@ -669,108 +702,108 @@ const updateArticle = async (req, res) => {
           message: "Error updating Article with id=" + id
         });
       });
-    }
- 
-   else{ 
-     if(req.files.imagename){
-      Files.findByIdAndUpdate(id, {
-        $set: {
-          title: req.body.title,
-          bio: req.body.bio,
-          abstract: req.body.abstract,
-          keyWords: req.body.keyWords,
-          abbreviations: req.body.abbreviations,
-          published: req.body.published,
-          status: req.body.status,
-          typeArticle: req.body.typeArticle,
-          attributesAticle: req.body.attributesAticle,
-          imagename:req.files.imagename.name,
-          pathFile:req.body.pathFile,
-          //multiple_files: datas
-         
-        },
-        updatedAt: Date.now()
-      },
-        {
-          new: true
-        }
-      )
-        .then(data => {
-          if (!data) {
-            res.status(404).send({
-              message: `Cannot update Article with id=${id}. Maybe Article was not found!`
-            });
-          } else res.send(
-            { message: "Article was updated successfully." });
-        })
-        .catch(err => {
-          res.status(500).send({
-            message: "Error updating Article with id=" + id
-          });
-        });
-      } 
-    
+  }
 
-    else{ 
-      if(req.files.multiple_files){
-
-      
-  req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
-  datas.push({
-    name: req.files.multiple_files.name,
-    mimetype: req.files.multiple_files.mimetype,
-    size: req.files.multiple_files.size
-  });
-
-      Files.findByIdAndUpdate(id, {
-        $set: {
-          title: req.body.title,
-          bio: req.body.bio,
-          abstract: req.body.abstract,
-          keyWords: req.body.keyWords,
-          abbreviations: req.body.abbreviations,
-          published: req.body.published,
-          status: req.body.status,
-          typeArticle: req.body.typeArticle,
-          attributesAticle: req.body.attributesAticle,
-          // imagename:req.files.imagename.name,
-          // pathFile:req.body.pathFile,
-          multiple_files: datas
-         
-        },
-        updatedAt: Date.now()
-      },
-        {
-          new: true
-        }
-      )
-        .then(data => {
-          if (!data) {
-            res.status(404).send({
-              message: `Cannot update Article with id=${id}. Maybe Article was not found!`
-            });
-          } else res.send(
-            { message: "Article was updated successfully." });
-        })
-        .catch(err => {
-          res.status(500).send({
-            message: "Error updating Article with id=" + id
-          });
-        });
-      } 
-
-      
   else {
-    if(req.files){
+    if (req.files.imagename) {
+      Files.findByIdAndUpdate(id, {
+        $set: {
+          title: req.body.title,
+          bio: req.body.bio,
+          abstract: req.body.abstract,
+          keyWords: req.body.keyWords,
+          abbreviations: req.body.abbreviations,
+          published: req.body.published,
+          status: req.body.status,
+          typeArticle: req.body.typeArticle,
+          attributesAticle: req.body.attributesAticle,
+          imagename: req.files.imagename.name,
+          pathFile: req.body.pathFile,
+          //multiple_files: datas
 
-      
-      req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
-      datas.push({
-        name: req.files.multiple_files.name,
-        mimetype: req.files.multiple_files.mimetype,
-        size: req.files.multiple_files.size
-      });
-    
+        },
+        updatedAt: Date.now()
+      },
+        {
+          new: true
+        }
+      )
+        .then(data => {
+          if (!data) {
+            res.status(404).send({
+              message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+            });
+          } else res.send(
+            { message: "Article was updated successfully." });
+        })
+        .catch(err => {
+          res.status(500).send({
+            message: "Error updating Article with id=" + id
+          });
+        });
+    }
+
+
+    else {
+      if (req.files.multiple_files) {
+
+
+        req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
+        datas.push({
+          name: req.files.multiple_files.name,
+          mimetype: req.files.multiple_files.mimetype,
+          size: req.files.multiple_files.size
+        });
+
+        Files.findByIdAndUpdate(id, {
+          $set: {
+            title: req.body.title,
+            bio: req.body.bio,
+            abstract: req.body.abstract,
+            keyWords: req.body.keyWords,
+            abbreviations: req.body.abbreviations,
+            published: req.body.published,
+            status: req.body.status,
+            typeArticle: req.body.typeArticle,
+            attributesAticle: req.body.attributesAticle,
+            // imagename:req.files.imagename.name,
+            // pathFile:req.body.pathFile,
+            multiple_files: datas
+
+          },
+          updatedAt: Date.now()
+        },
+          {
+            new: true
+          }
+        )
+          .then(data => {
+            if (!data) {
+              res.status(404).send({
+                message: `Cannot update Article with id=${id}. Maybe Article was not found!`
+              });
+            } else res.send(
+              { message: "Article was updated successfully." });
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Error updating Article with id=" + id
+            });
+          });
+      }
+
+
+      else {
+        if (req.files) {
+
+
+          req.files.multiple_files.mv('./uploads/' + req.files.multiple_files.name);
+          datas.push({
+            name: req.files.multiple_files.name,
+            mimetype: req.files.multiple_files.mimetype,
+            size: req.files.multiple_files.size
+          });
+
           Files.findByIdAndUpdate(id, {
             $set: {
               title: req.body.title,
@@ -782,10 +815,10 @@ const updateArticle = async (req, res) => {
               status: req.body.status,
               typeArticle: req.body.typeArticle,
               attributesAticle: req.body.attributesAticle,
-               imagename:req.files.imagename.name,
-               pathFile:req.body.pathFile,
+              imagename: req.files.imagename.name,
+              pathFile: req.body.pathFile,
               multiple_files: datas
-             
+
             },
             updatedAt: Date.now()
           },
@@ -806,11 +839,11 @@ const updateArticle = async (req, res) => {
                 message: "Error updating Article with id=" + id
               });
             });
-          } 
-    
-  }
+        }
+
+      }
     }
-    
+
   }
 }
 
@@ -942,118 +975,117 @@ const addLike = (async (req, res) => {
 
 const addView = (async (req, res) => {
 
-  
-//   Files.findByIdAndUpdate(req.params.id, {
-//     $push: { view: req.decoded.id }
-//   },
-//     {
-//       new: true
-//     })
 
-//     .then(data => {
-//       if (!data) {
-//         res.status(404).send({
-//           message: `Cannot update View with . Maybe Article was not found!`
-//         });
-//       } else res.send({ message: data.view.length });
-//     })
+  //   Files.findByIdAndUpdate(req.params.id, {
+  //     $push: { view: req.decoded.id }
+  //   },
+  //     {
+  //       new: true
+  //     })
 
-//     .catch(err => {
-//       res.status(500).send({
-//         message: "Error updating View with id="
-//       });
-//     });
+  //     .then(data => {
+  //       if (!data) {
+  //         res.status(404).send({
+  //           message: `Cannot update View with . Maybe Article was not found!`
+  //         });
+  //       } else res.send({ message: data.view.length });
+  //     })
+
+  //     .catch(err => {
+  //       res.status(500).send({
+  //         message: "Error updating View with id="
+  //       });
+  //     });
 
 
-// })
-  
-try {
-  const user= await User.findById({_id:req.decoded.id} );
- // console.log("inside get user",user)
-  
-  let visi = await Files.findById({_id:req.params.id}).populate('view')
-    console.log('req.parsm',req.params.id)
-    
-  const visiteur=visi.view.map((a)=>{
-    return a.name
-  })
-  console.log('visiteur',visiteur)
+  // })
 
-  const countt=visi.view.map((a)=>{
-    return a.count
-  })
-  console.log('count',(countt.length===0))
-  if(countt.length===0)
-  {
-    let c=countt
-    const data={
-      name : 'localhost',
-      count :  c+1,
-      viewBy: user,
-      article:req.params.id
+  try {
+    const user = await User.findById({ _id: req.decoded.id });
+    // console.log("inside get user",user)
 
-    }
-    console.log('c',(c))
+    let visi = await Files.findById({ _id: req.params.id }).populate('view')
+    console.log('req.parsm', req.params.id)
 
-    // Creating a new default record
-    const beginCount = await Files.findByIdAndUpdate(
-     {_id: req.params.id},
-      $set={
-     view:data
+    const visiteur = visi.view.map((a) => {
+      return a.name
     })
+    console.log('visiteur', visiteur)
 
-    console.log('beginCount 1',beginCount)
+    const countt = visi.view.map((a) => {
+      return a.count
+    })
+    console.log('count', (countt.length === 0))
+    if (countt.length === 0) {
+      let c = countt
+      const data = {
+        name: 'localhost',
+        count: c + 1,
+        viewBy: user,
+        article: req.params.id
 
-    // Saving in the database
-    beginCount.save()
+      }
+      console.log('c', (c))
 
-    // Sending thee count of visitor to the browser
-    res.send(`<h2>Counter: `+countt+'</h2>')
+      // Creating a new default record
+      const beginCount = await Files.findByIdAndUpdate(
+        { _id: req.params.id },
+        $set = {
+          view: data
+        })
 
-    // Logging when the app is visited first time
-    console.log("First visitor arrived")
+      console.log('beginCount 1', beginCount)
+
+      // Saving in the database
+      beginCount.save()
+
+      // Sending thee count of visitor to the browser
+      res.send(`<h2>Counter: ` + countt + '</h2>')
+
+      // Logging when the app is visited first time
+      console.log("First visitor arrived")
+    }
+    else {
+
+      // Incrementing the count of visitor by 1
+      let c = countt[0] + 1
+      const data = {
+        name: 'localhost',
+        count: c,
+        viewBy: user,
+        article: req.params.id
+
+      }
+      console.log('codff', data)
+      // Creating a new default record
+      const beginCount = await Files.findByIdAndUpdate(
+        { _id: req.params.id },
+
+        $push = {
+          view: data
+        })
+
+      console.log('beginCount 2', beginCount)
+
+      // Saving in the database
+      beginCount.save()
+
+
+      // Saving to the database
+
+      // Sending thee count of visitor to the browser
+      res.send(`<h2>Counter 2: ` + c + '</h2>')
+
+      // Logging the visitor count in the console
+    }
+  } catch (err) {
+    console.log("inside file  ");
+
+    res.status(500).send({
+      message:
+        err.message
+    });
   }
- else{
-
-  // Incrementing the count of visitor by 1
-  let c=countt[0]+1
-  const data={
-    name : 'localhost',
-    count :  c,
-    viewBy: user,
-    article:req.params.id
-
-  }
-  console.log('codff',data)
-  // Creating a new default record
-  const beginCount = await Files.findByIdAndUpdate(
-    {_id: req.params.id},
-    
-    $push={
-   view:data
-  })
-
-  console.log('beginCount 2',beginCount)
-
-  // Saving in the database
-  beginCount.save()
-
-  
-  // Saving to the database
-
-  // Sending thee count of visitor to the browser
-  res.send(`<h2>Counter 2: `+c+'</h2>')
-
-  // Logging the visitor count in the console
-}
-} catch (err) {
-  console.log("inside file  ");
-
-  res.status(500).send({
-    message:
-      err.message
-  });
-}
 
 });
 
@@ -1117,17 +1149,25 @@ const getArticle = (async (req, res) => {
   console.log('inside find article by id');
 
   try {
-    /*   const user= await User.findById({user:req.decoded.id } );
-       console.log("inside get user",user)
-       console.log("inside get user id ",req.decoded.id)
-       */
-    const article = await Files.findById({_id:req.params.id}).populate('authors').populate('comments.postedBy',['email','username']);
-    // console.log("inside get user", article.map((a)=>{
-    //   return(
-    //     a
-    //   )
-    // }))
+       const rulesChecked=await Files
+      .aggregate([
+            { "$lookup": {
+               "from": "Files",
+               "let": { "rulesChecked": "$rulesChecked" },
+             "pipeline": [
+                { "$match": { "$expr": { "$in": [ "$_id", "$$rulesChecked" ] } } }
+               ],
+             "as": "output"
+          }}
+       ])
 
+    const article = await Files.findById({ _id: req.params.id })
+    .populate('authors')
+    .populate('comments.postedBy', ['email', 'username'])
+    .populate('attributesAticle')
+    .populate('typeArticle',['label'])
+    .populate('rulesChecked');
+    
     res.status(200).json(article);
 
 

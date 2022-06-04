@@ -1,12 +1,33 @@
 const mongoose = require("mongoose");
 
+const ReviewSchema = mongoose.Schema;
+
+var reviews = new ReviewSchema({
+    article: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+
+    }],
+    editor: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+
+    }],
+    },
+    { timestamps: true }
+
+);
+
+
 const FilesSchema = mongoose.Schema;
 
 const Files = FilesSchema({
 
     multiple_files: [],
 
-   
+
     title: {
         type: String,
     },
@@ -28,9 +49,9 @@ const Files = FilesSchema({
 
     },
 
-    filepassword:{
+    filepassword: {
         type: String,
-        default:''        
+        default: ''
     },
     authors: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -51,10 +72,10 @@ const Files = FilesSchema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
-    
+
         name: String,
         count: Number,
-    
+
 
     }],
 
@@ -104,18 +125,21 @@ const Files = FilesSchema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Rule',
         }],
-        imagename: {
-            type: String,
-            required: true,
-    
-        },
-    
-        pathFile: {
-            type: String,
-            required: true,
-        },
 
-        
+    imagename: {
+        type: String,
+        required: true,
+
+    },
+
+    pathFile: {
+        type: String,
+        required: true,
+    },
+    
+    review: [reviews]
+    
+
 
 },
     { timestamps: true }

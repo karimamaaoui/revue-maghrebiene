@@ -7,6 +7,16 @@ const ruleSchema = new Schema({
         type: String,
         required:true,
     },
+
+    article: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article',
+      }],
+      checked: {
+        type:Boolean,
+        default:false
+    },
+
    
 });
 
