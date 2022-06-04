@@ -271,7 +271,7 @@ function Article() {
         formData.append('abbreviations', abbreviations);
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
-        formData.append('rulesChecked', rulesChecked);
+     //   formData.append('rulesChecked', rulesChecked);
         formData.append('pathFile', pathFile);
         formData.append('imagename', imagename);
         formData.append('filepassword', filepassword);
@@ -283,6 +283,13 @@ function Article() {
 
             formData.append('multiple_files', multiple_files[i]);
             setFilesname(multiple_files[i])
+        }
+
+        for (let j = 0; j < rulesChecked.length; j++) {
+            console.log(rulesChecked[j]);
+            formData.append('rulesChecked', rulesChecked[j]);
+
+
         }
         setPostSubmitted(true)
         console.log("form", formData)
@@ -522,7 +529,7 @@ function Article() {
                                                                 <div class="col-sm-3">
                                                                     <h6 class="mb-0">{t("profile:keyWords")}</h6>
                                                                 </div>
-                                                                <div class="col-sm-9 text-secondary">
+                                                                <div class="col-sm-8 text-secondary">
                                                                     <div className="tags-input-container" style={{ borderColor: "#B91736" }}>
                                                                         {
                                                                             tags.map((tag, index) => (
@@ -731,7 +738,7 @@ function Article() {
 
                                                                                                 // Case 1 : The user checks the box
                                                                                                 if (checked) {
-                                                                                                    setRulesChecked(e.target.value);
+                                                                                                    setRulesChecked([...rulesChecked, value])
 
                                                                                                 }
                                                                                             }

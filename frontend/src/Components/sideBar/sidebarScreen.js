@@ -36,90 +36,10 @@ export default function SidebarScreen() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const navigation = [
-    {
-      title: "Search Article",
-      href: "/search",
-      icon: "bi bi-search",
-    },
-    {
-      title: "Recent Article",
-      href: "/article",
-      icon: "bi bi-newspaper",
-    },
-
-    {
-
-      title: "Most Read",
-      href: "/adminpanel",
-      icon: "bi bi-book",
-    },
-
-  ];
-
-  let location = useLocation();
-
   return (
     <>
 
-      {/* <nav id="sidebar" >
-
-        <div id="wrapper" class="wrapper-content" >
-          <div id="sidebar-wrapper" style={{ backgroundColor: '#FEE5CF' }}>
-            <ul class="sidebar-nav">
-              <h2 style={{ marginTop: '10px' }}>
-                Menu
-              </h2>
-
-              <li className="list-unstyled components mb-2">
-                <a href="/search" className="inline-block ">
-                  <i className="bi bi-search "></i>
-                  {' '}
-                  Search Article</a>
-              </li>
-              <li className="list-unstyled components mb-2">
-                <a href="#" className="inline-block">
-                  <i className="bi bi-newspaper "></i>
-                  {' '}
-                  Recent Article</a>
-              </li>
-
-              <li className="list-unstyled components mb-2">
-                <a href="#" className="inline-block">
-                  <i className="bi bi-book"></i>
-                  {' '}
-                  Most Read</a>
-              </li>
-              {userInfo.roleuser === "Reader" ?
-              <>
-              
-                <li className="list-unstyled components mb-2">
-                  <a href="/users" className="inline-block">
-                    <i className="bi bi-book"></i>
-                    {' '}
-                    Users List</a>
-                </li>
-                
-                <li className="list-unstyled components mb-2">
-                  <a href="/managearticles" className="inline-block">
-                    <i className="bi bi-book"></i>
-                    {' '}
-                    Articles List</a>
-                </li>
-
-                </>
-                : <></>
-
-              }
-
-
-            </ul>
-          </div>
-
-        </div>
-
-      </nav> */}
-
+     
       <nav id="sidebar" >
 
         <div className="p-6 pt-5 " style={{ backgroundColor: '#FEE5CF', position: "sticky", height: "100%" }}>

@@ -42,6 +42,8 @@ import AddPost from './Components/Home/addPost'
 
 import MostRead from './Components/MostRead/MostRead'
 
+import RepondingToArticle from './Components/editorPanel/RepondingToArticle'
+import CorrectionPage from './Components/editorPanel/CorrectionPage'
 
 export default function RoutesList() {
 
@@ -54,6 +56,8 @@ export default function RoutesList() {
         <Routes>
         <Route path="/a" element={<SideBar />} />
         <Route path="/mostread" element={<MostRead />} />
+        <Route path="/respond" element={<RepondingToArticle />} />
+        <Route path="/correction/:id" element={<CorrectionPage />} />
 
         <Route path="/b/:id" element={<AddPost />} />
 
