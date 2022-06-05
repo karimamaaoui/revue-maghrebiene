@@ -15,7 +15,7 @@ function Step1({ formData, setFormData }) {
 
   const typeList = useSelector((state) => state.typeList);
   const { loading, error, types } = typeList;
-  
+
   // const attributeList = useSelector((state) => state.attributeList);
   // const { loadingAttribute, errorAttribute, attributes } = attributeList;
 
@@ -23,14 +23,14 @@ function Step1({ formData, setFormData }) {
   // const { loadingRule, errorRule, rules } = getAllRule;
 
   // console.log("rules", rules)
-   const userLogin = useSelector((state) => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
 
   useEffect(() => {
     dispatch(listTypes());
-//    dispatch(listAttribute());
-  //  dispatch(listRules())
+    //    dispatch(listAttribute());
+    //  dispatch(listRules())
 
     if (!userInfo) {
       history.push("/");
@@ -44,19 +44,58 @@ function Step1({ formData, setFormData }) {
   return (
 
     <div className="sign-up-container" style={{ backgroundColor: 'white' }}>
-        <label style={{marginLeft:'-140px'}}>Section</label>
-      <select className="select" value={formData.typeArticle} 
-      onChange={(event) =>
-        setFormData({ ...formData, typeArticle: event.target.value }) }>
-          
-        <option value="">Choose one</option>
-        {types?.map((type, key) => {
+        <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(1 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Title Is Valid ?</h5>
+                </div><div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
+                  </label>
+                </div>
+                <div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          return <option key={key} value={type._id} > {type.label}</option>;
-        })}
-      </select>
+      <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(2 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Abstract Is Valid ?</h5>
+                </div><div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
+                  </label>
+                </div>
+                <div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-   
     </div>
   );
 }

@@ -1,0 +1,29 @@
+.app__newsletter{
+    padding:2rem 4rem;
+    background-color: #D68082;
+
+
+}
+.app__newsletter-heading{
+    text-align: center;
+    color:white;
+}
+.app__newsletter-input{
+    flex-direction: row;
+    margin-top:3rem;
+}
+.app__newsletter-input input{
+    width:420px;
+    border:1px solid goldenrod;
+    border-radius:15px;
+    font-size: 1rem;
+    font-family:var(--font-base);
+    color:black;
+    margin-right:2rem;
+    padding:0.75rem 1rem;
+    background: white;;
+}
+.app__newsletter-input button{
+    width:max-content;
+}
+

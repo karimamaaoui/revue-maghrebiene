@@ -74,7 +74,7 @@
 }
 
 .wrapper .accordion-collapse {
-    background-color: #eaf3fa
+    background-color: #FEE5CF
 }
 
 .wrapper .accordion-collapse ul li {
@@ -84,7 +84,7 @@
 }
 
 .wrapper .accordion-collapse ul li:hover {
-    background-color: #c9e7ff
+    background-color:white
 }
 
 .wrapper .accordion-collapse ul li a {

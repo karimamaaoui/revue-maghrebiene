@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +7,13 @@ import { getAllArticlePaginate, getAllArticles } from '../../redux/Actions/artic
 import NavbarList from "../adminPanel/views/navbarList";
 import SidebarScreen from "../sideBar/sidebarScreen";
 import './RepondingToArticle.css'
+
+
+import Accepter from '../../assets/accepter.png'
+import Refuser from '../../assets/refuser.png'
+
+
+
 export default function RepondingToArticle() {
 
 
@@ -61,7 +69,7 @@ export default function RepondingToArticle() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Article</h1>
+                                                <h1 style={{ color: '#B91736' }}>Correct Article</h1>
                                             </div>
                                             <br />
                                             <div className="row ">
@@ -75,42 +83,74 @@ export default function RepondingToArticle() {
                                                     return (
 
                                                         <div class="row" key={index}>
-                                                            
+
                                                             <div class="col-md-12">
 
                                                                 <ul class="list-group fa-padding">
                                                                     <li class="list-group-item" data-toggle="modal" data-target="#issue">
-                                                                    <button type="button" class="pull-right" 
-                                                                    style={{backgroundColor:'#FEE5CF',border:'none',borderRadius:'12px',padding:'5px'}}
-                                                                    data-toggle="modal" 
-                                                                    data-target="#newIssue" 
-                                                                    onClick={()=>{
-                                                                        history(`/correction/${tdata._id}`)
-                                                                    }}> Correct</button>
-
+                                                                        <div className='col-12'>
+                                                                            <button type="button" class="pull-right"
+                                                                                style={{ backgroundColor: '#FEE5CF', border: 'none', borderRadius: '12px', padding: '5px' }}
+                                                                                data-toggle="modal"
+                                                                                data-target="#newIssue"
+                                                                                onClick={() => {
+                                                                                    history(`/correction/${tdata._id}`)
+                                                                                }}> Correct</button>
+                                                                        </div>
+                                                                        <br/>
+                                                                        
+                                                                        <div className='row'>
+                                                                        <div className='col'> 
                                                                         <div class="media">
                                                                             <i class="fa fa-file-o pull-left"></i>
 
                                                                             <div class="media-body" >
 
-                                                                                <strong>Title : {tdata.title}</strong> 
-                                                                                <br/>
+                                                                                <strong >Title : {tdata.title}</strong>
+                                                                                <br />
                                                                                 <span >
-                                                                                status :   {tdata.status}</span>
-                                                                                    {tdata.authors?.map((a, key) => {
-                                                                    return (
-                                                                        <div key={key}>
-                                                              
-                                                                                <p class="info">Writted by {a.username}
-                                                                                </p>
-                                                                                </div> 
-                                                                                )})}
+                                                                                    Status :
+                                                                                    {tdata.status === "loading" ?
+                                                                                        <div style={{ display: "inline-flex" }}>
+                                                                                            <img src={Refuser}
+                                                                                                style={{ height: '20px', }} />
+                                                                                        </div>
+                                                                                        : tdata.status === "accepted" ?
+
+                                                                                            <div style={{ display: "inline-flex" }}>
+                                                                                                <img src={Accepter}
+                                                                                                    style={{ height: '20px' }} />
+                                                                                            </div>
+                                                                                            :
+                                                                                            <div style={{ display: "inline-flex" }}>
+                                                                                                <img src={Accepter}
+                                                                                                    style={{ height: '20px' }} />
+                                                                                            </div>
+
+
+                                                                                    }
+
+
+
+
+                                                                                </span>
+                                                                                {tdata.authors?.map((a, key) => {
+                                                                                    return (
+                                                                                        <div key={key}>
+
+                                                                                            <p class="info">Writted by {a.username}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    )
+                                                                                })}
                                                                                 <p>
-                                                                                 keyWords : {tdata.keyWords} 
-                                                                                  <br/>
-                                                                                  <br/>  CreatedAt : {tdata.createdAt} </p>
-                                                                                 
+                                                                                    keyWords : {tdata.keyWords}
+                                                                                    <br />
+                                                                                    <br />  CreatedAt :{moment(tdata.createdAt).format("DD-MM-YYYY HH:mm:ss")}  </p>
+
                                                                             </div>
+                                                                        </div>
+                                                                        </div>
                                                                         </div>
                                                                     </li>
                                                                 </ul>

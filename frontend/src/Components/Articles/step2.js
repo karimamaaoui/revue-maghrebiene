@@ -43,87 +43,58 @@ function Step2({ formData, setFormData }) {
   return (
 
     <div className="sign-up-container" style={{ backgroundColor: 'white' }}>
-      <br/>
-      <label style={{fontSize:'20px'}}>Choose Attribute</label>
-
-      <div style={{ display: "inline-flex" ,fontSize:"18px" }}>
-
-        {attributes?.map((item, i) => (
-
-          <div
-            key={i}>
-
-            <input type="checkbox" className='checkbox__box'
-              value={item._id}
-              name={formData.attributesAticle}
-              onChange={(e) => {
-                // Destructuring
-                const { value, checked } = e.target;
-                const { attributesAticle } = formData;
-                console.log(`${value} is ${checked}`);
-
-                // Case 1 : The user checks the box
-                if (checked) {
-                  setFormData({ ...formData, attributesAticle: [...attributesAticle, value] })
-
-                  /*setFormData({
-                     attributesAticle:[...attributesAticle, value] 
-                   });*/
-                }
-              }
-
-              }
-            />
-            <label className='col' id="check" style={{fontSize:'17px'}}  >{item.label}  </label>
-
-
-          </div>
-        ))
-        }
-      </div>
-        <br/>
-        <br/>
-
-      <div class="container">
-        <div className='row  '>
-          <div className="col-md-15 offset-md">
-            <div className='card'>
-
-          <label>Article Requirements</label>
-            <p style={{fontSize:'10px'}}>You muse read and acknowledge that you've completed the requirements below proceeding</p>
-            <div style={{ display: "inline-flex" }}>
-
-              {rules?.map((item, i) => (
-
-                <div key={i}>
-
-                  <input type="checkbox" className='checkbox__box'
-                    value={item._id}
-                    name={formData.rulesChecked}
-                    onChange={(e) => {
-                      // Destructuring
-                      const { value, checked } = e.target;
-                      const { rulesChecked } = formData;
-                      console.log(`${value} is ${checked}`);
-
-                      // Case 1 : The user checks the box
-                      if (checked) {
-                        setFormData({ ...formData, rulesChecked: [...rulesChecked, value] })
-
-                      }
-                    }
-                    }
-                  />
-                  <label className='col' id="check" style={{fontSize:'10px'}}  >{item.label}  </label>
+              <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(3 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Title Is Valid ?</h5>
+                </div><div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
+                  </label>
                 </div>
-              ))
-              }
+                <div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
+                  </label>
+                </div>
+              </div>
             </div>
-            </div>
-
           </div>
         </div>
       </div>
+
+      <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(4 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Title Is Valid ?</h5>
+                </div><div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
+                  </label>
+                </div>
+                <div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

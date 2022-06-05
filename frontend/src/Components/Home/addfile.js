@@ -763,103 +763,85 @@ export default function AddFile(props) {
     const [Total_Revenue, setTotalRevenue] = useState('');
     console.log(Total_Revenue)
     const [companyInfo, setCompanyInfo] = useState([])
-    
+
     const ReadingProgress = ({ target }) => {
         const [readingProgress, setReadingProgress] = useState(0);
         const scrollListener = () => {
-          if (!target.current) {
-            return;
-          }
-      
-          const element         = target.current;
-          const totalHeight     = element.clientHeight - element.offsetTop - (window.innerHeight);
-          const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      
-          if (windowScrollTop === 0) {
-            return setReadingProgress(0);
-          }
-      
-          if (windowScrollTop > totalHeight) {
-            return setReadingProgress(100);
-          }
-         
-          setReadingProgress((windowScrollTop / totalHeight) * 100);
-        };
-        
-        useEffect(() => {
-          window.addEventListener("scroll", scrollListener);
-          return () => window.removeEventListener("scroll", scrollListener);
-        });
-      
-        return <div className={`reading-progress-bar`} style={{width: `${readingProgress}%`}} />;
-      };
-        const target = React.createRef();
+            if (!target.current) {
+                return;
+            }
 
-   
+            const element = target.current;
+            const totalHeight = element.clientHeight - element.offsetTop - (window.innerHeight);
+            const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+            if (windowScrollTop === 0) {
+                return setReadingProgress(0);
+            }
+
+            if (windowScrollTop > totalHeight) {
+                return setReadingProgress(100);
+            }
+
+            setReadingProgress((windowScrollTop / totalHeight) * 100);
+        };
+
+        useEffect(() => {
+            window.addEventListener("scroll", scrollListener);
+            return () => window.removeEventListener("scroll", scrollListener);
+        });
+
+        return <div className={`reading-progress-bar`} style={{ width: `${readingProgress}%` }} />;
+    };
+    const target = React.createRef();
+
+
     return (
         <>
 
-<div class="wrapper bg-white rounded shadow">
- <div class="h2 text-center fw-bold">
- BBBootstrap
- </div>
-  <div class="h3 text-primary text-center">
-  How can we help you?</div>
-   <div class="d-flex justify-content-center"> <div class="search w-75 d-flex align-items-center"> 
-   <span class="fas fa-search text-dark"></span> 
-   <input type="text" class="form-control" placeholder="Describe your issue"/>
-    </div> </div> 
-    <div class="accordion accordion-flush border-top border-start border-end" id="myAccordion"> 
-    <div class="accordion-item"> <h2 class="accordion-header" id="flush-headingOne">
-     <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse"
-      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-       Popular on BBBootstrap </button> </h2> <div id="flush-collapseOne" class="accordion-collapse collapse border-0"
-        aria-labelledby="flush-headingOne" data-bs-parent="#myAccordion"> <div class="accordion-body p-0"> 
-        <ul class="list-unstyled m-0"> <li><a href="#">Adding Snippets</a></li> <li><a href="#">Accessing 
-        Color Palette</a></li>
-         <li><a href="#">
-         Searching Snippets</a></li> 
-         <li><a href="#">How to use online editor
-          tools</a></li> <li><a href="#">Upgrading
-           Pro</a></li> </ul> </div> 
-           </div> </div>
-            <div class="accordion-item"> 
-            <h2 class="accordion-header" id="flush-headingOne">
-             <button class="accordion-button collapsed border-0" type="button" 
-             data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" 
-             aria-expanded="false" aria-controls="flush-collapseTwo"> Know About Pro
-              </button> </h2> <div id="flush-collapseTwo" class="accordion-collapse collapse border-0" 
-              aria-labelledby="flush-headingOne" data-bs-parent="#myAccordion"> <div class="accordion-body 
-              p-0"> <ul class="list-unstyled m-0"> <li><a href="#">How to upgrade to pro</a></li> 
-              <li><a href="#">Benifits of Pro</a></li> <li><a href="#">Payment methods to get Pro
-              </a></li> </ul> </div> </div> </div> <div class="accordion-item"> 
-              <h2 class="accordion-header" id="flush-headingOne"> 
-              <button class="accordion-button collapsed border-0"
-               type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false"
-                aria-controls="flush-collapseThree"> BBBootstrap Tools </button> </h2> <div id="flush-collapseThree" 
-                class="accordion-collapse collapse border-0" aria-labelledby="flush-headingOne" data-bs-parent="#myAccordion">
-                     <div class="accordion-body p-0"> <ul class="list-unstyled m-0"> <li><a href="#">How to use Pro Online Editor</a>
-                     </li> <li><a href="#">Know Gradient generator</a></li> <li><a href="#">Using Beautifier</a></li> </ul> </div> 
-                     </div> </div> <div class="accordion-item"> <h2 class="accordion-header" id="flush-headingOne"> 
-                     <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                      aria-expanded="false" aria-controls="flush-collapseFour"> Download Snippets </button> </h2> <div id="flush-collapseFour"
-                       class="accordion-collapse collapse border-0" aria-labelledby="flush-headingOne" data-bs-parent="#myAccordion"> 
-                       <div class="accordion-body p-0"> <ul class="list-unstyled m-0"> <li><a href="#">How to download snippets</a></li> 
-                       <li><a href="#">Donate to Author</a></li> <li><a href="#">Donation methods</a></li> </ul> </div> </div> </div> 
-                       <div class="accordion-item"> <h2 class="accordion-header" id="flush-headingOne"> <button class="accordion-button 
-                       collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false"
-                        aria-controls="flush-collapseFive"> BBBootstrap Icons </button> </h2> <div id="flush-collapseFive" class="accordion-collapse 
-                        collapse border-0" aria-labelledby="flush-headingOne" data-bs-parent="#myAccordion"> <div class="accordion-body p-0"> 
-                        <ul class="list-unstyled m-0"> <li><a href="#">Adding icons to snippets</a></li> <li><a href="#">Fontawesome Icons</a>
-                        </li> <li><a href="#">Material Design</a></li> </ul> </div> </div> </div> <div class="accordion-item"> <h2 class="accordion-header"
-                         id="flush-headingOne"> <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse" 
-                         data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix"> Policy & copyrights </button> 
-                         </h2> <div id="flush-collapseSix" class="accordion-collapse collapse border-0" aria-labelledby="flush-headingOne"
-                          data-bs-parent="#myAccordion"> <div class="accordion-body p-0"> <ul class="list-unstyled m-0"> <li><a href="#">BBBootstrap Guidelines</a></li>
-                           <li><a href="#">BBBootstrap Policies</a></li> <li><a href="#">Copyright and right management</a></li> </ul> </div> </div> </div> </div> </div>
+            <div class="container mt-5 mb-5"> <div class="row"> <div class="col-md-8"> 
+            <div class="bg-white p-3 rounded mt-2">
+                 <div class="row"> <div class="col-md-3">
+                <div class="d-flex flex-column justify-content-center align-items-center icon-container bg-success text-white ">
+                    <i class="fa fa-flask fa-5x mb-3 mt-5">
+                </i>
+                <span class="mb-4">Hands on Lab</span>
+                </div> 
+                </div>
+                 <div class="col-md-8 "> 
+                <div class="listing-title">
+                    <h5>Getting started with docker on linux for Azure</h5>
+                </div> <div class="d-flex flex-row align-items-center">
+                        <div class="d-flex flex-row align-items-center ratings">
+                            <span class="mr-1 rating-number">4</span>
+                             <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <span class="mr-2 text-black-50 number-ratings">
+                                (12342 ratings)</span></div>
+                                 <div class="level mr-2">
+                            <span>Level:</span>
+                            <span class="font-weight-bold">Beginner
+                            </span></div>
+                             <div class="level mr-1">
+                            <span>Time:</span>
+                            <span class="font-weight-bold">
+                                1h 20m</span></div> </div> 
+                                <div class="description">
+                        <p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer...
+                            <br /></p> </div> 
+                            <div class="tags mb-2"><span>Microsoft</span><span>Azure</span><span>Development</span></div> </div> 
+                            
+            </div>
+            </div>
+       </div> </div>
+            </div>
 
-
-                                    {/* <div class="container">
+            {/* <div class="container">
 <div class="col-md-7">
 <div class="well">
     <form accept-charset="UTF-8" action="" method="POST">

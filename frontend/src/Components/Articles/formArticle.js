@@ -5,7 +5,7 @@ import Step3 from './step3';
 import './formArticle.css'
 import SidebarScreen from '../sideBar/sidebarScreen';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { listTypes } from '../../redux/Actions/typeAction';
 import {listAttribute} from '../../redux/Actions/attributeActions';
 import Header from '../adminPanel/layouts/Header';
@@ -33,6 +33,10 @@ function FormArticle() {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const id = useParams();
+  const readId = id.id
+  console.log("id =",readId)
+
 
 
   useEffect(() => {
@@ -73,7 +77,7 @@ function FormArticle() {
     type: '',
 
   });
-  const FormTitles = ["Start", "Next Step", "Add Metadata","Upload files"];
+  const FormTitles = ["Start", "Next Step", "Next Step","Next Step"];
 
 
   const PageDisplay = () => {
@@ -89,14 +93,14 @@ function FormArticle() {
       return <Step4 formData={formData} setFormData={setFormData} />;
     }
   };
-  const submitHandler = async (e) => {
+  // const submitHandler = async (e) => {
 
-    e.preventDefault();   
-     //console.log("user info from register",addnewArticle(formData))
+  //   e.preventDefault();   
+  //    //console.log("user info from register",addnewArticle(formData))
 
-    dispatch(addnewArticle(formData));
+  //   dispatch(addnewArticle(formData));
 
-  }
+  // }
 
 
   return (
@@ -153,7 +157,7 @@ function FormArticle() {
                         }}
                       >
                              
-                        {page === FormTitles.length - 1 ? <button style={{borderRadius:"15px"}} onClick={submitHandler}>Submit </button>   :<button style={{borderRadius:"15px"}}> Next </button>}
+                        {page === FormTitles.length - 1 ? <button style={{borderRadius:"15px"}} >Submit </button>   :<button style={{borderRadius:"15px"}}> Next </button>}
                       </div>
                       </div>
                     </div>

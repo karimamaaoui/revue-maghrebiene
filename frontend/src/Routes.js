@@ -44,6 +44,8 @@ import MostRead from './Components/MostRead/MostRead'
 
 import RepondingToArticle from './Components/editorPanel/RepondingToArticle'
 import CorrectionPage from './Components/editorPanel/CorrectionPage'
+import CheckedCorrection from './Components/editorPanel/checkedCorrection/checkedCorrection'
+import Landing from './Landing'
 
 export default function RoutesList() {
 
@@ -54,10 +56,14 @@ export default function RoutesList() {
 
       <div>
         <Routes>
+        <Route path="/" element={<Landing />} />
+
         <Route path="/a" element={<SideBar />} />
         <Route path="/mostread" element={<MostRead />} />
         <Route path="/respond" element={<RepondingToArticle />} />
         <Route path="/correction/:id" element={<CorrectionPage />} />
+
+        <Route path="/checked/:id" element={<CheckedCorrection />} />
 
         <Route path="/b/:id" element={<AddPost />} />
 
@@ -85,9 +91,9 @@ export default function RoutesList() {
           <Route path="/editprofile" element={<UpdateProfile />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/" element={<Started />} />
+          {/* <Route path="/" element={<Started />} /> */}
           <Route path="/start" element={<Authenticate />} />
-          {/* <Route path="/a" element={<FormArticle />} /> */}
+          <Route path="/arti/:id" element={<FormArticle />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/restpassword" element={<RestPassword />} />
           <Route path="/s" element={<AddFile />} />

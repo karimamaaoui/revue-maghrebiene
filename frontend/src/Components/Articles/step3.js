@@ -116,197 +116,35 @@ function Step3() {
 
 
   return (
-    <div className="" style={{ backgroundColor: 'white' }}>
-      <div class="card-body">
-        <form onSubmit={handleSubmit} encType='multipart/form-data' >
-
-          <div class="row mb-3">
-            <div class="col-sm-2">
-            </div>
-            <div class="col-sm-9 text-secondary">
-
-              <select className="select" name="typeArticle"
-                onChange={(e) => {
-                  setTypeArticle(e.target.value);
-
-                }}
-              >
-
-                <option value="">Choose one</option>
-                {types?.map((type, key) => {
-
-                  return <option key={key} value={type._id} > {type.label}</option>;
-                })}
-              </select>
-            </div>
-          </div>
-
-
-          <div class="row mb-3">
-            <div class="sign-up-container">
-
-              <label style={{ fontSize: '20px' }}>Choose Categorie</label>
-
-              <div style={{ display: "inline-flex", fontSize: "50px" }}>
-
-                {attributes?.map((item, i) => (
-
-                  <div
-                    key={i}>
-
-                    <input type="checkbox" className='checkbox__box'
-                      value={item._id}
-                      name={attributesAticle}
-                      onChange={(e) => {
-                        // Destructuring
-                        const { value, checked } = e.target;
-                        console.log(`${value} is ${checked}`);
-
-                        // Case 1 : The user checks the box
-                        if (checked) {
-                          setAttributesAticle([value])
-
-                        }
-                      }
-
-                      }
-                    />
-                    <label className='col' id="check" style={{ fontSize: '17px' }}  >{item.label}  </label>
-
-
-                  </div>
-                ))
-                }
+    <div className="sign-up-container" style={{ backgroundColor: 'white' }}>
+          <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(1 of 20)</span></div>
               </div>
-
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">Title</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-              <input
-                type="text"
-                name="title"
-                className="form-control"
-
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">Bio</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-
-              <input
-                type="text"
-                className="form-control"
-                name="bio"
-                onChange={handleChangeBio}
-              />
-            </div>
-          </div>
-
-
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">Abstract</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-              <input
-                type="text"
-                className="form-control"
-                name="abstract"
-                onChange={(e) => {
-                  setAbstract(e.target.value);
-
-                }}
-              />
-            </div>
-          </div>
-
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">KeyWords</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-              <input
-                type="text"
-                className="form-control"
-                name="keyWords"
-                onChange={(e) => {
-                  setKeyWords(e.target.value);
-
-                }}
-              />
-            </div>
-          </div>
-
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">Abbreviations</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-              <input
-                type="text"
-                className="form-control"
-                name="abbreviations"
-                onChange={(e) => {
-                  setAbbreviations(e.target.value);
-
-                }}
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-sm-3">
-              <h6 class="mb-0">Content</h6>
-            </div>
-            <div class="col-sm-9 text-secondary">
-              <input
-                type="file"
-                name="multiple_files"
-                className="file-uploader "
-                multiple
-                onChange={handlePhoto}
-              />
-            </div>
-          </div>
-
-          
-        </form>
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-9 text-secondary">
-              <div  className="footer">
-
-                <div style={{ display: "inline-flex" }}>
-
-                  <button
-                    style={{ borderRadius: "15px" }}
-                  >
-                    Add Article
-                  </button>
-
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Title Is Valid ?</h5>
+                </div><div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
+                  </label>
+                </div>
+                <div class="ans ml-2">
+                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-   
+        </div>
       </div>
 
-    </div>
-  );
+</div>
+);
 }
 
 export default Step3;

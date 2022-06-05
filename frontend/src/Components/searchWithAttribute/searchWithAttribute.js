@@ -104,7 +104,7 @@ export default function SearchWithAttribute() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Search With Theme:::::::::::::::::::::::::::::::::::::::::::::
+                                                <h1 style={{ color: '#B91736' }}>Search With Theme
                                                 </h1>
                                             </div>
                                             <br />
