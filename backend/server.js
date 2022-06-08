@@ -20,9 +20,13 @@ const viewRoute = require('./routes/viewRoute');
 const demandRoute = require('./routes/demandRoute/demandRoute');
 const feedbackRoute=require('./routes/feedbackRoute/feedRoute')
 const favoriteRoute=require('./routes/favoriteRoute/favoriteRoute')
+const rooms = ['general', 'tech', 'finance', 'crypto'];
+const cors = require("cors");
 
 const http = require('http');
 const Files = require("./model/Files");
+const User = require("./model/user");
+const Message = require("./model/Message");
 
 app.use(bodyParser.json())
 
@@ -33,6 +37,7 @@ const io = require('socket.io')(server, {
   },
 });
 
+app.use(cors());
 
 let onlineUsers = [];
 
@@ -48,17 +53,7 @@ const removeUser = (socketId) => {
 io.on("connection", (socket) => {
 
   console.log("connected to socket .io", socket);
-  //io.emit('firstevent',"hello this it test");
-
-  // socket.on('setup',(userData)=>{
-  //           socket.join(userData._id);
-  //           console.log("user data id",userData._id)
-  //         socket.emit('connected');
-  //         })
-  // socket.on("disconnect",()=>[
-  //     console.log("someone has left")
-
-  // ])
+  
   socket.on('setup', (username) => {
     socket.on('setup', (userData) => {
       addNewUser(username, socket.id)
@@ -80,7 +75,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("check_all_notifications", async () => {
-    const files = await Files.find({});
+    const files = await Files.find({}).sort({createdAt:-1}).limit(5);
 
     files.forEach((file) => {
       file.read = true;
@@ -136,6 +131,62 @@ app.use(
 app.use(
   fileUpload()
 );
+
+async function getLastMessagesFromRoom(room){
+  let roomMessages = await Message.aggregate([
+    {$match: {to: room}},
+    {$group: {_id: '$date', messagesByDate: {$push: '$$ROOT'}}}
+  ])
+  return roomMessages;
+}
+
+function sortRoomMessagesByDate(messages){
+  return messages.sort(function(a, b){
+    let date1 = a._id.split('/');
+    let date2 = b._id.split('/');
+
+    date1 = date1[2] + date1[0] + date1[1]
+    date2 =  date2[2] + date2[0] + date2[1];
+
+    return date1 < date2 ? -1 : 1
+  })
+}
+
+// socket connection
+
+io.on("connection", (socket) => {
+
+  socket.on('new-user', async ()=> {
+    const members = await User.find();
+    io.emit('new-user', members)
+  })
+
+  socket.on('join-room', async(newRoom, previousRoom)=> {
+    socket.join(newRoom);
+    socket.leave(previousRoom);
+    let roomMessages = await getLastMessagesFromRoom(newRoom);
+    roomMessages = sortRoomMessagesByDate(roomMessages);
+    socket.emit('room-messages', roomMessages)
+  })
+
+  socket.on('message-room', async(room, content, sender, time, date) => {
+    const newMessage = await Message.create({content, from: sender, time, date, to: room});
+    let roomMessages = await getLastMessagesFromRoom(room);
+    roomMessages = sortRoomMessagesByDate(roomMessages);
+    // sending message to room
+    io.to(room).emit('room-messages', roomMessages);
+    socket.broadcast.emit('notifications', room)
+  })
+
+  
+
+})
+
+
+app.get('/rooms', (req, res)=> {
+  res.json(rooms)
+})
+
 
 // routes 
 app.use('/api/auth/', userRegister);

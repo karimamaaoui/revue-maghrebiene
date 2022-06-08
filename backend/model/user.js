@@ -17,6 +17,7 @@ const User = UserSchema({
 
 
     },
+     
     lastname:{
         type:String,
         default:"",
@@ -42,8 +43,17 @@ const User = UserSchema({
         type:String,
         default:""
     },
+
+    newMessages: {
+        type: Object,
+        default: {}
+      },
+   
     
-    
+      status: {
+        type: String,
+        default: 'online'
+      },
     roles: [
         {
           type: mongoose.Schema.Types.ObjectId,

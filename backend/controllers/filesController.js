@@ -239,6 +239,8 @@ const getAllArticle = (
         .populate('authors')
         .populate('comments')
         .populate('rulesChecked')
+        .populate('view')
+        
 
         .sort({ createdAt: -1 }).limit(limit).skip(skip);
 
@@ -1141,6 +1143,118 @@ const addComment = (async (req, res) => {
 
 })
 
+//add review 
+const addReview = (async (req, res) => {
+
+  const editorReview = {
+    text: req.body.text,
+    postedBy: req.decoded.id,
+    article:req.params.id
+  }
+  Files.findByIdAndUpdate(req.params.id, {
+    $push: { editorReview: editorReview }
+  }, {
+    new: true
+  })
+
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Article with . Maybe Article was not found!`
+        });
+      } else res.send({ message: "Article was updated successfully." });
+
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Article with id="
+      });
+    });
+
+
+})
+
+  //pulishArticle
+  const publishArticle = (async (req, res) => {     
+    try{
+    const editorValidation = {
+   
+    titleValidation:req.body.titleValidation,
+    abstractValidation:req.body.abstractValidation,
+    keywordsValidation:req.body.keywordsValidation,
+    abbreviationsValidation:req.body.abbreviationsValidation,
+    filepasswordValidation:req.body.filepasswordValidation,
+    imageValidation:req.body.imageValidation,
+    themeValidation:req.body.themeValidation,
+    rulesValidation:req.body.rulesValidation,
+    typeValidation:req.body.typeValidation,
+    fileValidation:req.body.fileValidation,
+  }
+
+  console.log("editorValidation",editorValidation)
+
+  if(editorValidation.titleValidation ==='false' && editorValidation.abstractValidation==='false' && editorValidation.themeValidation==='false'
+    && editorValidation.keywordsValidation==='false' && editorValidation.abbreviationsValidation==='false' && editorValidation.filepasswordValidation==='false' &&
+        editorValidation.imageValidation==='false' && editorValidation.rulesValidation==='false' && editorValidation.typeValidation==='false'
+         && editorValidation.fileValidation==='false'
+          )
+{
+  Files.findByIdAndUpdate(req.params.id, {
+    $set: { editorValidation: editorValidation, status:'rejected',published:false },
+
+  }, {
+    new: true
+  })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Article with . Maybe Article was not found!`
+        });
+      } else res.send({ editorValidation });
+
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Article with id="
+      });
+    });
+
+
+}
+  else if(editorValidation.titleValidation ==='true' && editorValidation.abstractValidation==='true' && editorValidation.themeValidation==='true'
+    && editorValidation.keywordsValidation==='true' && editorValidation.abbreviationsValidation==='true' && editorValidation.filepasswordValidation==='true' &&
+        editorValidation.imageValidation==='true' && editorValidation.rulesValidation==='true' && editorValidation.typeValidation==='true' && editorValidation.fileValidation==='true'
+          )
+
+{
+  Files.findByIdAndUpdate(req.params.id, {
+    $set: { editorValidation: editorValidation,published:true,status:'accepted' },
+
+  }, {
+    new: true
+  })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Article with . Maybe Article was not found!`
+        });
+      } else res.send({ editorValidation });
+
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Article with id="
+      });
+    });
+
+  }}
+    catch (err) {
+      res.status(500).json({ msg: "Unauthorized" });
+    }
+  
+}
+)
+
 
 // Get One
 
@@ -1178,6 +1292,8 @@ const getArticle = (async (req, res) => {
 
 });
 
+
+
 const PdfParse = require('pdf-parse');
 const user = require('../model/user');
 const View = require('../model/View');
@@ -1204,6 +1320,7 @@ module.exports = {
   convertFile,
   addComment,
   addView,
-
-  getAllViews
+  addReview,
+  getAllViews,
+  publishArticle
 }

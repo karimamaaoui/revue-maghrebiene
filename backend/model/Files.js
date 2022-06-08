@@ -1,20 +1,58 @@
 const mongoose = require("mongoose");
 
 const ReviewSchema = mongoose.Schema;
+const ValidationSchema = mongoose.Schema;
 
 var reviews = new ReviewSchema({
-    article: [{
+    postedBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
 
     }],
-    editor: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
+    text:String
+    },
+    { timestamps: true }
 
-    }],
+);
+
+var validation = new ValidationSchema({
+    titleValidation:{
+        type:Boolean,
+        default:false
+    },
+    abstractValidation:{
+        type:Boolean,
+        default:false
+    },
+    keywordsValidation:{
+        type:Boolean,
+        default:false
+    },
+    abbreviationsValidation:{
+        type:Boolean,
+        default:false
+    },
+    filepasswordValidation:{
+        type:Boolean,
+        default:false
+    },
+    imageValidation:{
+        type:Boolean,
+        default:false
+    },
+    themeValidation:{
+        type:Boolean,
+        default:false
+    },
+    rulesValidation:{
+        type:Boolean,
+        default:false
+    },
+    typeValidation:{
+        type:Boolean,
+        default:false
+    }
     },
     { timestamps: true }
 
@@ -137,7 +175,9 @@ const Files = FilesSchema({
         required: true,
     },
     
-    review: [reviews]
+    editorReview: [reviews],
+
+    editorValidation: [validation]
     
 
 

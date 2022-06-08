@@ -74,9 +74,6 @@ const handleLogin=([verifySignUp.checkDuplicateUsernameOrEmail,
       if (!user) {
           return res.status(400).json({ message: "user not found" });
       }
-
-
-
     const bytes= CryptoJs.AES.decrypt(user.password,process.env.SECRET_Key);
     const originalPassword = bytes.toString(CryptoJs.enc.Utf8);
     console.log("userpass",user.password)

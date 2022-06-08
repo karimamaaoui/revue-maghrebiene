@@ -42,7 +42,7 @@ const handleRegister= async (req,res)=>{
         firstname: req.body.lastname,
         lastname: req.body.lastname,
         university: req.body.university,
-        placeofpractice: req.body.placeofpractice
+        placeofpractice: req.body.placeofpractice,
     });
 
     //req.checkBody('password', 'Invalid possword').notEmpty().len(3, 30);

@@ -35,8 +35,12 @@ router.get('/filter/:key',verifyToken.verifyUserToken, filesController.getArticl
 router.put('/like/:id',verifyToken.verifyUserToken, filesController.addLike);
 
 router.get('/view/:id',verifyToken.verifyUserToken, filesController.addView);
+router.put('/validation/:id',verifyToken.verifyUserToken, filesController.publishArticle);
+
 
 router.put('/comment/:id',verifyToken.verifyUserToken, filesController.addComment);
+router.put('/review/:id',verifyToken.verifyUserToken, filesController.addReview);
+
 
 router.get('/getsingle/:id',filesController.getArticle);
  
