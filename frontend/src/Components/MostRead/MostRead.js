@@ -8,11 +8,22 @@ import { getAllArticles } from '../../redux/Actions/articleActions';
 import NavbarList from '../adminPanel/views/navbarList';
 import SidebarScreen from '../sideBar/sidebarScreen';
 import FileDownload from "js-file-download"
+import { Button, Card, Form, Modal, OverlayTrigger, Tab, Tabs, Tooltip } from "react-bootstrap";
 
 export default function MostRead() {
     const dispatch = useDispatch();
     const history = useNavigate();
 
+    const handleShow = () => setShow(true);
+    const [show, setShow] = useState(false);
+    const [requiredItem, setRequiredItem] = useState(0);
+
+    const handleClose = () => setShow(false);
+
+    const replaceModalItem = (id) => {
+        handleShow()
+        setRequiredItem(id)
+    }
 
     const [articles, setArticles] = useState([]);
 
@@ -42,14 +53,17 @@ export default function MostRead() {
         setArticles(data)
 
 
-        console.log(data.map((v) => {
-            setView(v.view)
-
-            return (
-                v.view.length
-            )
-        }))
-    }
+        console.log(data)
+    //         .map((v) => {
+    //         setView(v.view)
+    //         console.log('view',v.view.map((vi)=>{
+    //             return (
+    //                 vi.count.length
+    //             )
+    //         }))
+            
+    //     }))
+     }
 
     const loadMore = () => {
         setNoOfElement(noOfElement + noOfElement)
@@ -72,7 +86,7 @@ export default function MostRead() {
 
         const slice = articles?.slice(0, noOfElement)
 
-        const handleView = async (id) => {
+        const handleView = async (idd) => {
             const config = {
                 headers: {
                     "Content-type": "application/json",
@@ -80,21 +94,20 @@ export default function MostRead() {
     
                 },
             };
-            let userId = userInfo.user._id;
-            let user = { userId }
     
+            await axios.get(`http://localhost:5000/api/file/view/${idd}`, config)
     
-            return await axios.put(`http://localhost:5000/api/file/view/${id}`, user, config)
                 .then((res) => {
     
-                    console.log(res.data);
+                    console.log('fdfdfdfdfd', res.data);
                     setViewArticle(res.data)
-               
+    
                 }).catch(err => {
                     console.log(err)
                 })
     
         }
+    
         const handleDownload = async (id) => {
             // const { data } = await axios.get(`http://localhost:5000/api/file/${id}`);
             // console.log("user data", data)
@@ -235,7 +248,7 @@ export default function MostRead() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Most Read::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                <h1 style={{ color: '#B91736' }}>Most Read</h1>
                                             </div>
                                             <br />
 
@@ -282,107 +295,109 @@ export default function MostRead() {
                                                                                         }
 
                                                                                         <div className="footer">
-                                                                                            <div style={{ display: "inline-flex" }}>
+                                                                                        <button type='submit' className='primary'
+                                                                                                                style={{ borderRadius: "10px" }}
+                                                                                                                onClick={async () => {
+                                                                                                                    handleView(tdata._id);
 
-                                                                                                <button type='submit' className='primary'
-                                                                                                    style={{ borderRadius: "10px" }}
-                                                                                                    onClick={async () => {
-                                                                                                        handleView(tdata._id);
+                                                                                                                    const result = await Alert(
 
+                                                                                                                        <div className="footer" style={{ height: '70%' }}>
+                                                                                                                            <Tabs defaultActiveKey="first"
+                                                                                                                                style={{ backgroundColor: '#FEE5CF', }} >
 
-                                                                                                        const result = await Alert(
+                                                                                                                                <Tab eventKey="first" title="Aboutus">
+                                                                                                                                    {(tdata.view.length) > 0 ?
 
-                                                                                                            <div className="footer">
-                                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                                                                        <h6 style={{
+                                                                                                                                            fontSize: '14px',
+                                                                                                                                            marginTop: '12px'
+                                                                                                                                        }}>
+                                                                                                                                            <i class="bi bi-eye"></i>
 
-                                                                                                                    <button type='submit' className='primary'
-                                                                                                                        onClick={() => handleDownload(tdata._id)}>
-                                                                                                                        download
-                                                                                                                    </button>
-                                                                                                                </div>
-                                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                                                                            {tdata.view.length} view(s)
+                                                                                                                                        </h6>
+                                                                                                                                        : <h6> </h6>
+                                                                                                                                    }
+                                                                                                                                    Abstract :
+                                                                                                                                    {tdata.abstract}
+                                                                                                                                    <button onClick={
+                                                                                                                                        async () => {
+                                                                                                                                            {
+                                                                                                                                                tdata.filepassword.length != 0 ?
+                                                                                                                                                    <div>
+                                                                                                                                                        {replaceModalItem(tdata._id)}
 
+                                                                                                                                                    </div>
+                                                                                                                                                    :
+                                                                                                                                                    history(`/b/${tdata._id}`)
+                                                                                                                                            }
+                                                                                                                                        }}> read all article</button>
 
-
-                                                                                                                </div>
-                                                                                                                <div style={{ display: "inline-flex", }}>
-
-                                                                                                                    <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                        onClick={() => handleLike(tdata._id)}
-                                                                                                                    ></button>
-                                                                                                                    <br />
-                                                                                                                </div>
-
-                                                                                                                <div style={{ display: "inline-flex", }}>
-
-                                                                                                                    <button className="bi bi-star-fill"
-                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                        onClick={() => handleFavoris(tdata._id)}
-                                                                                                                    ></button>
-                                                                                                                    <br />
-                                                                                                                </div>
-
-                                                                                                                {(tdata.like.length) > 0 ?
-
-                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                        {tdata.like.length} like(s)
-                                                                                                                    </h6>
-                                                                                                                    : <h6> </h6>
-                                                                                                                }
-                                                                                                                {(tdata.view.length) > 0 ?
-
-                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                        <i class="bi bi-eye"></i>
-
-                                                                                                                        {tdata.view.length} view(s)
-                                                                                                                    </h6>
-                                                                                                                    : <h6> </h6>
-                                                                                                                }
-
-                                                                                                                Abstract :
-                                                                                                                {tdata.abstract}
-
-                                                                                                            </div>,
-                                                                                                            'Load More'
+                                                                                                                                </Tab>
 
 
-                                                                                                        );
 
-                                                                                                        if (result) {
-                                                                                                            //  this.handleBooking(item.id);
-                                                                                                            { console.log("id", tdata._id) }
+                                                                                                                                <Tab eventKey="second" title="Dashboard">
+                                                                                                                                    <div style={{ display: "inline-flex" }}>
 
-                                                                                                        }
-                                                                                                    }}
 
-                                                                                                >
+                                                                                                                                        <button type='submit' className='primary'
+                                                                                                                                            onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                            download
+                                                                                                                                        </button>
+                                                                                                                                    </div>
 
-                                                                                                    Load More
-                                                                                                </button>
-                                                                                                <br />
-                                                                                                <form
-                                                                                                    onSubmit={(e) => {
-                                                                                                        e.preventDefault()
-                                                                                                        makeComment(tdata._id)
-                                                                                                    }}
-                                                                                                >  <input type="text"
-                                                                                                    name='text'
-                                                                                                    required
-                                                                                                    onChange={(e) => {
-                                                                                                        setText(e.target.value);
+                                                                                                                                    <div style={{ display: "inline-flex", }}>
 
-                                                                                                    }} style={{
-                                                                                                        borderLeftColor: 'transparent',
-                                                                                                        borderTopColor: 'transparent',
-                                                                                                        borderRightColor: 'transparent',
+                                                                                                                                        <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                            onClick={() => handleLike(tdata._id)}
+                                                                                                                                        ></button>
+                                                                                                                                        <br />
+                                                                                                                                    </div>
 
-                                                                                                    }} placeholder="add a comment" />
+                                                                                                                                    <div style={{ display: "inline-flex", }}>
 
-                                                                                                </form>
+                                                                                                                                        <button className="bi bi-star-fill"
+                                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                            onClick={() => handleFavoris(tdata._id)}
+                                                                                                                                        ></button>
+                                                                                                                                        <br />
+                                                                                                                                    </div>
 
-                                                                                            </div>
-                                                                                        </div>
+                                                                                                                                    {(tdata.like.length) > 0 ?
+                                                                                                                                        <div>
+                                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                                {tdata.like.length} like(s)
+
+                                                                                                                                            </h6>
+                                                                                                                                        </div>
+                                                                                                                                        : <h6> </h6>
+                                                                                                                                    }
+
+                                                                                                                                </Tab>
+                                                                                                                            </Tabs>
+
+
+                                                                                                                        </div>,
+                                                                                                                        'Read More'
+
+
+                                                                                                                    );
+
+                                                                                                                    if (result) {
+                                                                                                                        //  this.handleBooking(item.id);
+                                                                                                                        { console.log("id", tdata._id) }
+
+                                                                                                                    }
+                                                                                                                }}
+
+                                                                                                            >
+
+                                                                                                                Read More
+                                                                                                            </button>
+    </div>
 
                                                                                     </p>
                                                                                 </div>

@@ -46,17 +46,32 @@ import RepondingToArticle from './Components/editorPanel/RepondingToArticle'
 import CorrectionPage from './Components/editorPanel/CorrectionPage'
 import CheckedCorrection from './Components/editorPanel/checkedCorrection/checkedCorrection'
 import Landing from './Landing'
+import Chat from './Components/Chat/Chat'
+import { useSelector } from 'react-redux';
+import {useState} from 'react'
+import { AppContext, socket } from "./Components/Chat/AppContext";
 
 export default function RoutesList() {
+  const [rooms, setRooms] = useState([]);
+    const [currentRoom, setCurrentRoom] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [messages, setMessages] = useState([]);
+    const [privateMemberMsg, setPrivateMemberMsg] = useState({});
+    const [newMessages, setNewMessages] = useState({});
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
   return (
     <>
+              <AppContext.Provider value={{ socket, currentRoom, setCurrentRoom, members, setMembers, messages, setMessages, privateMemberMsg,
+                 setPrivateMemberMsg, rooms, setRooms, newMessages, setNewMessages }}>
 
     <Router>
 
       <div>
         <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/chat" element={<Chat />} />
 
         <Route path="/a" element={<SideBar />} />
         <Route path="/mostread" element={<MostRead />} />
@@ -119,7 +134,7 @@ export default function RoutesList() {
       </div>
 
     </Router>
-
+</AppContext.Provider>
     </>
 
   );

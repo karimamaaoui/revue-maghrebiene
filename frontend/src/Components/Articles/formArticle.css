@@ -1,9 +1,10 @@
 
-label.radio {
+label.checkbox {
   cursor: pointer;
+
 }
 
-label.radio input {
+label.checkbox input {
   position: absolute;
   top: 0; 
   left: 0;
@@ -11,7 +12,7 @@ label.radio input {
   pointer-events: none;
 }
 
-label.radio span {
+label.checkbox span {
   padding: 4px 0px;
   border: 1px solid red;
   display: inline-block;
@@ -21,12 +22,14 @@ label.radio span {
   border-radius: 3px;
   margin-top: 7px;
   text-transform: uppercase;
+  
 }
 
-label.radio input:checked + span {
+label.checkbox input:checked + span {
   border-color: red;
   background-color: red;
   color: #fff;
+
 }
 
 .ans {

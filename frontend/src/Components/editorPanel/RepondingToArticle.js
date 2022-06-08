@@ -10,7 +10,11 @@ import './RepondingToArticle.css'
 
 
 import Accepter from '../../assets/accepter.png'
+import Loading from '../../assets/loading.jpg'
+
 import Refuser from '../../assets/refuser.png'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 
 
@@ -38,6 +42,7 @@ export default function RepondingToArticle() {
         userInfo,
 
     ]);
+   
 
     const handlePageClick = (data) => {
 
@@ -112,7 +117,7 @@ export default function RepondingToArticle() {
                                                                                     Status :
                                                                                     {tdata.status === "loading" ?
                                                                                         <div style={{ display: "inline-flex" }}>
-                                                                                            <img src={Refuser}
+                                                                                            <img src={Loading}
                                                                                                 style={{ height: '20px', }} />
                                                                                         </div>
                                                                                         : tdata.status === "accepted" ?
@@ -123,7 +128,7 @@ export default function RepondingToArticle() {
                                                                                             </div>
                                                                                             :
                                                                                             <div style={{ display: "inline-flex" }}>
-                                                                                                <img src={Accepter}
+                                                                                                <img src={Refuser}
                                                                                                     style={{ height: '20px' }} />
                                                                                             </div>
 

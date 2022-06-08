@@ -8,10 +8,12 @@ import { listTypes } from '../../redux/Actions/typeAction';
 import NavbarList from '../adminPanel/views/navbarList';
 import SidebarScreen from '../sideBar/sidebarScreen';
 import FileDownload from "js-file-download"
+import toast, { Toaster } from "react-hot-toast";
 
 
 import './correction.css'
 import { Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 export default function CorrectionPage() {
 
@@ -101,9 +103,15 @@ export default function CorrectionPage() {
             history("/");
         }
         else {
-            handleGetSingleArticle();
+            const callFunction= handleGetSingleArticle();
+            
             handleRead();
             // handleView(readId)
+            toast.promise(callFunction, {
+                loading: "Process",
+                error: "error occurs in data",
+                success: "get data successfully...."
+              });
         }
 
     },
@@ -115,6 +123,40 @@ export default function CorrectionPage() {
 
         ]);
 
+        const [text, setText] = useState('');
+
+        const makeComment = async (id) => {
+            console.log('click on comment')
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${userInfo.token}`,
+    
+                },
+            };
+            let postedBy = userInfo.user._id;
+    
+            let user = { text, postedBy }
+    
+            return await axios.put(`http://localhost:5000/api/file/review/${id}`, user, config)
+                .then((res) => {
+    
+                    console.log(res.data);
+                    Swal.fire({
+                        title: "Succces!",
+                        text: "Comment Added Successfully",
+                        icon: 'success',
+                        button: "OK!"
+                    });
+    
+    
+                    console.log('article => ' + JSON.stringify(user));
+    
+                }).catch(err => {
+                    console.log(err)
+                })
+        }
+     
     return (
         <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
             <div className="main-body">
@@ -144,7 +186,12 @@ export default function CorrectionPage() {
                                                 </div>
                                                 <br />
                                                 <div class="accordion accordion-flush border-top border-start border-end" id="myAccordion">
+                                                <div style={{float:'right'}}>
+                                                <Toaster />
+                                                </div>
+                                              
                                                     <div class="accordion-item">
+
                                                         <h2 class="accordion-header" id="flush-headingOne">
                                                             <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse"
                                                                 data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -171,7 +218,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -180,7 +231,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -251,7 +307,10 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -259,8 +318,17 @@ export default function CorrectionPage() {
                                                                                                     <div >
 
                                                                                                         <button class="pull-right"
-                                                                                                            style={{ borderRadius: "15px", }}>
+                                                                                                            style={{ borderRadius: "15px", }}
+                                                                                                            
+                                                                                                            onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}>
+                                                                                                          
+                                                                                                            
                                                                                                             <i class="fa fa-send" >
+
                                                                                                                 Add
                                                                                                             </i>
 
@@ -338,7 +406,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -346,6 +418,13 @@ export default function CorrectionPage() {
                                                                                                     <div >
 
                                                                                                         <button class="pull-right"
+                                                                                                         onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                          
+                                                                                                           
                                                                                                             style={{ borderRadius: "15px", }}>
                                                                                                             <i class="fa fa-send" >
                                                                                                                 Add
@@ -415,7 +494,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -424,7 +507,13 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" 
+                                                                                                             onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                        >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -496,7 +585,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -505,7 +598,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -574,7 +672,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -583,7 +685,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send"  onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                        >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -662,7 +769,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -671,7 +782,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send"  onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                        >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -752,7 +868,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -761,7 +881,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send"  onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                        >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -838,7 +963,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -847,7 +976,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -929,7 +1063,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -938,7 +1076,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -1018,7 +1161,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
 
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -1027,7 +1174,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send"  onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 
@@ -1115,6 +1267,11 @@ export default function CorrectionPage() {
                                                                                                 <textarea class="form-control" placeholder="write a review..."
                                                                                                     type="text"
                                                                                                     name='text'
+                                                                                                    onChange={(e) => {
+                                                                                                        setText(e.target.value);
+
+                                                                                                    }}
+                                                                                                  
                                                                                                     rows="3"></textarea>
                                                                                                 <br />
                                                                                                 <div className="" >
@@ -1123,7 +1280,12 @@ export default function CorrectionPage() {
 
                                                                                                         <button class="pull-right btn btn-danger"
                                                                                                             style={{ borderRadius: "15px", }}>
-                                                                                                            <i class="fa fa-send" >
+                                                                                                            <i class="fa fa-send" onClick={
+                                                                                                                () => {
+            
+                                                                                                                    makeComment(datas._id)
+                                                                                                                }}
+                                                                                                         >
                                                                                                                 Add
                                                                                                             </i>
 

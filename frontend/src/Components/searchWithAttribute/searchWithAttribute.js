@@ -109,7 +109,6 @@ export default function SearchWithAttribute() {
                                             </div>
                                             <br />
 
-                                            <h4 style={{ color: '#B91736' }}>{articleByAttribute.length} Article(s) Found {attributeName}</h4>
                                             <div className="row">
                                                 <div class="container">
                                                     <div class="row justify-content-center">
@@ -117,6 +116,8 @@ export default function SearchWithAttribute() {
                                                         <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
                                                             {slice.map((atrib) => {
                                                                 return (
+                                                                    <>
+                                                                {atrib.published === true ?
 
                                                                     <div class="card card-margin">
                                                                         <div class="card-header no-border">
@@ -246,6 +247,8 @@ export default function SearchWithAttribute() {
 
                                                                     </div>
                                                                         </div>
+                                                                         : <></>}
+                                                                        </>
                                                         )
                                                             })
                                                             }

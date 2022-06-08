@@ -255,7 +255,8 @@ export default function SearchPahe() {
 
     }
 
-    const handleView = async (id) => {
+
+    const handleView = async (idd) => {
         const config = {
             headers: {
                 "Content-type": "application/json",
@@ -264,21 +265,19 @@ export default function SearchPahe() {
             },
         };
 
+        await axios.get(`http://localhost:5000/api/file/view/${idd}`, config)
 
-        return await axios.get(`http://localhost:5000/api/view/add/${id}`, config)
             .then((res) => {
 
-                //  console.log(res.data);
+                console.log('fdfdfdfdfd', res.data);
                 setViewArticle(res.data)
-                //  console.log('vvvvvvvvvvvvvvvvvvvvvvvvv', res.data)
-
-                //  console.log('view => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
             })
 
     }
+
     const [fileURL, setFileURL] = useState('');
     //console.log('fileURL', fileURL)
 
@@ -429,7 +428,7 @@ export default function SearchPahe() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Search::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                <h1 style={{ color: '#B91736' }}>Search</h1>
                                             </div>
                                             <br />
                                             <div className="row ">
@@ -457,27 +456,6 @@ export default function SearchPahe() {
                                                     <div className='col-4' style={{ display: "flex", fontSize: "15px", flexWrap: "wrap" }}>
                                                         <p>   Choose  Type : </p>
 
-                                                        {/* {types &&
-                                                            types.map(c => (
-                                                                <div key={c._id} className='form-check' >
-                                                                    <input
-                                                                        className='form-check-input'
-                                                                        type='checkbox'
-                                                                        name='types'
-                                                                        value={c._id}
-
-                                                                        id='flexCheckChecked'
-                                                                        checked={typeIds.includes(c._id)}
-                                                                        onChange={handleCategory}
-                                                                    />
-                                                                    <label
-                                                                        className='form-check-label'
-                                                                        htmlFor='flexCheckChecked'
-                                                                    >
-                                                                        {c.label}
-                                                                    </label>
-                                                                </div>
-                                                            ))} */}
 
                                                         <select className="select" name="types"
                                                             required
@@ -501,31 +479,6 @@ export default function SearchPahe() {
                                                     </div>
 
 
-                                                    {/* 
-                                                    <div className='col-4' style={{ display: "flex", fontSize: "15px", flexWrap: "wrap" }}>
-                                                        <p>   Choose  Attribute : </p>
-                                                        {attributes &&
-                                                            attributes.map(a => (
-                                                                <div key={a._id} className='form-check' >
-                                                                    <input
-                                                                        className='form-check-input'
-                                                                        type='checkbox'
-                                                                        name='types'
-                                                                        value={a._id}
-
-                                                                        id='flexCheckChecked'
-                                                                        checked={attributeIds.includes(a._id)}
-                                                                        onChange={handleAttribute}
-                                                                    />
-                                                                    <label
-                                                                        className='form-check-label'
-                                                                        htmlFor='flexCheckChecked'
-                                                                    >
-                                                                        {a.label}
-                                                                    </label>
-                                                                </div>
-                                                            ))}
-                                                    </div> */}
                                                 </div>
 
                                             </div>
@@ -572,243 +525,251 @@ export default function SearchPahe() {
                                                         {searchInput.length > 1 ? (
                                                             searchResult.map((tdata, index) => {
 
-                                                                return (<>
+                                                                return (
 
-                                                                    <div className='card'>
+                                                                    <>
 
-                                                                        <div class="sign-up-container">
-                                                                            <br />
+                                                                        {tdata.published === true ?
 
-                                                                            <div style={{ display: "inline-flex", fontSize: "50px" }}>
+                                                                            <div className='card'>
 
+                                                                                <div class="sign-up-container">
+                                                                                    <br />
 
-                                                                                <div key={index}>
-                                                                                    <div class="card-body">
-                                                                                        <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
-                                                                                        <img src={tdata.pathFile} alt="" height="140px" width="30px" />
-
-                                                                                        <p>
-                                                                                            KeyWords :
-                                                                                            {tdata.keyWords}
-                                                                                            <br />
-
-                                                                                            Created At : {tdata.createdAt}
-
-                                                                                            <br />
-                                                                                            Type :
-                                                                                            {tdata.typeArticle.map(
-                                                                                                (type, i) => {
-                                                                                                    return (
-                                                                                                        type.label
-                                                                                                    )
-                                                                                                })
-                                                                                            }
-
-                                                                                            <div className="footer">
-                                                                                                <div style={{ display: "inline-block" }}>
-                                                                                                    <form
-                                                                                                        onSubmit={(e) => {
-                                                                                                            e.preventDefault()
-                                                                                                            makeComment(tdata._id)
-                                                                                                        }}
-                                                                                                    >
-
-                                                                                                        <div class="card-header">
-                                                                                                            <div class="input-group">
-                                                                                                                <input
-                                                                                                                    type="text"
-                                                                                                                    placeholder="Message"
-                                                                                                                    name='text'
-                                                                                                                    onChange={(e) => {
-                                                                                                                        setText(e.target.value);
-
-                                                                                                                    }} />
-                                                                                                                {console.log('text', text)}
-                                                                                                                <div class="input-group-append">
-                                                                                                                    <button type="button" class="btn btn-outline-secondary" onClick={
-                                                                                                                        () => {
-
-                                                                                                                            makeComment(tdata._id)
-                                                                                                                        }}><i class="fa fa-send"></i></button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </form>
-
-                                                                                                    <button type='submit' className='primary'
-                                                                                                            style={{ borderRadius: "10px" }}
-                                                                                                            onClick={async () => {
-                                                                                                                //   handleView(tdata._id);
+                                                                                    <div style={{ display: "inline-flex", fontSize: "50px" }}>
 
 
-                                                                                                                const result = await Alert(
+                                                                                        <div key={index}>
+                                                                                            <div class="card-body">
+                                                                                                <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
+                                                                                                <img src={tdata.pathFile} alt="" height="140px" width="30px" />
 
-                                                                                                                    <div className="footer" style={{ height: '70%' }}>
-                                                                                                                        <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
-
-                                                                                                                            <Tab eventKey="first" title="Aboutus">
-                                                                                                                                {(tdata.view.length) > 0 ?
-
-                                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                        <i class="bi bi-eye"></i>
-
-                                                                                                                                        {tdata.view.length} view(s)
-                                                                                                                                    </h6>
-                                                                                                                                    : <h6> </h6>
-                                                                                                                                }
-                                                                                                                                Abstract :
-                                                                                                                                {tdata.abstract}
-                                                                                                                                <button onClick={
-                                                                                                                                async () => {
-                                                                                                                                    {
-                                                                                                                                        tdata.filepassword.length != 0 ?
-                                                                                                                                            <div>
-                                                                                                                                                {replaceModalItem(tdata._id)}
-
-                                                                                                                                            </div>
-                                                                                                                                            :
-                                                                                                                                            history(`/b/${tdata._id}`)
-                                                                                                                                    }
-                                                                                                                                }}> read all article</button>
-
-                                                                                                                            </Tab>
-
-                                                                                                                           
-
-                                                                                                                            <Tab eventKey="second" title="Dashboard">
-                                                                                                                                <div style={{ display: "inline-flex" }}>
-
-
-                                                                                                                                    <button type='submit' className='primary'
-                                                                                                                                        onClick={() => handleDownload(tdata._id)}>
-                                                                                                                                        download
-                                                                                                                                    </button>
-                                                                                                                                </div>
-
-                                                                                                                                <div style={{ display: "inline-flex", }}>
-
-                                                                                                                                    <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                        onClick={() => handleLike(tdata._id)}
-                                                                                                                                    ></button>
-                                                                                                                                    <br />
-                                                                                                                                </div>
-
-                                                                                                                                <div style={{ display: "inline-flex", }}>
-
-                                                                                                                                    <button className="bi bi-star-fill"
-                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                        onClick={() => handleFavoris(tdata._id)}
-                                                                                                                                    ></button>
-                                                                                                                                    <br />
-                                                                                                                                </div>
-
-                                                                                                                                {(tdata.like.length) > 0 ?
-                                                                                                                                    <div>
-                                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                            {tdata.like.length} like(s)
-
-                                                                                                                                        </h6>
-                                                                                                                                    </div>
-                                                                                                                                    : <h6> </h6>
-                                                                                                                                }
-
-                                                                                                                            </Tab>
-                                                                                                                        </Tabs>
-
-
-                                                                                                                    </div>,
-                                                                                                                    'Read More'
-
-
-                                                                                                                );
-
-                                                                                                                if (result) {
-                                                                                                                    //  this.handleBooking(item.id);
-                                                                                                                    { console.log("id", tdata._id) }
-
-                                                                                                                }
-                                                                                                            }}
-
-                                                                                                        >
-
-                                                                                                            Read More
-                                                                                                        </button>
-                                                                                                        
-                                                                                                      
-                                                                                                    
+                                                                                                <p>
+                                                                                                    KeyWords :
+                                                                                                    {tdata.keyWords}
                                                                                                     <br />
-                                                                                                    <Modal show={show} onHide={handleClose}>
-                                                                                                            <Modal.Header closeButton >
-                                                                                                            </Modal.Header>
-                                                                                                            <Modal.Body>
+
+                                                                                                    Created At : {tdata.createdAt}
+
+                                                                                                    <br />
+                                                                                                    Type :
+                                                                                                    {tdata.typeArticle.map(
+                                                                                                        (type, i) => {
+                                                                                                            return (
+                                                                                                                type.label
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+
+                                                                                                    <div className="footer">
+                                                                                                        <div style={{ display: "inline-block" }}>
+                                                                                                            <form
+                                                                                                                onSubmit={(e) => {
+                                                                                                                    e.preventDefault()
+                                                                                                                    makeComment(tdata._id)
+                                                                                                                }}
+                                                                                                            >
+
+                                                                                                                <div class="card-header">
+                                                                                                                    <div class="input-group">
+                                                                                                                        <input
+                                                                                                                            type="text"
+                                                                                                                            placeholder="Message"
+                                                                                                                            name='text'
+                                                                                                                            onChange={(e) => {
+                                                                                                                                setText(e.target.value);
+
+                                                                                                                            }} />
+                                                                                                                        {console.log('text', text)}
+                                                                                                                        <div class="input-group-append">
+                                                                                                                            <button type="button" class="btn btn-outline-secondary" onClick={
+                                                                                                                                () => {
+
+                                                                                                                                    makeComment(tdata._id)
+                                                                                                                                }}><i class="fa fa-send"></i></button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+
+                                                                                                            <button type='submit' className='primary'
+                                                                                                                style={{ borderRadius: "10px" }}
+                                                                                                                onClick={async () => {
+                                                                                                                    handleView(tdata._id);
+
+                                                                                                                    const result = await Alert(
+
+                                                                                                                        <div className="footer" style={{ height: '70%' }}>
+                                                                                                                            <Tabs defaultActiveKey="first"
+                                                                                                                                style={{ backgroundColor: '#FEE5CF', }} >
+
+                                                                                                                                <Tab eventKey="first" title="Aboutus">
+                                                                                                                                    {(tdata.view.length) > 0 ?
+
+                                                                                                                                        <h6 style={{
+                                                                                                                                            fontSize: '14px',
+                                                                                                                                            marginTop: '12px'
+                                                                                                                                        }}>
+                                                                                                                                            <i class="bi bi-eye"></i>
+
+                                                                                                                                            {tdata.view.length} view(s)
+                                                                                                                                        </h6>
+                                                                                                                                        : <h6> </h6>
+                                                                                                                                    }
+                                                                                                                                    Abstract :
+                                                                                                                                    {tdata.abstract}
+                                                                                                                                    <button onClick={
+                                                                                                                                        async () => {
+                                                                                                                                            {
+                                                                                                                                                tdata.filepassword.length != 0 ?
+                                                                                                                                                    <div>
+                                                                                                                                                        {replaceModalItem(tdata._id)}
+
+                                                                                                                                                    </div>
+                                                                                                                                                    :
+                                                                                                                                                    history(`/b/${tdata._id}`)
+                                                                                                                                            }
+                                                                                                                                        }}> read all article</button>
+
+                                                                                                                                </Tab>
 
 
-                                                                                                                <div class="row">
-                                                                                                                    <div class="col">
-                                                                                                                        <div class="panel panel-default">
-                                                                                                                            <div class="panel-heading">
-                                                                                                                                <div class="row">
-                                                                                                                                    <h3 class="text-center">Payment Details</h3>
-                                                                                                                                    <div class="inlineimage">
-                                                                                                                                        <img class="img-responsive images"
-                                                                                                                                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div class="panel-body">
-                                                                                                                                <form role="form">
+
+                                                                                                                                <Tab eventKey="second" title="Dashboard">
+                                                                                                                                    <div style={{ display: "inline-flex" }}>
+
+
+                                                                                                                                        <button type='submit' className='primary'
+                                                                                                                                            onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                            download
+                                                                                                                                        </button>
+                                                                                                                                    </div>
+
+                                                                                                                                    <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                        <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                            onClick={() => handleLike(tdata._id)}
+                                                                                                                                        ></button>
+                                                                                                                                        <br />
+                                                                                                                                    </div>
+
+                                                                                                                                    <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                        <button className="bi bi-star-fill"
+                                                                                                                                            style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                            onClick={() => handleFavoris(tdata._id)}
+                                                                                                                                        ></button>
+                                                                                                                                        <br />
+                                                                                                                                    </div>
+
+                                                                                                                                    {(tdata.like.length) > 0 ?
+                                                                                                                                        <div>
+                                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                                {tdata.like.length} like(s)
+
+                                                                                                                                            </h6>
+                                                                                                                                        </div>
+                                                                                                                                        : <h6> </h6>
+                                                                                                                                    }
+
+                                                                                                                                </Tab>
+                                                                                                                            </Tabs>
+
+
+                                                                                                                        </div>,
+                                                                                                                        'Read More'
+
+
+                                                                                                                    );
+
+                                                                                                                    if (result) {
+                                                                                                                        //  this.handleBooking(item.id);
+                                                                                                                        { console.log("id", tdata._id) }
+
+                                                                                                                    }
+                                                                                                                }}
+
+                                                                                                            >
+
+                                                                                                                Read More
+                                                                                                            </button>
+
+
+
+                                                                                                            <br />
+                                                                                                            <Modal show={show} onHide={handleClose}>
+                                                                                                                <Modal.Header closeButton >
+                                                                                                                </Modal.Header>
+                                                                                                                <Modal.Body>
+
+
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col">
+                                                                                                                            <div class="panel panel-default">
+                                                                                                                                <div class="panel-heading">
                                                                                                                                     <div class="row">
-                                                                                                                                        <div class="col-xs-12">
-                                                                                                                                            <div class="form-group"> <label>CARD NUMBER</label>
-                                                                                                                                                <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                        <h3 class="text-center">Payment Details</h3>
+                                                                                                                                        <div class="inlineimage">
+                                                                                                                                            <img class="img-responsive images"
+                                                                                                                                                src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="panel-body">
+                                                                                                                                    <form role="form">
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-12">
+                                                                                                                                                <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                                                    <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                                </div>
                                                                                                                                             </div>
                                                                                                                                         </div>
-                                                                                                                                    </div>
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-7 col-md-7">
+                                                                                                                                                <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                                                <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-12">
+                                                                                                                                                <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </form>
+                                                                                                                                </div>
+                                                                                                                                <div class="footer">
                                                                                                                                     <div class="row">
-                                                                                                                                        <div class="col-xs-7 col-md-7">
-                                                                                                                                            <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
-                                                                                                                                        </div>
-                                                                                                                                        <div class="col-xs-5 col-md-5 pull-right">
-                                                                                                                                            <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
-                                                                                                                                        </div>
+                                                                                                                                        <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
                                                                                                                                     </div>
-                                                                                                                                    <div class="row">
-                                                                                                                                        <div class="col-xs-12">
-                                                                                                                                            <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                </form>
-                                                                                                                            </div>
-                                                                                                                            <div class="footer">
-                                                                                                                                <div class="row">
-                                                                                                                                    <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                            </Modal.Body>
+                                                                                                                </Modal.Body>
 
-                                                                                                        </Modal>
-
+                                                                                                            </Modal>
 
 
-                                                                                                </div>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </p>
                                                                                             </div>
-                                                                                        </p>
+                                                                                        </div>
+
+
                                                                                     </div>
                                                                                 </div>
 
-
                                                                             </div>
-                                                                        </div>
-
-                                                                    </div>
-
-                                                                </>
+                                                                            : "Not Authorized"
+                                                                        }
+                                                                    </>
 
                                                                 )
 
@@ -819,6 +780,7 @@ export default function SearchPahe() {
 
                                                             : (
                                                                 articles?.map((tdata, index) => {
+
 
                                                                     <div className="row">
                                                                         <div className=""  >
@@ -849,240 +811,245 @@ export default function SearchPahe() {
                                                                     </div>
 
                                                                     return (
+                                                                        <>
 
-                                                                        <div className='card'>
-                                                                            <div class="sign-up-container">
-                                                                                <br />
+                                                                            {tdata.published === true ?
 
-
-                                                                                <div style={{ display: "inline-flex", fontSize: "50px" }}>
-
-
-                                                                                    <div key={index}>
-                                                                                        <div class="card-body">
-                                                                                            <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
-
-                                                                                            <img src={tdata.pathFile} alt="" height="140px" width="30px" />
-
-                                                                                            <p>
-                                                                                                KeyWords :
-                                                                                                {tdata.keyWords}
-
-                                                                                                <br />
-                                                                                                Created At : {tdata.createdAt}
-
-                                                                                                <br />
-                                                                                                Type :
-                                                                                                {tdata.typeArticle.map(
-                                                                                                    (type, i) => {
-                                                                                                        return (
-                                                                                                            type.label
-                                                                                                        )
-                                                                                                    })
-                                                                                                }
-                                                                                                <br />
-                                                                                                <div className="footer">
-                                                                                                    <div style={{ display: "inline-block" }}>
-
-                                                                                                        <form
-                                                                                                            onSubmit={(e) => {
-                                                                                                                e.preventDefault()
-                                                                                                                makeComment(tdata._id)
-                                                                                                            }}
-                                                                                                        >                <div class="card-header">
-                                                                                                                <div class="input-group">
-                                                                                                                    <input
-                                                                                                                        type="text"
-                                                                                                                        placeholder="Message"
-                                                                                                                        name='text'
-                                                                                                                        onChange={(e) => {
-                                                                                                                            setText(e.target.value);
-
-                                                                                                                        }} />
-                                                                                                                    {console.log('text', text)}
-                                                                                                                    <div class="input-group-append">
-                                                                                                                        <button type="button" class="btn btn-outline-secondary" onClick={
-                                                                                                                            () => {
-
-                                                                                                                                makeComment(tdata._id)
-                                                                                                                            }}><i class="fa fa-send"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-
-                                                                                                        </form>
-
-                                                                                                        <button type='submit' className='primary'
-                                                                                                            style={{ borderRadius: "10px" }}
-                                                                                                            onClick={async () => {
-                                                                                                                //   handleView(tdata._id);
+                                                                                <div className='card'>
+                                                                                    <div class="sign-up-container">
+                                                                                        <br />
 
 
-                                                                                                                const result = await Alert(
-
-                                                                                                                    <div className="footer" style={{ height: '70%' }}>
-                                                                                                                        <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
-
-                                                                                                                            <Tab eventKey="first" title="Aboutus">
-                                                                                                                                {(tdata.view.length) > 0 ?
-
-                                                                                                                                    <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                        <i class="bi bi-eye"></i>
-
-                                                                                                                                        {tdata.view.length} view(s)
-                                                                                                                                    </h6>
-                                                                                                                                    : <h6> </h6>
-                                                                                                                                }
-                                                                                                                                Abstract :
-                                                                                                                                {tdata.abstract}
-                                                                                                                                <button onClick={
-                                                                                                                                async () => {
-                                                                                                                                    {
-                                                                                                                                        tdata.filepassword.length != 0 ?
-                                                                                                                                            <div>
-                                                                                                                                                {replaceModalItem(tdata._id)}
-
-                                                                                                                                            </div>
-                                                                                                                                            :
-                                                                                                                                            history(`/b/${tdata._id}`)
-                                                                                                                                    }
-                                                                                                                                }}> read all article</button>
-
-                                                                                                                            </Tab>
-
-                                                                                                                           
-
-                                                                                                                            <Tab eventKey="second" title="Dashboard">
-                                                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                        <div style={{ display: "inline-flex", fontSize: "50px" }}>
 
 
-                                                                                                                                    <button type='submit' className='primary'
-                                                                                                                                        onClick={() => handleDownload(tdata._id)}>
-                                                                                                                                        download
-                                                                                                                                    </button>
-                                                                                                                                </div>
+                                                                                            <div key={index}>
+                                                                                                <div class="card-body">
+                                                                                                    <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
 
-                                                                                                                                <div style={{ display: "inline-flex", }}>
+                                                                                                    <img src={tdata.pathFile} alt="" height="140px" width="30px" />
 
-                                                                                                                                    <button className="bi bi-hand-thumbs-up-fill"
-                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                        onClick={() => handleLike(tdata._id)}
-                                                                                                                                    ></button>
-                                                                                                                                    <br />
-                                                                                                                                </div>
+                                                                                                    <p>
+                                                                                                        KeyWords :
+                                                                                                        {tdata.keyWords}
 
-                                                                                                                                <div style={{ display: "inline-flex", }}>
+                                                                                                        <br />
+                                                                                                        Created At : {tdata.createdAt}
 
-                                                                                                                                    <button className="bi bi-star-fill"
-                                                                                                                                        style={{ borderRadius: '10px', width: '100%' }}
-                                                                                                                                        onClick={() => handleFavoris(tdata._id)}
-                                                                                                                                    ></button>
-                                                                                                                                    <br />
-                                                                                                                                </div>
+                                                                                                        <br />
+                                                                                                        Type :
+                                                                                                        {tdata.typeArticle.map(
+                                                                                                            (type, i) => {
+                                                                                                                return (
+                                                                                                                    type.label
+                                                                                                                )
+                                                                                                            })
+                                                                                                        }
+                                                                                                        <br />
+                                                                                                        <div className="footer">
+                                                                                                            <div style={{ display: "inline-block" }}>
 
-                                                                                                                                {(tdata.like.length) > 0 ?
-                                                                                                                                    <div>
-                                                                                                                                        <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
-                                                                                                                                            {tdata.like.length} like(s)
+                                                                                                                <form
+                                                                                                                    onSubmit={(e) => {
+                                                                                                                        e.preventDefault()
+                                                                                                                        makeComment(tdata._id)
+                                                                                                                    }}
+                                                                                                                >                <div class="card-header">
+                                                                                                                        <div class="input-group">
+                                                                                                                            <input
+                                                                                                                                type="text"
+                                                                                                                                placeholder="Message"
+                                                                                                                                name='text'
+                                                                                                                                onChange={(e) => {
+                                                                                                                                    setText(e.target.value);
 
-                                                                                                                                        </h6>
-                                                                                                                                    </div>
-                                                                                                                                    : <h6> </h6>
-                                                                                                                                }
+                                                                                                                                }} />
+                                                                                                                            {console.log('text', text)}
+                                                                                                                            <div class="input-group-append">
+                                                                                                                                <button type="button" class="btn btn-outline-secondary" onClick={
+                                                                                                                                    () => {
 
-                                                                                                                            </Tab>
-                                                                                                                        </Tabs>
-
-
-                                                                                                                    </div>,
-                                                                                                                    'Read More'
-
-
-                                                                                                                );
-
-                                                                                                                if (result) {
-                                                                                                                    //  this.handleBooking(item.id);
-                                                                                                                    { console.log("id", tdata._id) }
-
-                                                                                                                }
-                                                                                                            }}
-
-                                                                                                        >
-
-                                                                                                            Read More
-                                                                                                        </button>
-                                                                                                        <Modal show={show} onHide={handleClose}>
-                                                                                                            <Modal.Header closeButton >
-                                                                                                            </Modal.Header>
-                                                                                                            <Modal.Body>
-
-
-                                                                                                                <div class="row">
-                                                                                                                    <div class="col">
-                                                                                                                        <div class="panel panel-default">
-                                                                                                                            <div class="panel-heading">
-                                                                                                                                <div class="row">
-                                                                                                                                    <h3 class="text-center">Payment Details</h3>
-                                                                                                                                    <div class="inlineimage">
-                                                                                                                                        <img class="img-responsive images"
-                                                                                                                                            src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
-                                                                                                                                        <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div class="panel-body">
-                                                                                                                                <form role="form">
-                                                                                                                                    <div class="row">
-                                                                                                                                        <div class="col-xs-12">
-                                                                                                                                            <div class="form-group"> <label>CARD NUMBER</label>
-                                                                                                                                                <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                    <div class="row">
-                                                                                                                                        <div class="col-xs-7 col-md-7">
-                                                                                                                                            <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
-                                                                                                                                        </div>
-                                                                                                                                        <div class="col-xs-5 col-md-5 pull-right">
-                                                                                                                                            <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                    <div class="row">
-                                                                                                                                        <div class="col-xs-12">
-                                                                                                                                            <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                </form>
-                                                                                                                            </div>
-                                                                                                                            <div class="footer">
-                                                                                                                                <div class="row">
-                                                                                                                                    <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
-                                                                                                                                </div>
+                                                                                                                                        makeComment(tdata._id)
+                                                                                                                                    }}><i class="fa fa-send"></i></button>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                            </Modal.Body>
 
-                                                                                                        </Modal>
+                                                                                                                </form>
 
-                                                                                                        <br />
+                                                                                                                <button type='submit' className='primary'
+                                                                                                                    style={{ borderRadius: "10px" }}
+                                                                                                                    onClick={async () => {
+                                                                                                                           handleView(tdata._id);
 
-                                                                                                    </div>
+
+                                                                                                                        const result = await Alert(
+
+                                                                                                                            <div className="footer" style={{ height: '70%' }}>
+                                                                                                                                <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
+
+                                                                                                                                    <Tab eventKey="first" title="Aboutus">
+                                                                                                                                        {(tdata.view.length) > 0 ?
+
+                                                                                                                                            <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                                <i class="bi bi-eye"></i>
+
+                                                                                                                                                {tdata.view.length} view(s)
+                                                                                                                                            </h6>
+                                                                                                                                            : <h6> </h6>
+                                                                                                                                        }
+                                                                                                                                        Abstract :
+                                                                                                                                        {tdata.abstract}
+                                                                                                                                        <button onClick={
+                                                                                                                                            async () => {
+                                                                                                                                                {
+                                                                                                                                                    tdata.filepassword.length != 0 ?
+                                                                                                                                                        <div>
+                                                                                                                                                            {replaceModalItem(tdata._id)}
+
+                                                                                                                                                        </div>
+                                                                                                                                                        :
+                                                                                                                                                        history(`/b/${tdata._id}`)
+                                                                                                                                                }
+                                                                                                                                            }}> read all article</button>
+
+                                                                                                                                    </Tab>
+
+
+
+                                                                                                                                    <Tab eventKey="second" title="Dashboard">
+                                                                                                                                        <div style={{ display: "inline-flex" }}>
+
+
+                                                                                                                                            <button type='submit' className='primary'
+                                                                                                                                                onClick={() => handleDownload(tdata._id)}>
+                                                                                                                                                download
+                                                                                                                                            </button>
+                                                                                                                                        </div>
+
+                                                                                                                                        <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                            <button className="bi bi-hand-thumbs-up-fill"
+                                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                                onClick={() => handleLike(tdata._id)}
+                                                                                                                                            ></button>
+                                                                                                                                            <br />
+                                                                                                                                        </div>
+
+                                                                                                                                        <div style={{ display: "inline-flex", }}>
+
+                                                                                                                                            <button className="bi bi-star-fill"
+                                                                                                                                                style={{ borderRadius: '10px', width: '100%' }}
+                                                                                                                                                onClick={() => handleFavoris(tdata._id)}
+                                                                                                                                            ></button>
+                                                                                                                                            <br />
+                                                                                                                                        </div>
+
+                                                                                                                                        {(tdata.like.length) > 0 ?
+                                                                                                                                            <div>
+                                                                                                                                                <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
+                                                                                                                                                    {tdata.like.length} like(s)
+
+                                                                                                                                                </h6>
+                                                                                                                                            </div>
+                                                                                                                                            : <h6> </h6>
+                                                                                                                                        }
+
+                                                                                                                                    </Tab>
+                                                                                                                                </Tabs>
+
+
+                                                                                                                            </div>,
+                                                                                                                            'Read More'
+
+
+                                                                                                                        );
+
+                                                                                                                        if (result) {
+                                                                                                                            //  this.handleBooking(item.id);
+                                                                                                                            { console.log("id", tdata._id) }
+
+                                                                                                                        }
+                                                                                                                    }}
+
+                                                                                                                >
+
+                                                                                                                    Read More
+                                                                                                                </button>
+                                                                                                                <Modal show={show} onHide={handleClose}>
+                                                                                                                    <Modal.Header closeButton >
+                                                                                                                    </Modal.Header>
+                                                                                                                    <Modal.Body>
+
+
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col">
+                                                                                                                                <div class="panel panel-default">
+                                                                                                                                    <div class="panel-heading">
+                                                                                                                                        <div class="row">
+                                                                                                                                            <h3 class="text-center">Payment Details</h3>
+                                                                                                                                            <div class="inlineimage">
+                                                                                                                                                <img class="img-responsive images"
+                                                                                                                                                    src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="panel-body">
+                                                                                                                                        <form role="form">
+                                                                                                                                            <div class="row">
+                                                                                                                                                <div class="col-xs-12">
+                                                                                                                                                    <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                            <div class="row">
+                                                                                                                                                <div class="col-xs-7 col-md-7">
+                                                                                                                                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                            <div class="row">
+                                                                                                                                                <div class="col-xs-12">
+                                                                                                                                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </form>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="footer">
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </Modal.Body>
+
+                                                                                                                </Modal>
+
+                                                                                                                <br />
+
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                    </p>
                                                                                                 </div>
 
-                                                                                            </p>
+
+                                                                                            </div>
+
+
                                                                                         </div>
-
-
                                                                                     </div>
-
-
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
 
+                                                                                : <></>}
+                                                                        </>
 
                                                                     )
                                                                 })

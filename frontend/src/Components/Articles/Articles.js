@@ -344,7 +344,7 @@ function Article() {
                                                     <div class="card-body">
                                                       
                                                         <div className="row">
-                                                            <h1 style={{ color: '#B91736' }}>Add New Article::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                                            <h1 style={{ color: '#B91736' }}>Add New Article</h1>
                                                         </div>
                                                         <br />
 

@@ -73,8 +73,6 @@ export const login = (username, password) => async (dispatch) => {
 // logout
 export const logout = () => async (dispatch) => {
   localStorage.removeItem("userInfo");
-  await axios.post(
-    'http://localhost:5000/api/user/logout')
   dispatch({ type: USER_LOGOUT });
 
 }

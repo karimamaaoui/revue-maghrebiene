@@ -6,7 +6,7 @@ import { addNewFile } from "../../redux/Actions/fileActions";
 import { listTypes } from "../../redux/Actions/typeAction";
 import './formArticle.css'
 
-function Step3() {
+function Step3({ formData, setFormData }) {
 
 
   const dispatch = useDispatch();
@@ -59,50 +59,32 @@ function Step3() {
   // }
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('multiple_files', multiple_files);
-    formData.append('title', title);
-    formData.append('bio', bio);
-    formData.append('abstract', abstract);
-    formData.append('keyWords', keyWords);
-    formData.append('abbreviations', abbreviations);
-    formData.append('typeArticle', typeArticle);
-    formData.append('attributesAticle', attributesAticle);
+  const defaultData = [
 
+    { name: "article", boxes: ["true", "false"], selected: null },
 
+  ];
 
-    console.log(multiple_files.length);
-    for (let i = 0; i < multiple_files.length; i++) {
-      console.log(multiple_files[i]);
+  const [data, setData] = useState(defaultData);
 
-      formData.append('multiple_files', multiple_files[i]);
-    }
-    //  console.log("formdata",formData)
+  const handleChange = e => {
+    const { name, value } = e.target;
+    const updatedData = data.map(group => {
+      if (group.name === name) {
+        return {
+          ...group,
+          selected: group.selected === value ? null : value
+        };
+      } else {
+        return group;
+      }
+    });
 
-    dispatch(addNewFile(formData));
+    setFormData({ ...formData, checkValidation: [value] })
+  };
 
-  }
-  const handlePhoto = (e) => {
-    setMultiple_files(e.target.files);
-    setFilename(e.target.files[0].names);
-  }
-
-  const handleChange = (e) => {
-    setTitle(e.target.value);
-
-  }
-
-  const handleChangeBio = (e) => {
-    setBio(e.target.value);
-
-  }
 
   useEffect(() => {
-    dispatch(listTypes());
-    dispatch(listAttribute());
-    //  dispatch(listRules())
 
     if (!userInfo) {
       history.push("/");
@@ -117,25 +99,177 @@ function Step3() {
 
   return (
     <div className="sign-up-container" style={{ backgroundColor: 'white' }}>
-          <div class="container mt-5">
+      <div class="container mt-5">
         <div class="d-flex justify-content-center row">
           <div class="col-md-10 col-lg-10">
             <div class="border">
               <div class="question bg-white p-3 border-bottom">
                 <div class="d-flex flex-row justify-content-between align-items-center mcq">
-                  <h4>AQ VALIDATION</h4><span>(1 of 20)</span></div>
+                  <h4>AQ VALIDATION</h4><span>(4 of 20)</span></div>
               </div>
               <div class="question bg-white p-3 border-bottom">
                 <div class="d-flex flex-row align-items-center question-title">
                   <h3 class="text-danger">Q.</h3>
-                  <h5 class="mt-1 ml-2">Title Is Valid ?</h5>
-                </div><div class="ans ml-2">
-                  <label class="radio"> <input type="radio" name="brazil" value="brazil" /> <span>True</span>
-                  </label>
+                  <h5 class="mt-1 ml-2">Theme Is Valid ?</h5>
                 </div>
                 <div class="ans ml-2">
-                  <label class="radio"> <input type="radio" name="Germany" value="Germany" /> <span>False</span>
-                  </label>
+                  {data.map((group) => {
+                    return (
+                      <div>
+                        {group.boxes.map((box) => {
+                          return (
+                            <div>
+                              <label class="checkbox">
+                                {console.log('box', box)}
+                                <input
+                                  onChange={(e) => {
+                                    const { name, value } = e.target;
+                                    const updatedData = data.map(group => {
+                                      if (group.name === name) {
+                                        return {
+                                          ...group,
+                                          selected: group.selected === value ? null : value
+                                        };
+                                      } else {
+                                        return group;
+                                      }
+
+                                    });
+                                    { console.log('boolean', value) }
+                                    setFormData({ ...formData, themeValidation: value })
+                                  }}
+
+                                  type="checkbox"
+                                  name={group.name}
+                                  value={box}
+                                /> <span>{box}</span>
+                              </label>
+
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(4 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Rules Is Valid ?</h5>
+                </div>
+                <div class="ans ml-2">
+                  {data.map((group) => {
+                    return (
+                      <div>
+                        {group.boxes.map((box) => {
+                          return (
+                            <div>
+                              <label class="checkbox">
+                                {console.log('box', box)}
+                                <input
+                                  onChange={(e) => {
+                                    const { name, value } = e.target;
+                                    const updatedData = data.map(group => {
+                                      if (group.name === name) {
+                                        return {
+                                          ...group,
+                                          selected: group.selected === value ? null : value
+                                        };
+                                      } else {
+                                        return group;
+                                      }
+
+                                    });
+                                    { console.log('boolean', value) }
+                                    setFormData({ ...formData, rulesValidation: value })
+                                  }}
+
+                                  type="checkbox"
+                                  name={group.name}
+                                  value={box}
+                                /> <span>{box}</span>
+                              </label>
+
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+          <div class="col-md-10 col-lg-10">
+            <div class="border">
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row justify-content-between align-items-center mcq">
+                  <h4>AQ VALIDATION</h4><span>(4 of 20)</span></div>
+              </div>
+              <div class="question bg-white p-3 border-bottom">
+                <div class="d-flex flex-row align-items-center question-title">
+                  <h3 class="text-danger">Q.</h3>
+                  <h5 class="mt-1 ml-2">Type Is Valid ?</h5>
+                </div>
+                <div class="ans ml-2">
+                  {data.map((group) => {
+                    return (
+                      <div>
+                        {group.boxes.map((box) => {
+                          return (
+                            <div>
+                              <label class="checkbox">
+                                {console.log('box', box)}
+                                <input
+                                     onChange={(e) => {
+                                      const { name, value } = e.target;
+                                      const updatedData = data.map(group => {
+                                        if (group.name === name) {
+                                          return {
+                                            ...group,
+                                            selected: group.selected === value ? null : value
+                                          };
+                                        } else {
+                                          return group;
+                                        }
+  
+                                      });
+                                      { console.log('boolean', value) }
+                                      setFormData({ ...formData, typeValidation: value })
+                                    }}
+  
+                                  type="checkbox"
+                                  name={group.name}
+                                  value={box}
+                                /> <span>{box}</span>
+                              </label>
+
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                    )
+                  })}
                 </div>
               </div>
             </div>
@@ -143,8 +277,9 @@ function Step3() {
         </div>
       </div>
 
-</div>
-);
+
+    </div>
+  );
 }
 
 export default Step3;

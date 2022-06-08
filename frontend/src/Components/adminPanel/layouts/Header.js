@@ -12,6 +12,7 @@ import {
   Button,
   Label,
 } from "reactstrap";
+
 import {AiTwotoneMinusCircle} from 'react-icons/ai'
 import {MdMenuOpen} from "react-icons/md"
 import user1 from "../../../assets/user1.jpg";
@@ -22,18 +23,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/Actions/actions";
 import NavBarFeed from "../../feed/navbarFeed";
 
-
-
 const Header = () => {
-
-
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  const logoutHandler = () => {
+  
+  const logoutHandler = async() => {
       dispatch(logout());
       history("/");
-  }
+       }
   let location = useLocation();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;

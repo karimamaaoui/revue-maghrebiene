@@ -5,6 +5,7 @@ import RoutesList from './Routes';
  import { Suspense } from "react";
 import './i18n'
 //  var socket;
+import { useSelector } from 'react-redux';
 
 const App=()=> {
   // const [socketConnected, setSocketConnected] = useState(false)
@@ -18,11 +19,11 @@ const App=()=> {
   //     }))
   //  })
 
-  
+
   return (
 
     <div className="App" id="home">
-      
+
       <RoutesList/>
 
     </div>

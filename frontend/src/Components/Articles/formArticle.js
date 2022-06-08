@@ -15,6 +15,8 @@ import Loading from '../Authentification/Loading';
 import ErrorMessage from '../Authentification/ErrorMessage';
 import { listRules } from '../../redux/Actions/rulesActions';
 import Step4 from './step4.js';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function FormArticle() {
 
@@ -22,21 +24,12 @@ function FormArticle() {
   const history = useNavigate();
   const [page, setPage] = useState(0);
 
-  const typeList = useSelector((state) => state.typeList);
-  const { loading, error, types } = typeList;
   
-  const attributeList = useSelector((state) => state.attributeList);
-  const { loadingAttribute, errorAttribute, attributes } = attributeList;
-
-  const addArticle = useSelector((state) => state.addArticle);
-  const { loadingAddArticle, errorAddArticle, article, success } = addArticle;
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const id = useParams();
-  const readId = id.id
-  console.log("id =",readId)
-
+  const readId=id.id;
+ 
 
 
   useEffect(() => {
@@ -46,13 +39,6 @@ function FormArticle() {
       }
     
   
-    dispatch(listTypes());
-    dispatch(listAttribute());
-
-   // dispatch(addnewArticle(formData));
-    console.log(addArticle)
-    //console.log(attributeList)
-    //  console.log(listTypes)
     if (!userInfo) {
       history.push("/");
     }
@@ -60,25 +46,25 @@ function FormArticle() {
     dispatch,
     history,
     userInfo,
-    addArticle
+    
   ]);
 
 
   const [formData, setFormData] = useState({
-    title: "",
-    abstract: "",
-    keyWords: [],
-    abbreviations: "",
-    typeArticle: "",
-    attributesAticle: [],
-    rulesChecked: [],
-    multiple_files: [],
-    authors: [userInfo.user._id],
-    type: '',
+    titleValidation:false,
+    abstractValidation:false,
+    keywordsValidation:false,
+    abbreviationsValidation:false,
+    filepasswordValidation:false,
+    imageValidation:false,
+    themeValidation:false,
+    rulesValidation:false,
+    typeValidation:false,
+    fileValidation:false,
+
 
   });
-  const FormTitles = ["Start", "Next Step", "Next Step","Next Step"];
-
+  const FormTitles = ["Start", "Next Step", "Third Step","Fourth Step"];
 
   const PageDisplay = () => {
     if (page === 0) {
@@ -93,14 +79,35 @@ function FormArticle() {
       return <Step4 formData={formData} setFormData={setFormData} />;
     }
   };
-  // const submitHandler = async (e) => {
+  const handleSubmit =  async () => {
+    console.log('click on comment')
+    const config = {
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${userInfo.token}`,
 
-  //   e.preventDefault();   
-  //    //console.log("user info from register",addnewArticle(formData))
+        },
+    };
 
-  //   dispatch(addnewArticle(formData));
+    return await axios.put(`http://localhost:5000/api/file/validation/${readId}`, formData, config)
+        .then((res) => {
 
-  // }
+            console.log(res.data);
+            Swal.fire({
+                title: "Succces!",
+                text: "Comment Added Successfully",
+                icon: 'success',
+                button: "OK!"
+            });
+
+
+            console.log('article => ' + JSON.stringify(res.data));
+
+        }).catch(err => {
+            console.log(err)
+        })
+}
+
 
 
   return (
@@ -150,14 +157,14 @@ function FormArticle() {
                       <div 
                         onClick={() => {
                           if (page === FormTitles.length - 1) {
-                            console.log("data from formArticle",formData)
+                           // console.log("data from formArticle",formData)
                           } else {
                             setPage((currPage) => currPage + 1);
                           }
                         }}
                       >
                              
-                        {page === FormTitles.length - 1 ? <button style={{borderRadius:"15px"}} >Submit </button>   :<button style={{borderRadius:"15px"}}> Next </button>}
+                        {page === FormTitles.length - 1 ? <button style={{borderRadius:"15px"}} onClick={handleSubmit}> Submit </button>   :<button style={{borderRadius:"15px"}}> Next </button>}
                       </div>
                       </div>
                     </div>
