@@ -18,7 +18,6 @@ router.patch("/update/",verifyToken.verifyUserToken,userController.updateUser);
 
 router.patch('/upload-image/',verifyToken.verifyUserToken,  userController.changePictureProfile);
 
-
 router.post('/requestPasswordReset',  userController.forgotPassword);
 router.post('/restPassword',  userController.sendTemporaryPassword);
 
