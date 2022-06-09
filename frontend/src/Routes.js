@@ -60,12 +60,12 @@ export default function RoutesList() {
     const [newMessages, setNewMessages] = useState({});
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
+    const [notification, setNotification] = useState([]);
 
   return (
     <>
               <AppContext.Provider value={{ socket, currentRoom, setCurrentRoom, members, setMembers, messages, setMessages, privateMemberMsg,
-                 setPrivateMemberMsg, rooms, setRooms, newMessages, setNewMessages }}>
-
+                 setPrivateMemberMsg, rooms,notification,setNotification, setRooms, newMessages, setNewMessages }}>
     <Router>
 
       <div>

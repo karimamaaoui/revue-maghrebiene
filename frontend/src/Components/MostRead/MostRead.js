@@ -9,8 +9,9 @@ import NavbarList from '../adminPanel/views/navbarList';
 import SidebarScreen from '../sideBar/sidebarScreen';
 import FileDownload from "js-file-download"
 import { Button, Card, Form, Modal, OverlayTrigger, Tab, Tabs, Tooltip } from "react-bootstrap";
-
+import './most.css'
 export default function MostRead() {
+   
     const dispatch = useDispatch();
     const history = useNavigate();
 
@@ -181,8 +182,13 @@ export default function MostRead() {
                  //   console.log(res.data);
                     setLikeArticle(res.data)
     
-                 //   console.log('article => ' + JSON.stringify(res.data));
-    
+                    Swal.fire({
+                        title: "Succces!",
+                        text: "Like Added Successfully",
+                        icon: 'success',
+                        button: "OK!"
+                    });
+        
                 }).catch(err => {
                     console.log(err)
                 })
@@ -199,7 +205,6 @@ export default function MostRead() {
             };
             let userId = userInfo.user._id;
             let user = { userId, article }
-           // console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
     
     
             return await axios.post(`http://localhost:5000/api/favorite/add/`, user, config)
@@ -253,7 +258,7 @@ export default function MostRead() {
                                             <br />
 
                                             <div>
-                                                {slice.sort((a, b) => b.view.length - a.view.length)
+                                                {slice.sort((a, b) => b.view[0].count - a.view[0].count)
                                                     .map((tdata,index) => {
                                                         return (
                                                             <div>
@@ -278,8 +283,7 @@ export default function MostRead() {
                                                                                         KeyWords :
                                                                                         {tdata.keyWords}
                                                                                         <br />
-
-                                                                                       Views(s) {tdata.view.length}
+                                                                                       Views(s) {tdata.view[0].count}
                                                                                         <br />
 
                                                                                         Created At : {tdata.createdAt}
@@ -307,7 +311,7 @@ export default function MostRead() {
                                                                                                                                 style={{ backgroundColor: '#FEE5CF', }} >
 
                                                                                                                                 <Tab eventKey="first" title="Aboutus">
-                                                                                                                                    {(tdata.view.length) > 0 ?
+                                                                                                                                    {(tdata.view[0].count) > 0 ?
 
                                                                                                                                         <h6 style={{
                                                                                                                                             fontSize: '14px',
@@ -315,7 +319,7 @@ export default function MostRead() {
                                                                                                                                         }}>
                                                                                                                                             <i class="bi bi-eye"></i>
 
-                                                                                                                                            {tdata.view.length} view(s)
+                                                                                                                                            {tdata.view[0].count} view(s)
                                                                                                                                         </h6>
                                                                                                                                         : <h6> </h6>
                                                                                                                                     }
@@ -375,6 +379,9 @@ export default function MostRead() {
                                                                                                                                         </div>
                                                                                                                                         : <h6> </h6>
                                                                                                                                     }
+           
+
+
 
                                                                                                                                 </Tab>
                                                                                                                             </Tabs>

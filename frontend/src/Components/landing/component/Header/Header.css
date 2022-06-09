@@ -2,6 +2,7 @@
     background-color: #FEE5CF
 }
 
+
 .app__header-h1 {
     font-family: var(--font-base);
     color: #D68082;
@@ -22,7 +23,7 @@
 }
 
 .app__bg {
-    background-color:#FEE5CF ;
+    background-color: #FEE5CF;
     background-position: center;
     background-size: cover;
     background-repeat: repeat;

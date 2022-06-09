@@ -8,7 +8,7 @@ function MessageForm() {
 const userLogin = useSelector((state) => state.userLogin);
 const { userInfo } = userLogin;
 
-    const { socket, currentRoom, setMessages, messages, privateMemberMsg } = useContext(AppContext);
+    const { socket, currentRoom, setMessages, messages, privateMemberMsg,notification } = useContext(AppContext);
     const messageEndRef = useRef(null);
     useEffect(() => {
         scrollToBottom();
@@ -54,12 +54,12 @@ const { userInfo } = userLogin;
     return (
         <>
             <div className="messages-output">
-                {userInfo.user && !privateMemberMsg?._id && <div className="alert alert-info">You are in the {currentRoom} room</div>}
-                {userInfo.user && privateMemberMsg?._id && (
+                {userInfo.user._id && !privateMemberMsg?._id && <div className="alert alert-info">You are in the {currentRoom} room</div>}
+                {userInfo.user._id && privateMemberMsg?._id && (
                     <>
                         <div className="alert alert-info conversation-info">
                             <div>
-                                Your conversation with {privateMemberMsg.name} <img src={privateMemberMsg.picture} className="conversation-profile-pic" />
+                                Your conversation with {privateMemberMsg.username} <img src={privateMemberMsg.picture} className="conversation-profile-pic" />
                             </div>
                         </div>
                     </>
@@ -74,8 +74,9 @@ const { userInfo } = userLogin;
                                 <div className={sender?.email == userInfo.user?.email ? "message" : "incoming-message"} key={msgIdx}>
                                     <div className="message-inner">
                                         <div className="d-flex align-items-center mb-3">
-                                            <img src={sender.picture} style={{ width: 35, height: 35, objectFit: "cover", borderRadius: "50%", marginRight: 10 }} />
-                                            <p className="message-sender">{sender._id == userInfo.user?._id ? "You" : sender.name}</p>
+
+                                            <img src="https://th.bing.com/th/id/R.de3f90c6382373cd3e1fc6b09a6538d1?rik=yqlKO5k1g6VKNg&riu=http%3a%2f%2fforums2.cubiccastles.com%2fuploads%2fimageupload%2f269%2fY43O9EGGJAP6.png&ehk=w1J4Rcrg2oyfq33eGTEqIG81YoPlB8W%2bXmHDlV2SATY%3d&risl=&pid=ImgRaw&r=0" style={{ width: 35, height: 35, objectFit: "cover", borderRadius: "50%", marginRight: 10 }} />
+                                            <p className="message-sender">{sender._id == userInfo.user?._id ? "You" : sender.username}</p>
                                         </div>
                                         <p className="message-content">{content}</p>
                                         <p className="message-timestamp-left">{time}</p>
@@ -85,17 +86,17 @@ const { userInfo } = userLogin;
                         </div>
                     ))}
                 <div ref={messageEndRef} />
-                {console.log('messages',messages)}
             </div>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    <Col md={11}>
+                    <Col md={10}>
                         <Form.Group>
-                            <Form.Control type="text" placeholder="Your message" disabled={!userInfo.user} value={message} onChange={(e) => setMessage(e.target.value)}></Form.Control>
+                            <Form.Control type="text" placeholder="Your message" disabled={!userInfo.user} 
+                            value={message} onChange={(e) => setMessage(e.target.value)}></Form.Control>
                         </Form.Group>
                     </Col>
-                    <Col md={1}>
-                        <Button variant="primary" type="submit" style={{ width: "100%", backgroundColor: "orange" }} disabled={!userInfo.user}>
+                    <Col md={2}>
+                        <Button variant="primary" type="submit" style={{ width: "100%", backgroundColor: "RED",borderColor:'red' }} disabled={!userInfo.user}>
                             <i className="fa fa-paper-plane"></i>
                         </Button>
                     </Col>

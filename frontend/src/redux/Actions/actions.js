@@ -71,9 +71,28 @@ export const login = (username, password) => async (dispatch) => {
   }
 }
 // logout
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch,getState) => {
+
+  const {
+    userLogin: { userInfo },
+  } = getState();
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+
+    },
+  };
+
+  console.log("user token", config)
+
+  const { data } = await axios.delete('http://localhost:5000/logout', config);
+  console.log("user data", data)
+
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
+  
 
 }
 

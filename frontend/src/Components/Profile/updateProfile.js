@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { update, updateProfile, updateProfilePicture, userupdatePicture } from '../../redux/Actions/actions';
 import Loading from '../Authentification/Loading';
 import ErrorMessage from '../Authentification/ErrorMessage';
+import axios from 'axios';
+import NavbarList from '../adminPanel/views/navbarList';
 
 export default function UpdateProfile() {
 
@@ -30,7 +32,28 @@ export default function UpdateProfile() {
 
     const userUpdate = useSelector((state) => state.userUpdate);
     const { loading, error, success } = userUpdate;
+    const [authorList, setAuthorList] = useState([]);
 
+    
+    const getAuthor = async () => {
+      const config = {
+          headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${userInfo.token}`,
+  
+          },
+      };
+  
+      return await axios.get(`http://localhost:5000/api/author/get`, config)
+          .then((res) => {
+                  console.log("author",res.data);
+              setAuthorList(res.data)
+          }).catch(err => {
+              console.log(err)
+          })
+  
+  
+  }
     useEffect(() => {
         if (!userInfo) {
 
@@ -44,6 +67,8 @@ export default function UpdateProfile() {
             setEmail(userInfo.user.email);
             setPlaceOfPractice(userInfo.user.placeofpractice);
             setPassword(userInfo.user.password);
+            getAuthor();
+
 
         }
         console.log("userinfo", userInfo)
@@ -58,37 +83,7 @@ export default function UpdateProfile() {
         history("/profile")
     };
 
-    const postDetails = (pics) => {
-        setProfilePicMessage(null);
-        if (pics.type === "image/jpeg" || pics.type === "image/png") {
-            const data = new FormData();
-            data.append("file", pics);
-            data.append("upload_preset", "notezipper");
-            data.append("cloud_name", "piyushproj");
-            fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
-                method: "post",
-                body: data,
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    setProfilePic(data.url.toString());
-                    console.log(data.url.toString());
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        } else {
-            return setProfilePicMessage("Please Select an Image");
-        }
-    };
-   
-    const addPictureHandler = (e) => {
-        e.preventDefault();
-        dispatch(userupdatePicture({ profilePic }, token));
-        
-        history("/profile")
-    };
-
+  
     return (
         <React.StrictMode>        
 
@@ -100,8 +95,13 @@ export default function UpdateProfile() {
                 <div className="main-body">
                     <div className="row gutters-sm">
                         <SidebarScreen />
+                        
                         <div className="col-md-8" style={{ marginTop: '50px' }}>
-
+              <div className="contentArea">
+                <NavbarList />
+              </div>
+              <br />
+         
                             <h3 className="fieldset-title">Personal Info</h3>
                             <div class="card" >
                                 {loading && <Loading />}
@@ -114,22 +114,6 @@ export default function UpdateProfile() {
 
                                 <div class="card-body">
                                     <form onSubmit={submitHandler}>
-                                    <div className="form-group avatar">
-                                        <figure className="figure col-md-2">
-                                            <img className="img-rounded img-responsive"
-                                                src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                                        </figure>
-                                        
-                                        <div class="col-sm-12 text-secondary">
-
-                                            <input type="file" className="file-uploader "
-                                                onChange={(e) => postDetails(e.target.files[0])}
-                                                />
-                                                 {console.log('eeeeeeeeeeeeeee',profilePic)}
-                                           
-                                            <button type="submit" className="btn btn-primary" onClick={addPictureHandler}>Upload</button>
-                                        </div>
-                                    </div>
                                   
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
@@ -170,6 +154,8 @@ export default function UpdateProfile() {
                                                     onChange={(e) => setEmail(e.target.value)} />
                                             </div>
                                         </div>
+                                         {userInfo.roleuser==="Author" ? 
+                                        <>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
                                                 <h6 class="mb-0">placeofpractice</h6>
@@ -188,7 +174,10 @@ export default function UpdateProfile() {
                                                     onChange={(e) => setUniversity(e.target.value)} />
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
+                                        </>
+                                        :null}
+
+                                        {/* <div class="row mb-3">
                                             <div class="col-sm-3">
                                                 <h6 class="mb-0">Password</h6>
                                             </div>
@@ -198,11 +187,11 @@ export default function UpdateProfile() {
                                                     onChange={(e) => setPassword(e.target.value)}
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div class="row">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input className="btn btn-primary" type="submit" value="Update Profile" />
+                                                <input className="btn btn-danger" type="submit" value="Update Profile" />
                                             </div>
                                         </div>
                                     </form>

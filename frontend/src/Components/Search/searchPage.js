@@ -604,7 +604,7 @@ export default function SearchPahe() {
                                                                                                                                 style={{ backgroundColor: '#FEE5CF', }} >
 
                                                                                                                                 <Tab eventKey="first" title="Aboutus">
-                                                                                                                                    {(tdata.view.length) > 0 ?
+                                                                                                                                    {(tdata.view[0].count ) > 0 ?
 
                                                                                                                                         <h6 style={{
                                                                                                                                             fontSize: '14px',
@@ -612,7 +612,7 @@ export default function SearchPahe() {
                                                                                                                                         }}>
                                                                                                                                             <i class="bi bi-eye"></i>
 
-                                                                                                                                            {tdata.view.length} view(s)
+                                                                                                                                            {tdata.view[0].count } view(s)
                                                                                                                                         </h6>
                                                                                                                                         : <h6> </h6>
                                                                                                                                     }
@@ -889,12 +889,12 @@ export default function SearchPahe() {
                                                                                                                                 <Tabs defaultActiveKey="first" style={{ backgroundColor: '#FEE5CF', }} >
 
                                                                                                                                     <Tab eventKey="first" title="Aboutus">
-                                                                                                                                        {(tdata.view.length) > 0 ?
+                                                                                                                                        {(tdata.view[0].count ) > 0 ?
 
                                                                                                                                             <h6 style={{ fontSize: '14px', marginTop: '12px' }}>
                                                                                                                                                 <i class="bi bi-eye"></i>
 
-                                                                                                                                                {tdata.view.length} view(s)
+                                                                                                                                                {tdata.view[0].count } view(s)
                                                                                                                                             </h6>
                                                                                                                                             : <h6> </h6>
                                                                                                                                         }

@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/Actions/actions";
 import NavBarFeed from "../../feed/navbarFeed";
+import axios from "axios";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -29,9 +30,26 @@ const Header = () => {
 
   
   const logoutHandler = async() => {
-      dispatch(logout());
+   //   dispatch(logout());
+   const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+
+    },
+  };
+
+  console.log("user token", config)
+
+  const { data } = await axios.delete('http://localhost:5000/logout', config);
+  console.log("user data", data)
+
+  localStorage.removeItem("userInfo");
+ 
       history("/");
        }
+
+       
   let location = useLocation();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
