@@ -27,6 +27,7 @@ const Files = require("./model/Files");
 const User = require("./model/user");
 const Message = require("./model/Message");
 const verifyToken = require("./middleware/verifyToken");
+const Roles = require("./model/role");
 
 app.use(bodyParser.json())
 
@@ -266,4 +267,19 @@ function initial() {
 app.get('/rooms', (req, res)=> {
   res.json(rooms)
 
+})
+
+
+app.get('/roles', async(req, res)=> {
+  try{
+  
+      const roles = await Roles.find({});
+     
+      return res.status(200).json(roles);
+
+  } catch(err){
+    return res.status(500).json({ msg: err });
+
+  
+  }
 })

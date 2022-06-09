@@ -10,11 +10,11 @@ const createFavorite = async (req, res) => {
     if (!userId) {
         res.status(404).json({ msg: 'User does not exist' });
     }
-   
+    console.log('req.params.article',req.params.id)
   
     const favorite = await new Favorite({
       user: userId.id,
-      article:req.body.article
+      article:req.params.id
     });
     // Save attribute in the database
     favorite
@@ -39,8 +39,18 @@ const createFavorite = async (req, res) => {
 const getAllFavorite = ( async (req, res) => {
       console.log('inside get list of favorite');
       try {
-          const favorite = await Favorite.find().populate('user',['_id','email','username']).sort({ _id: -1 }) ;
+          const favorite = await Favorite.find().populate('user',['email','username'])
+          .populate('article')
+          .sort({ _id: -1 }) ;
+          const _idUser=favorite.map((fav)=>{return (fav.user._id)});
+         
+          if(req.decoded.id.includes(_idUser))
+          {
           return res.status(200).json(favorite);
+        }else {
+          return res.status(200).json('no');
+
+        }
 
       } catch (err) {
           return res.status(500).json({ msg: err });

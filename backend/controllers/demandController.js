@@ -13,6 +13,7 @@ const createDemand = async (req, res) => {
   
     const demand = await new Demand({
       user: userId.id,
+      coverletter:req.body.coverletter
     });
     
     

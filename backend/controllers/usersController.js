@@ -61,7 +61,7 @@ const getAllUsers = (verifyToken.verifyUserToken,
         const total = await User.countDocuments({});
         console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
 
-        const limit = 2;
+        const limit = 5;
         const skip = (currentPage - 1) * limit;
 
         console.log('inside get list of files', skip);

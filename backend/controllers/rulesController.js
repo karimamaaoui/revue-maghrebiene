@@ -46,5 +46,6 @@ const retrieveAllRules = ( async (req, res) => {
 });
   
 module.exports = {
-    createRules, retrieveAllRules
+    createRules, 
+    retrieveAllRules
   }
