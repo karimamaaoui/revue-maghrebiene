@@ -124,8 +124,13 @@ export default function ManageUser() {
                         <Col lg="12">
 
                           <Card id="usersList">
+
                             <CardBody>
                               <CardTitle tag="h5">Users List</CardTitle>
+                              <Col lg="32" >
+                        <button className="btn btn-danger" onClick={()=>{history('/addnewuser')}}>Add new user</button>
+                        </Col>
+                    
 
                               <Table className="no-wrap mt-3 align-middle" responsive borderless>
                                 <thead>
@@ -135,13 +140,10 @@ export default function ManageUser() {
                                     <th>firstname</th>
                                     <th>lastname</th>
                                     <th>isVerified</th>
-                                    <th>University</th>
                                     <th>Roles</th>
-
                                     <th>isApproved</th>
                                     <th>Action</th>
 
-                                    <th></th>
 
                                   </tr>
                                 </thead>
@@ -175,7 +177,6 @@ export default function ManageUser() {
                                           </div>}
                                       </td>
 
-                                      <td>{tdata.university}</td>
                                       {tdata.roles.map((rol) => {
                                         return (
                                           <td>

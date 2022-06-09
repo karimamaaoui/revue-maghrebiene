@@ -179,7 +179,6 @@ export default function MostRead() {
             return await axios.put(`http://localhost:5000/api/file/like/${id}`, user, config)
                 .then((res) => {
     
-                 //   console.log(res.data);
                     setLikeArticle(res.data)
     
                     Swal.fire({
@@ -213,7 +212,7 @@ export default function MostRead() {
                     console.log(res.data);
                     Swal.fire({
                         title: "Succces!",
-                        text: "Request Sended Successfully",
+                        text: "Article  Added To Favorite List Successfully",
                         icon: 'success',
                         button: "OK!"
                     });
@@ -261,6 +260,10 @@ export default function MostRead() {
                                                 {slice.sort((a, b) => b.view[0].count - a.view[0].count)
                                                     .map((tdata,index) => {
                                                         return (
+                                                            <>
+                                                            
+                                                            {tdata.published === true ?
+                                                                
                                                             <div>
                                                                 <div className='card'>
                                                                     <div class="sign-up-container">
@@ -418,6 +421,8 @@ export default function MostRead() {
                                                                 </div>
 
                                                             </div>
+                                                            :<></>}
+                                                            </>
                                                         )
                                                     })}
                                             </div>

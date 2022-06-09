@@ -226,11 +226,11 @@ export default function SearchPahe() {
             },
         };
         let userId = userInfo.user._id;
-        let user = { userId, article }
+        let user = { userId }
         // console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', user)
 
 
-        return await axios.post(`http://localhost:5000/api/favorite/add/`, user, config)
+        return await axios.post(`http://localhost:5000/api/favorite/add/${article}`, user, config)
             .then((res) => {
 
                 console.log(res.data);

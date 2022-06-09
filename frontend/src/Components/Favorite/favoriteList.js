@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getArticleByAttribute } from '../../redux/Actions/articleActions'
 import NavbarList from '../adminPanel/views/navbarList'
 import SidebarScreen from '../sideBar/sidebarScreen'
-import './searchwith.css';
 import moment from 'moment'
 import { Confirm, Prompt, Alert } from 'react-st-modal';
 
@@ -13,7 +12,7 @@ import First from '../../assets/first.jpg'
 import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 
-export default function SearchWithAttribute() {
+export default function FavoriteList() {
     const dispatch = useDispatch();
     const history = useNavigate();
 
@@ -36,11 +35,9 @@ export default function SearchWithAttribute() {
     const [attributeName, setAttributeName] = useState('')
     const [noOfElement, setNoOfElement] = useState(3);
 
-    const [viewArticle, setViewArticle] = useState([]);
+    const [favorites, setFavorites] = useState([]);
 
 
-    const id = useParams();
-    const updatedAttributeIds = id.id
     useEffect(async () => {
         try {
             const config = {
@@ -50,19 +47,21 @@ export default function SearchWithAttribute() {
                 },
             };
 
-            const { data } = await axios.get(`http://localhost:5000/api/file/getarticle/${updatedAttributeIds}`, config);
-            console.log('data from get attribtue', data.map((d) => {
-                d.attributesAticle.map((atr) => {
-                    setAttributeName(atr.label)
-                })
-            }))
-            setArticleByAttribute(data)
+            const data= await axios.get(`http://localhost:5000/api/favorite/`, config);
+            console.log('data from get favorite', data)
+            console.log('fddfddfd',data.includes('no'))
+            if(data==='no')
+            {return "no data found"}
+            
+            else {setFavorites(data)}
 
 
         } catch (error) {
             console.log(error)
         }
 
+
+        
 
         if (!userInfo) {
             history("/");
@@ -82,10 +81,10 @@ export default function SearchWithAttribute() {
 
     }
 
-
-    const slice = articleByAttribute?.slice(0, noOfElement)
+    const slice = favorites?.slice(0, noOfElement)
     const currentUrl = window.location.href;
     const [disable, setDisable] = useState(false);
+    console.log('fav',slice.length)
 
     return (
         <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
@@ -103,7 +102,7 @@ export default function SearchWithAttribute() {
                                         <div className="card-body">
 
                                             <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Search With Theme
+                                                <h1 style={{ color: '#B91736' }}>Favorite List
                                                 </h1>
                                             </div>
                                             <br />
@@ -113,53 +112,51 @@ export default function SearchWithAttribute() {
                                                     <div class="row justify-content-center">
 
                                                         <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
-                                                            {slice.map((atrib) => {
+                                                            {slice.length !=0 ? 
+                                                            slice.map((atrib) => {
                                                                 return (
                                                                     <>
-                                                                {atrib.published === true ?
+                                                                {atrib.article.published === true ?
 
                                                                     <div class="card card-margin">
                                                                         <div class="card-header no-border">
                                                                             <h5 class="card-title" style={{ textTransform: "uppercase" }}>
                                                                                 <b>
-                                                                                    {atrib.title}</b>
+                                                                                    {atrib.title}
+                                                                                    </b>
                                                                             </h5>
                                                                         </div>
                                                                         <div class="card-body pt-0">
                                                                             <div class="widget-49">
                                                                                 <div class="widget-49-title-wrapper">
                                                                                     <div class="widget-49-date-primary">
-                                                                                        <span class="widget-49-date-day" >{moment(atrib.createdAt).format("DD-MM-YYYY")}</span>
+                                                                                        <span class="widget-49-date-day" >{moment(atrib.article.createdAt).format("DD-MM-YYYY")}</span>
                                                                                     </div>
                                                                                     <div class="widget-49-meeting-info">
-                                                                                        {atrib.authors.map((auteur) => {
-                                                                                            return (
                                                                                                 <span class="widget-49-pro-title" >
                                                                                                     Writed By <b>
                                                                                                         <span style={{ textTransform: "capitalize" }}>
-                                                                                                            {auteur.username}
+                                                                                                            {atrib.user.username}
                                                                                                         </span>
                                                                                                     </b>
                                                                                                 </span>
-                                                                                            )
-                                                                                        })}
+                                                                                           
                                                                                     </div>
                                                                                 </div>
 
                                                                                 <div className='widget-49-meeting-points'>
-                                                                                    <span >{atrib.bio} </span>
+                                                                                    <span >{atrib.article.bio} </span>
                                                                                     <br />
 
-                                                                                    <img src={atrib.pathFile} alt="" height="140px" width="30px" />
+                                                                                    <img src={atrib.article.pathFile} alt="" height="140px" width="30px" />
 
                                                                                     <span></span>
-                                                                                    <span class="widget-49-meeting-time">{atrib.abstract} abstract</span>
+                                                                                    <span class="widget-49-meeting-time">{atrib.article.abstract} abstract</span>
                                                                                     <br />
 
-                                                                                    <span>{atrib.keyWords}</span>
+                                                                                    <span>{atrib.article.keyWords}</span>
                                                                                     <br />
-                                                                                    <span>view {atrib.view.length}</span>
-
+                                                                                    <span> {atrib.article.view[0].count} view(s)</span>
                                                                                 </div>
                                                                                 <ol class="widget-49-meeting-points">
 
@@ -169,18 +166,17 @@ export default function SearchWithAttribute() {
                                                                               
 
                                                                             <div class="widget-49-meeting-action" >
-                                                                                {console.log(atrib.filepassword.length != 0)}
                                                                                 <button className="btn btn-warning"
                                                                                     onClick={
                                                                                         async () => {
                                                                                             {
-                                                                                                atrib.filepassword.length != 0 ?
+                                                                                                atrib.article.filepassword.length != 0 ?
                                                                                                 <div>
-                                                                                                    {replaceModalItem(atrib._id)}
+                                                                                                    {replaceModalItem(atrib.article._id)}
 
                                                                                                 </div>
                                                                                                 :
-                                                                                                history(`/b/${atrib._id}`)
+                                                                                                history(`/b/${atrib.article._id}`)
                                                                                             }
                                                                                         }}
                                                                                 >
@@ -250,8 +246,8 @@ export default function SearchWithAttribute() {
                                                                         </>
                                                         )
                                                             })
-                                                            }
-
+                                                            : "No data "
+                                                        }
                                                     </div>
 
                                                 </div>

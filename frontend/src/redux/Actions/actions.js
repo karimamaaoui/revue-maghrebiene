@@ -97,7 +97,7 @@ export const logout = () => async (dispatch,getState) => {
 }
 
 // register new account
-export const register = (username, email, password) => async (dispatch) => {
+export const register = (username, email, password,role) => async (dispatch) => {
 
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
@@ -108,9 +108,17 @@ export const register = (username, email, password) => async (dispatch) => {
         username,
         email,
         password,
+        role
       },
     );
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+    Swal.fire({
+      title: "Succces!",
+      text: "User Added Successfully",
+      icon: 'success',
+      button: "OK!"
+    });
+  
     console.log("user data", data)
 
     dispatch({ type: USER_REGISTER_FAIL, payload: data });

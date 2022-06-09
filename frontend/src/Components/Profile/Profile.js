@@ -10,14 +10,6 @@ import NavbarList from '../adminPanel/views/navbarList';
 
 export default function Profile() {
 
-  const Pf='https://res.cloudinary.com/piyushproj/image/upload/'
-  /***
-   *              <ul>
-        {userInfo.user.roles &&
-          userInfo.user.roles.map((role, index) => <li key={index}>{role}</li>)}
-      </ul>
-         
-   */
   const dispatch = useDispatch();
   const history = useNavigate();
   const userLogin = useSelector((state) => state.userLogin);

@@ -18,9 +18,9 @@ import Buttons from './Components/adminPanel/views/ui/Alerts';
 import Badges from './Components/adminPanel/views/ui/Badges';
 import Table from './Components/adminPanel/views/ui/Tables';
 import Forms from './Components/adminPanel/views/ui/TRANSLATE/Forms';
-//import FullLayout from './Components/adminPanel/layouts/FullLayout'
 import AdminPage from './Components/adminPanel/adminpage';
 import ManageUser from '../src/Components/adminPanel/manageUsers/manageUser'
+import AddNewUser from '../src/Components/adminPanel/manageUsers/AddNewUser'
 
 import Article from './Components/Articles/Articles';
 import ManageArticle from '../src/Components/adminPanel/manageArticle/manageArticle'
@@ -34,11 +34,10 @@ import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
 import AttributeArticle from "./Components/searchWithAttribute/searchWithAttribute"
 
 import Feedback from './Components/feedback/Feedback'
-import HeaderTran from './Components/adminPanel/views/ui/TRANSLATE/headerTrans';
-import { Suspense } from "react";
 import DemandAuthor from './Components/DemandAuthor/demandAuthor';
 import AcceptDemand from './Components/DemandAuthor/AcceptDemand'
 import AddPost from './Components/Home/addPost'
+import FavoriteList from './Components/Favorite/favoriteList'
 
 import MostRead from './Components/MostRead/MostRead'
 
@@ -48,93 +47,97 @@ import CheckedCorrection from './Components/editorPanel/checkedCorrection/checke
 import Landing from './Landing'
 import Chat from './Components/Chat/Chat'
 import { useSelector } from 'react-redux';
-import {useState} from 'react'
+import { useState } from 'react'
 import { AppContext, socket } from "./Components/Chat/AppContext";
 
 export default function RoutesList() {
   const [rooms, setRooms] = useState([]);
-    const [currentRoom, setCurrentRoom] = useState([]);
-    const [members, setMembers] = useState([]);
-    const [messages, setMessages] = useState([]);
-    const [privateMemberMsg, setPrivateMemberMsg] = useState({});
-    const [newMessages, setNewMessages] = useState({});
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-    const [notification, setNotification] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [privateMemberMsg, setPrivateMemberMsg] = useState({});
+  const [newMessages, setNewMessages] = useState({});
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const [notification, setNotification] = useState([]);
 
   return (
     <>
-              <AppContext.Provider value={{ socket, currentRoom, setCurrentRoom, members, setMembers, messages, setMessages, privateMemberMsg,
-                 setPrivateMemberMsg, rooms,notification,setNotification, setRooms, newMessages, setNewMessages }}>
-    <Router>
+      <AppContext.Provider value={{
+        socket, currentRoom, setCurrentRoom, members, setMembers, messages, setMessages, privateMemberMsg,
+        setPrivateMemberMsg, rooms, notification, setNotification, setRooms, newMessages, setNewMessages
+      }}>
+        <Router>
 
-      <div>
-        <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/chat" element={<Chat />} />
+          <div>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/favorite" element={<FavoriteList />} />
 
-        <Route path="/a" element={<SideBar />} />
-        <Route path="/mostread" element={<MostRead />} />
-        <Route path="/respond" element={<RepondingToArticle />} />
-        <Route path="/correction/:id" element={<CorrectionPage />} />
+              <Route path="/a" element={<SideBar />} />
+              <Route path="/mostread" element={<MostRead />} />
+              <Route path="/respond" element={<RepondingToArticle />} />
+              <Route path="/correction/:id" element={<CorrectionPage />} />
 
-        <Route path="/checked/:id" element={<CheckedCorrection />} />
+              <Route path="/checked/:id" element={<CheckedCorrection />} />
 
-        <Route path="/b/:id" element={<AddPost />} />
+              <Route path="/b/:id" element={<AddPost />} />
 
-        <Route path="/search" element={<Search />} />
-        <Route path="/home" element={<PageAccueil />} />
-        <Route path="/demand" element={<DemandAuthor />} />
-        <Route path="/accept" element={<AcceptDemand />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/home" element={<PageAccueil />} />
+              <Route path="/demand" element={<DemandAuthor />} />
+              <Route path="/accept" element={<AcceptDemand />} />
 
-        <Route path="/feedback" element={<Feedback />} />
+              <Route path="/feedback" element={<Feedback />} />
 
-        <Route path="/article" element={<Article />} />
-        <Route path="/t" element={<Feed />} />
-        <Route path="/getarticlefromattribute/:id" element={<AttributeArticle />} />
+              <Route path="/article" element={<Article />} />
+              <Route path="/t" element={<Feed />} />
+              <Route path="/getarticlefromattribute/:id" element={<AttributeArticle />} />
 
-        
-        <Route path="/users" element={<ManageUser />} />
-        <Route path="/managearticles" element={<ManageArticle />} />
-        <Route path="/managearticles/:key" element={<ManageArticle />} />
+              <Route path="/addnewuser" element={<AddNewUser />} />
 
-        <Route path="/managearticles/search" element={<ManageArticle />} />
+              <Route path="/users" element={<ManageUser />} />
+              <Route path="/managearticles" element={<ManageArticle />} />
+              <Route path="/managearticles/:key" element={<ManageArticle />} />
 
-        <Route path="/editarticle/:id" element={<EditArticle />} />
+              <Route path="/managearticles/search" element={<ManageArticle />} />
 
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/editprofile" element={<UpdateProfile />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          {/* <Route path="/" element={<Started />} /> */}
-          <Route path="/start" element={<Authenticate />} />
-          <Route path="/arti/:id" element={<FormArticle />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/restpassword" element={<RestPassword />} />
-          <Route path="/s" element={<AddFile />} />
-          <Route exact path='/*' element={<NoRouteFound />} />          
-          <Route exact path='/profile' element={<FormArticle /> } />
+              <Route path="/editarticle/:id" element={<EditArticle />} />
 
-
-
-          <Route exact path="/starter" element= {<AdminStarted />} />
-          <Route exact path="/aboutadmin" element= {<AboutAdmin />} />
-          <Route exact path="/alerts" element= {<Alerts />} />
-          <Route exact path="/badges" element= {<Badges />} />
-          <Route exact path="/buttons" element= {<Buttons />} />
-          <Route exact path="/table" element= {<Table />} />
-          <Route exact path="/forms" element= {<Forms />} />
-          <Route exact path="/adminpanel" element= {<AdminPage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/editprofile" element={<UpdateProfile />} />
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="/login" element={<LoginForm />} />
+              {/* <Route path="/" element={<Started />} /> */}
+              <Route path="/start" element={<Authenticate />} />
+              <Route path="/arti/:id" element={<FormArticle />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/restpassword" element={<RestPassword />} />
+              <Route path="/s" element={<AddFile />} />
+              <Route exact path='/*' element={<NoRouteFound />} />
+              <Route exact path='/profile' element={<FormArticle />} />
 
 
 
+              <Route exact path="/starter" element={<AdminStarted />} />
+              <Route exact path="/aboutadmin" element={<AboutAdmin />} />
+              <Route exact path="/alerts" element={<Alerts />} />
+              <Route exact path="/badges" element={<Badges />} />
+              <Route exact path="/buttons" element={<Buttons />} />
+              <Route exact path="/table" element={<Table />} />
+              <Route exact path="/forms" element={<Forms />} />
+              <Route exact path="/adminpanel" element={<AdminPage />} />
 
-        </Routes>
 
-      </div>
 
-    </Router>
-</AppContext.Provider>
+
+            </Routes>
+
+          </div>
+
+        </Router>
+      </AppContext.Provider>
     </>
 
   );

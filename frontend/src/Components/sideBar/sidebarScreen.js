@@ -48,32 +48,6 @@ export default function SidebarScreen() {
               Menu
             </h2>
 
-            <li className="list-unstyled components mb-2">
-              <a href="/search" className="inline-block ">
-                <i className="bi bi-search "></i>
-                {' '}
-                Search Article</a>
-            </li>
-            <li className="list-unstyled components mb-2">
-              <a href="#" className="inline-block">
-                <i className="bi bi-newspaper "></i>
-                {' '}
-                Recent Article</a>
-            </li>
-
-            <li className="list-unstyled components mb-2">
-              <a href="/mostread" className="inline-block">
-                <i className="bi bi-book"></i>
-                {' '}
-                Most Read</a>
-            </li>
-
-            <li className="list-unstyled components mb-2">
-              <a href="/feedback" className="inline-block ">
-                <i className="bi bi-search "></i>
-                {' '}
-                Add Feedback</a>
-            </li>
           
             {userInfo.roleuser === "Reader" ?
               <>
@@ -97,14 +71,64 @@ export default function SidebarScreen() {
                     {' '}
                     Demand To be Author</a>
                 </li>
+                <li className="list-unstyled components mb-2">
+              <a href="/chat" className="inline-block ">
+                <i className="bi bi-chat-dots "></i>
+                {' '}
+                Send Message</a>
+            </li>
+            <li className="list-unstyled components mb-2">
+              <a href="/mostread" className="inline-block">
+                <i className="bi bi-book"></i>
+                {' '}
+                Most Read</a>
+            </li>
+
 
               </>
               : <></>
 
             }
 
-{userInfo.roleuser === "User" ?
+        {userInfo.roleuser === "User" ?
               <>
+                <li className="list-unstyled components mb-2">
+              <a href="/search" className="inline-block ">
+                <i className="bi bi-search "></i>
+                {' '}
+                Search Article</a>
+            </li>
+            
+
+            <li className="list-unstyled components mb-2">
+              <a href="/mostread" className="inline-block">
+                <i className="bi bi-book"></i>
+                {' '}
+                Most Read</a>
+            </li>
+
+            <li className="list-unstyled components mb-2">
+              <a href="/favorite" className="inline-block ">
+                <i className="bi bi-star"></i>
+                {' '}
+                Favorite List </a>
+            </li>
+
+            <li className="list-unstyled components mb-2">
+              <a href="/chat" className="inline-block ">
+                <i className="bi bi-chat-dots "></i>
+                {' '}
+                Send Message</a>
+            </li>
+          
+            <li className="list-unstyled components mb-2">
+              <a href="/feedback" className="inline-block ">
+                <i className="bi bi-card-text"></i>
+                {' '}
+                Add Feedback</a>
+            </li>
+
+          
 
                 <li className="list-unstyled components mb-2">
                   <a href="/demand" className="inline-block">
