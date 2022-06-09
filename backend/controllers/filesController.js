@@ -947,6 +947,7 @@ const convertFile = (async (req, res) => {
 const addLike = (async (req, res) => {
 
   const article = await Files.findById(req.params.id);
+  console.log('articl',article.like.includes(req.decoded.id))
   if (!article.like.includes(req.decoded.id)) {
     await article.updateOne({ $push: { like: req.decoded.id } },
 
@@ -1003,7 +1004,7 @@ const addView = (async (req, res) => {
   // })
 
   try {
-    const user = await User.findById({ _id: req.decoded.id });
+    const user = await User.findOne({ _id: req.decoded.id });
     // console.log("inside get user",user)
 
     let visi = await Files.findById({ _id: req.params.id }).populate('view')

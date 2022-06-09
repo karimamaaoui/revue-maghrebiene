@@ -44,11 +44,8 @@ const User = UserSchema({
         default:""
     },
 
-    newMessages: {
-        type: Object,
-        default: {}
-      },
-   
+      newMessages: [],
+      
     
       status: {
         type: String,

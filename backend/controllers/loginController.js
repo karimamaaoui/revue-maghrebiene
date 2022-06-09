@@ -95,7 +95,14 @@ const handleLogin=([verifySignUp.checkDuplicateUsernameOrEmail,
       const userrole = await Role.findById(user.roles);
 
       console.log("roles is ",userrole.name);
-      const roleuser=userrole.name
+      const roleuser=userrole.name;
+
+      const userOnline = await User.findByIdAndUpdate(
+        {_id:user._id},
+         $set={status : "online",});
+ 
+ 
+        await userOnline.save();
       return res.json({ token ,user,roleuser });
   } catch (error) {
     

@@ -20,13 +20,13 @@ const viewRoute = require('./routes/viewRoute');
 const demandRoute = require('./routes/demandRoute/demandRoute');
 const feedbackRoute=require('./routes/feedbackRoute/feedRoute')
 const favoriteRoute=require('./routes/favoriteRoute/favoriteRoute')
-const rooms = ['general', 'tech', 'finance', 'crypto'];
 const cors = require("cors");
 
 const http = require('http');
 const Files = require("./model/Files");
 const User = require("./model/user");
 const Message = require("./model/Message");
+const verifyToken = require("./middleware/verifyToken");
 
 app.use(bodyParser.json())
 
@@ -131,6 +131,7 @@ app.use(
 app.use(
   fileUpload()
 );
+const rooms = ['general', 'private'];
 
 async function getLastMessagesFromRoom(room){
   let roomMessages = await Message.aggregate([
@@ -177,15 +178,33 @@ io.on("connection", (socket) => {
     io.to(room).emit('room-messages', roomMessages);
     socket.broadcast.emit('notifications', room)
   })
+  app.delete('/logout',verifyToken.verifyUserToken, async(req, res)=> {
+    try {
+
+  
+      const { newMessages} = req.body;
+      const user = await User.findByIdAndUpdate(
+       {_id: req.decoded.id},
+        $set={status : "offline",newMessages:newMessages});
+
+
+       await user.save();
+       console.log('rrrrrrrrrrrrrrrrrrrrrrrr',user)
+
+      const members = await User.find();
+      socket.broadcast.emit('new-user', members);
+      res.status(200).send();
+    } catch (e) {
+      console.log(e);
+      res.status(400).send()
+    }
+  })
 
   
 
 })
 
 
-app.get('/rooms', (req, res)=> {
-  res.json(rooms)
-})
 
 
 // routes 
@@ -243,3 +262,8 @@ function initial() {
     }
   });
 }
+
+app.get('/rooms', (req, res)=> {
+  res.json(rooms)
+
+})
