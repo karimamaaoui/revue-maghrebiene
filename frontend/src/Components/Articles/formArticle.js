@@ -112,7 +112,7 @@ function FormArticle() {
 
   return (
 <>
-{userInfo.roleuser === "Author" ?
+{userInfo.roleuser === "Editor" ?
 
     <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
       <div className="main-body" >

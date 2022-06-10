@@ -111,7 +111,7 @@ export default function AddNewUser() {
                                 </div>
                                 <br />
 
-                                <h3 className="fieldset-title">Personal Info</h3>
+                                <h3 className="fieldset-title">Add New User</h3>
                                 <div class="card" >
                                     {loading && <Loading />}
                                     {error && <ErrorMessage variant="danger">

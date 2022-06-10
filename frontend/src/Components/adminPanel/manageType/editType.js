@@ -98,6 +98,9 @@ export default function EditType() {
                                     <div id="content" className="p-6 p-md-10 pt-12">
                                         <NavbarList />
                                         <div className="" style={{ backgroundColor: 'white' }}>
+                                        <br/>
+                                            <h3 className="fieldset-title">Update Type</h3>
+
                                             <div class="card-body">
                                             <form   onSubmit={handleEdit}>
                                                     <div class="row mb-3">
@@ -124,7 +127,7 @@ export default function EditType() {
                                                                 <button 
                                                                     style={{ borderRadius: "15px" }}
                                                                 >
-                                                                    Add Rule
+                                                                    Edit Type
                                                                 </button>
 
                                                             </div>

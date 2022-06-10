@@ -98,6 +98,9 @@ export default function EditRule() {
                                     <div id="content" className="p-6 p-md-10 pt-12">
                                         <NavbarList />
                                         <div className="" style={{ backgroundColor: 'white' }}>
+                                            <br/>
+                                            <h3 className="fieldset-title">Update Rule</h3>
+
                                             <div class="card-body">
                                             <form   onSubmit={handleEdit}>
                                                     <div class="row mb-3">

@@ -26,7 +26,12 @@ const SalesChart = () => {
   
     ],[])
   
-
+    const data = [
+      {name: 'Geeksforgeeks', students: 400},
+      {name: 'Technical scripter', students: 700},
+      {name: 'Geek-i-knack', students: 200},
+      {name: 'Geek-o-mania', students: 1000}
+    ];
 
   useEffect(() => {
     const getStats = async () => {
@@ -103,21 +108,16 @@ const SalesChart = () => {
 
 
   return (
+    <>
     <Card style={{height:"500px"}}>
       <CardBody style={{height:"100%"}}>
-        {/* <Chart
-          type="area"
-          width="100%"
-          height="390"
-          series={chartoptions.series}
-          options={chartoptions.options}
-        ></Chart> */}
             <Chart data={articleStat}  title="Article Analytics" grid dataKey="New Article"  />
 
       
       </CardBody>
 
     </Card>
+    </>
   );
 };
 

@@ -1,8 +1,41 @@
-import React from 'react';
+import React , {useState } from 'react';
 
 import './FooterOverlay.css';
+import emailjs from "emailjs-com"
 
-export default function FooterOverlay() {
+const Result =()=>{
+    return(
+        <p> Your message has been successfuly sent.
+            We will contact you soon
+        </p>
+    )
+
+}
+   const FooterOverlay=()=> {
+    const [result,showResult]=useState(false);
+
+
+
+    const  sendEmail=(e)=>{
+        e.preventDefault();
+
+        emailjs.sendForm("service_rbof27f",
+                        "template_jxm3ail",
+                        e.target,
+                        "MjKWXCQj3COA-S5mb"
+                        ).then(res=>{
+                            console.log(res);
+                        }).catch (err=> console.log(err)
+                        );
+
+                        e.target.reset();
+                        showResult(true);
+    };
+    setTimeout(()=>{
+        showResult(false)
+    },5000)
+
+
     return (
         <div>
 
@@ -47,7 +80,7 @@ export default function FooterOverlay() {
                             <div class="single-footer-widget section_padding_0_130">
                                 <h5 class="widget-title">Contact</h5>
                                 <div class="footer_menu">
-                                    <form>
+                                <form onSubmit={sendEmail}>
                                         <input
                                             type='email'
                                             name='email'
@@ -58,7 +91,7 @@ export default function FooterOverlay() {
                                         <p className='help-block text-danger'></p>
 
                                         <textarea
-                                            name='message'
+                                            name='msg'
                                             id='message'
                                             className='form-control'
                                             rows='4'
@@ -71,6 +104,11 @@ export default function FooterOverlay() {
                                         <button type='submit' className='btn btn-danger' style={{borderRadius:'15px'}}>
                                             Send Message
                                         </button>
+                                        <div>
+                              {
+                                  result ? <Result/> : null   
+                                 }  
+                            </div>
                                     </form>
                                 </div>
                             </div>
@@ -81,3 +119,5 @@ export default function FooterOverlay() {
         </div>
     )
 }
+
+export default FooterOverlay
