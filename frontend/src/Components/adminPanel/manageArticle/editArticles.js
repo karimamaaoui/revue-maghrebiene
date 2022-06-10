@@ -232,15 +232,14 @@ function EditArticle({match}) {
                                                                 value={typeArticle}
                                                                     onChange={(e) => {
                                                                         setTypeArticle(e.target.value);
-
                                                                     }}
                                                                 >
-
                                                                     <option value="">Choose one</option>
                                                                     {types?.map((type, key) => {
 
                                                                         return <option key={key} value={type._id} > {type.label}</option>;
                                                                     })}
+                                                                    {console.log('trrrfrf',typeArticle)}
                                                                 </select>
                                                             </div>
                                                         </div>

@@ -65,6 +65,30 @@ export default function SidebarScreen() {
                     {' '}
                     Articles List</a>
                 </li>
+               
+                <li className="list-unstyled components mb-2">
+                  <a href="/rules" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Rules List</a>
+                </li>
+               
+                <li className="list-unstyled components mb-2">
+                  <a href="/attributes" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Attributes List</a>
+                </li>
+
+                
+                <li className="list-unstyled components mb-2">
+                  <a href="/types" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Types List</a>
+                </li>
+               
+               
                 <li className="list-unstyled components mb-2">
                   <a href="/accept" className="inline-block">
                     <i className="bi bi-book"></i>
@@ -153,6 +177,56 @@ export default function SidebarScreen() {
                     Add Article </a>
                 </li>
 
+                <li className="list-unstyled components mb-2">
+              <a href="/chat" className="inline-block ">
+                <i className="bi bi-chat-dots "></i>
+                {' '}
+                Send Message</a>
+            </li>
+          
+            <li className="list-unstyled components mb-2">
+              <a href="/feedback" className="inline-block ">
+                <i className="bi bi-card-text"></i>
+                {' '}
+                Add Feedback</a>
+            </li>
+
+         
+
+              </>
+              : <></>
+            }
+
+{userInfo.roleuser === "Editor" ?
+              <>
+
+                <li className="list-unstyled components mb-2">
+                  <a href="/respond" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Correct Article </a>
+                </li>
+
+                <li className="list-unstyled components mb-2">
+              <a href="/chat" className="inline-block ">
+                <i className="bi bi-chat-dots "></i>
+                {' '}
+                Send Message</a>
+            </li>
+          
+            <li className="list-unstyled components mb-2">
+              <a href="/feedback" className="inline-block ">
+                <i className="bi bi-card-text"></i>
+                {' '}
+                Add Feedback</a>
+            </li>
+
+            <li className="list-unstyled components mb-2">
+                  <a href="/demand" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    Want to be Author </a>
+                </li>
 
               </>
               : <></>

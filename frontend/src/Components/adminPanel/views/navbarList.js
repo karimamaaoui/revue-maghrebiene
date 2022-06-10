@@ -52,6 +52,7 @@ export default function NavbarList() {
         </div>
 
         <div>
+        {userInfo.roleuser === "User" ?
 
           <header className='navbar'>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -65,14 +66,9 @@ export default function NavbarList() {
                   )
                 })}
 
-             {/* <div className='navbar__item'>Education</div>
-             <div className='navbar__item'>Health</div>
-             <div className='navbar__item'>Culture</div>
-             <div className='navbar__item'>Social</div>
-             <div className='navbar__item'>Environment</div>
-             <div className='navbar__item'>Business</div> */}
-        </div>
+          </div>
       </header>
+      :<></>}
 
     </div>
       </div >

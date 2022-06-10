@@ -9,6 +9,7 @@ import SidebarScreen from "../../sideBar/sidebarScreen";
 import axios from "axios";
 import ReactPaginate from 'react-paginate'
 import './manageArticle.css'
+import { Confirm } from "react-st-modal";
 export default function ManageArticle() {
 
   const dispatch = useDispatch();
@@ -53,15 +54,14 @@ export default function ManageArticle() {
   ]);
 
   const deleteHandler = (id) => {
-    if (window.confirm("Are you sure?")) {
+    // if (window.confirm("Are you sure?")) {
       dispatch(deleteArticle(id));
-    }
+    
   };
 
   const loadMore = () => {
     setNoOfElement(noOfElement + noOfElement)
   }
-  const slice = articles?.slice(0, noOfElement)
 
 
   const [searchInput, setSearchInput] = useState('');
@@ -147,9 +147,10 @@ export default function ManageArticle() {
                                 <thead>
                                   <tr>
                                     <th>title</th>
-                                    <th>content</th>
-                                    <th>key words</th>
+                                    <th>keywords</th>
                                     <th>abbreviations</th>
+                                    <th>Image</th>
+
                                     <th>status</th>
                                     <th></th>
 
@@ -172,7 +173,9 @@ export default function ManageArticle() {
                                               </div>
                                             </div>
                                           </td>
-                                          <td>{tdata.content}</td>
+                                          
+
+                                          <td><img src={tdata.pathFile} style={{width:'82px'}} /></td>
                                           <td>
                                             {tdata.keyWords}
                                           </td>
@@ -218,7 +221,15 @@ export default function ManageArticle() {
                                           </Button>
                                           <Button variant="outline-warning"
                                             className="mx-2"
-                                            onClick={() => deleteHandler(tdata._id)}>
+                                            onClick={async() =>{
+                                              const result=  await Confirm('Are you sure you want to delete this one', 
+                                              'Delete Сonfirmation');
+                                            if (result) {
+                                              deleteHandler(tdata._id)
+                                            } else {
+                                              history(`/managearticles`);
+                                          }}
+                                            }>
                                             <i class="bi bi-trash3"></i>
                                           </Button>
                                         </tr>
@@ -241,7 +252,7 @@ export default function ManageArticle() {
                                               </div>
                                             </div>
                                           </td>
-                                          <td>{tdata.content}</td>
+                                          <td><img src={tdata.pathFile} style={{width:'82px'}} /></td>
                                           <td>
                                             {tdata.keyWords}
                                           </td>
@@ -286,7 +297,16 @@ export default function ManageArticle() {
                                           </Button>
                                           <Button variant="outline-warning"
                                             className="mx-2"
-                                            onClick={() => deleteHandler(tdata._id)}>
+                                            onClick={async() =>{
+                                              const result=  await Confirm('Are you sure you want to delete this one', 
+                                              'Delete Сonfirmation');
+                                            if (result) {
+                                              deleteHandler(tdata._id)
+                                            } else {
+                                              history(`/managearticles`);
+                                          }}
+                                            }
+                                            >
                                             <i class="bi bi-trash3"></i>
                                           </Button>
                                         </tr>

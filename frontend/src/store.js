@@ -13,13 +13,14 @@ import {
   userNewArrivalReducer,
   demandAuthorReducer
 } from './redux/reducers/userReducer';
-import { retrieveTypeReducer } from './redux/reducers/typesReducers';
-import { retrieveAttributeReducer } from './redux/reducers/attributeReducers';
+import { retrieveTypeReducer, typeDeleteReducer } from './redux/reducers/typesReducers';
+import { attributeDeleteReducer, retrieveAttributeReducer } from './redux/reducers/attributeReducers';
 import { addArticleReducer, articleDeleteReducer, articleUpdateReducer, retrieveAllArticleReducer, retrieveArticlerRandomReducer } from './redux/reducers/articleReducers';
 import { addFileReducer, addPostReducer } from './redux/reducers/fileReducers';
-import { retrieveRulesReducer } from './redux/reducers/rulesReducers';
+import { retrieveRulesReducer, ruleDeleteReducer } from './redux/reducers/rulesReducers';
 import { getArticleByFilter } from './redux/Actions/articleActions';
 import { addFeedBackReducer, retreiveFeedBackReducer, retrieveAllFeedbackReducer } from './redux/reducers/feedbackReducers';
+import { getUserByFilter } from './redux/Actions/actions';
 
 const reducer = combineReducers({
   // here contain our reducers
@@ -36,10 +37,14 @@ const reducer = combineReducers({
   addPost:addPostReducer,
   getAllUser:retrieveAllUserReducer,
   userDelete:userDeleteReducer,
+  ruleDelete:ruleDeleteReducer,
+  attributeDelete:attributeDeleteReducer,
+  typeDelete:typeDeleteReducer,
   getAllArticle:retrieveAllArticleReducer,
   articleDelete:articleDeleteReducer,
   getAllRule:retrieveRulesReducer,
   articleFilters: getArticleByFilter,
+  userFilters:getUserByFilter,
   RandomArticle:retrieveArticlerRandomReducer,
   listArrivals:userNewArrivalReducer,
   articleUpdate: articleUpdateReducer,

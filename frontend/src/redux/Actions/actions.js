@@ -8,6 +8,9 @@ import {
   RETRIEVE_DEMAND_AUTHOR_FAIL,
   RETRIEVE_DEMAND_AUTHOR_REQUEST,
   RETRIEVE_DEMAND_AUTHOR_SUCCESS,
+  RETRIEVE_USER_BY_FILTER_FAIL,
+  RETRIEVE_USER_BY_FILTER_REQUEST,
+  RETRIEVE_USER_BY_FILTER_SUCCESS,
   RETRIEVE_USER_FAIL,
   RETRIEVE_USER_REQUEST,
   RETRIEVE_USER_SUCCESS,
@@ -281,6 +284,42 @@ export const userupdatePicture = (profilePic) => async (dispatch, getState) => {
 }
 
 
+
+export const getUserByFilter= (searchTerm,data) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: RETRIEVE_USER_BY_FILTER_REQUEST});
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+
+      },
+    };
+
+
+    const { data } = await axios.get(`http://localhost:5000/api/user/filter/${searchTerm}`, config);
+    console.log("user data", data)
+
+
+    dispatch({ type: RETRIEVE_USER_BY_FILTER_SUCCESS, payload: data });
+
+  } catch (error) {
+    dispatch({
+      type: RETRIEVE_USER_BY_FILTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+
+  }
+}
+
 // get all user
 export const getAllUsers = () => async (dispatch, getState) => {
 
@@ -342,7 +381,7 @@ export const getAllUserPaginate= (currentPage) => async (dispatch, getState) => 
       },
     };
 
-    const { data } = await axios.get(`http://localhost:5000/api/file/user/getAllUsers?currentPage=${currentPage}`, config);
+    const { data } = await axios.get(`http://localhost:5000/api/user/getAllUsers?currentPage=${currentPage}`, config);
     dispatch({ type: RETRIEVE_USER_SUCCESS, payload: data });
   
   } catch (error) {

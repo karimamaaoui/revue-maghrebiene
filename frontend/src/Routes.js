@@ -32,6 +32,7 @@ import Feed from "./Components/feed/feed"
 
 import EditArticle from "./Components/adminPanel/manageArticle/editArticles"
 import AttributeArticle from "./Components/searchWithAttribute/searchWithAttribute"
+import ListRule from "./Components/adminPanel/manageRule/listRule"
 
 import Feedback from './Components/feedback/Feedback'
 import DemandAuthor from './Components/DemandAuthor/demandAuthor';
@@ -49,6 +50,14 @@ import Chat from './Components/Chat/Chat'
 import { useSelector } from 'react-redux';
 import { useState } from 'react'
 import { AppContext, socket } from "./Components/Chat/AppContext";
+import AddRule from './Components/adminPanel/manageRule/addRule';
+import EditRule from './Components/adminPanel/manageRule/editRule';
+import ListType from './Components/adminPanel/manageType/listType';
+import AddType from './Components/adminPanel/manageType/addType';
+import EditType from './Components/adminPanel/manageType/editType';
+import ListAttribute from './Components/adminPanel/manageAttribute/listAttribute';
+import EditAttribute from './Components/adminPanel/manageAttribute/editAttribute';
+import AddAttribute from './Components/adminPanel/manageAttribute/addAttribute';
 
 export default function RoutesList() {
   const [rooms, setRooms] = useState([]);
@@ -74,6 +83,7 @@ export default function RoutesList() {
               <Route path="/" element={<Landing />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/favorite" element={<FavoriteList />} />
+              <Route path="/rules" element={<ListRule />} />
 
               <Route path="/a" element={<SideBar />} />
               <Route path="/mostread" element={<MostRead />} />
@@ -98,12 +108,23 @@ export default function RoutesList() {
               <Route path="/addnewuser" element={<AddNewUser />} />
 
               <Route path="/users" element={<ManageUser />} />
+              <Route path="/addrule" element={<AddRule />} />
+              <Route path="/addattribute" element={<AddAttribute />} />
+
+              <Route path="/addtype" element={<AddType />} />
+              <Route path="/types" element={<ListType />} />
+              <Route path="/attributes" element={<ListAttribute />} />
+
               <Route path="/managearticles" element={<ManageArticle />} />
               <Route path="/managearticles/:key" element={<ManageArticle />} />
 
               <Route path="/managearticles/search" element={<ManageArticle />} />
 
               <Route path="/editarticle/:id" element={<EditArticle />} />
+              <Route path="/editattribute/:id" element={<EditAttribute />} />
+
+              <Route path="/editrule/:id" element={<EditRule />} />
+              <Route path="/edittype/:id" element={<EditType />} />
 
               <Route path="/profile" element={<Profile />} />
               <Route path="/editprofile" element={<UpdateProfile />} />

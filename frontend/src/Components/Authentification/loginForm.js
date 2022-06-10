@@ -74,6 +74,12 @@ export default function LoginForm() {
 
         }
     
+        else if (userInfo.roleuser === "Editor")
+        {
+          history("/respond");
+
+        }
+    
     }
   }, [history, userInfo]);
   const submitHandler = async (e) => {

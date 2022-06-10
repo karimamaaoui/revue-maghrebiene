@@ -55,6 +55,11 @@ export default function RepondingToArticle() {
 
 
     return (
+        <>
+        {!userInfo ? history('/'):
+      
+                 userInfo.roleuser === "Editor" ?
+     
         <div>
 
             <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
@@ -149,6 +154,10 @@ export default function RepondingToArticle() {
                                                                                     )
                                                                                 })}
                                                                                 <p>
+                                                                                    
+                                                                                filepassword : {tdata.filepassword}
+                                                                                </p>
+                                                                                <p>
                                                                                     keyWords : {tdata.keyWords}
                                                                                     <br />
                                                                                     <br />  CreatedAt :{moment(tdata.createdAt).format("DD-MM-YYYY HH:mm:ss")}  </p>
@@ -206,5 +215,11 @@ export default function RepondingToArticle() {
                 </div>
             </div>
         </div>
+         : "Not Authorized"
+        }
+
+
+</>
+
     )
 }
