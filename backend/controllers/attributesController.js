@@ -33,7 +33,7 @@ const createAttribute = async (req, res) => {
 const updateAttribute = async (req, res) => {
   console.log('inside find update Attribute');
   try {
-    const updateAttribute = await Attribute.findOneAndUpdate(
+    const updateAtri = await Attribute.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
@@ -45,7 +45,7 @@ const updateAttribute = async (req, res) => {
 
     );
 
-    res.status(200).json(updateAttribute);
+    res.status(200).json(updateAtri);
   } catch (err) {
     res.status(404).json("Attribute not found");
   }
@@ -70,14 +70,10 @@ const getOneAttribute= (async (req, res) => {
   console.log('inside find article by id');
 
   try {
-    /*   const user= await User.findById({user:req.decoded.id } );
-       console.log("inside get user",user)
-       console.log("inside get user id ",req.decoded.id)
-       */
-    const article = await Attribute.findById(req.params.id);
-    console.log("inside get user", article)
+    const attribute = await Attribute.findById(req.params.id);
+    console.log("inside get user", attribute)
 
-    res.status(200).json(article);
+    res.status(200).json(attribute);
 
 
   } catch (err) {
@@ -93,7 +89,7 @@ const retrieveAllAttributes = (async (req, res) => {
   const query = req.query.new;
   console.log('inside get list of attributes');
   try {
-    const attributes = await query ? await Attribute.find().sort({ _id: -1 }).limit(10) : await Attribute.find();
+    const attributes = await query ? await Attribute.find().sort({ _id: -1 }).limit(10) : await Attribute.find().sort({ _id: -1 }).limit(10);
     return res.status(200).json(attributes);
 
   } catch (err) {

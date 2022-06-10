@@ -33,7 +33,7 @@ const createType = async (req, res) => {
 const updateType = async (req, res) => {
   console.log('inside find update Type');
   try {
-    const updateType = await Type.findOneAndUpdate(
+    const updateType = await Type.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,

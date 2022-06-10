@@ -55,18 +55,16 @@ const getUser = (async (req, res) => {
 
 //GET ALL
 
-const getAllUsers = (verifyToken.verifyUserToken,
+const getAllUsers = (
     async (req, res) => {
         const currentPage = req.query.currentPage;
         const total = await User.countDocuments({});
-        console.log("fsfdgdskfgfhkdsgfkdsgffbd", total)
+        console.log("total", total)
 
         const limit = 5;
         const skip = (currentPage - 1) * limit;
-
         console.log('inside get list of files', skip);
 
-        console.log('inside get list of users');
         try {
             const users = await User.find().populate('roles', ['name']).sort({ createdAt: -1 }).limit(limit).skip(skip);
 
@@ -76,110 +74,12 @@ const getAllUsers = (verifyToken.verifyUserToken,
             return res.status(500).json({ msg: err });
         }
     });
+
 const generateToken = (id, user) => {
     return jwt.sign({ id, user }, process.env.SECRET_Key, {
         expiresIn: "30m",
     });
 };
-// UPDATE
-/*
-const updateUser = (async(req, res) => {
-    //  console.log("inside update user")
-    const id = req.decoded;
-    // console.log(req.body)
-    //  console.log(id)
-    /*   try{  
-            User.findOneAndUpdate(
-              {user : req.decoded},
-              {$set: req.body,updatedAt: Date.now()},
-              (err,result)=>{
-               
-                  const msg ={
-                      msg: "user successfully updated",
-       
-                  };
-       
-                  return res.json(msg);
-              }   
-          )
-      }catch (err) {
-          console.error(err);
-          res.status(500).json({ msg: err});
-        }    
-        
-      */
-
-/*  const user= await User.findOne(req.decoded);
-  console.log("user",user);
-
-  if (user)
-  {
-      user.firstname=req.body.firstname || user.firstname;
-      user.username=req.body.username || user.username;
-      user.lastname=req.body.lastname || user.lastname;
-      
-  
-
-  const updatedUser =await user.save();
-  res.json({
-      firstname:updatedUser.firstname,
-      lastname:updatedUser.lastname,
-      username:updatedUser.username
-  })
-
-  const token = generateToken(req.decoded);
-  console.log("token ",token)
-  return res.json({ token });
-
-/*   User.findOneAndUpdate(req.decoded,
-      req.body).then(result => {
-          console.log(result)
-
-          res.status(200).json(result)
-
-      }
-      )
-      const payload = {
-          user: { id: user._id },
-      };
-      // show user id
-      console.log("payload", payload);
-
-
-      jwt.sign(
-          payload,
-          process.env.SECRET_Key,
-          {
-              expiresIn: '1m',
-          },*/
-
-/*       }
-else  {
-   console.error(err);
-   res.status(404).json(err.message);
-}
-
-});*/
-/*
-const updateUser = (async (req, res) => {
-    const user = await User.findById(req.decoded.id);
-  
-    console.log("user")
-    if (!user) {
-        return res.status(400).json({ message: "user not found" });
-    }
-      
-       await User.findOneAndUpdate(req.decoded, {
-         $set :req.body
-      });
-      const token= generateToken(user);
-      console.log(token)
-        
-      return res.json({ token ,user });
-      
-    }
-    );
-*/
 
 const updateUser = (async (req, res) => {
     const user = await User.findById(req.decoded.id);
@@ -189,17 +89,9 @@ const updateUser = (async (req, res) => {
         user.firstname = req.body.firstname || user.firstname;
         user.lastname = req.body.lastname || user.lastname;
 
-        //   user.university = req.body.university || user.university;
-        //   user.placeofpractice = req.body.placeofpractice || user.placeofpractice;
-
+        
         const updatedUser = await user.save();
 
-        /*   res.json({
-             username: updatedUser.username,
-             firstname: updatedUser.firstname,
-             lastname: updatedUser.lastname,
-             token: generateToken(updatedUser),
-           });*/
         const token = generateToken(updatedUser, user);
 
         return res.json({ token, user });
@@ -649,6 +541,34 @@ const getNewArrivals = (
         }
     });
 
+
+
+    const getUserSearch = (async (req, res) => {
+        console.log("key", req.params.key)
+      
+        try {
+         
+          const user = await User.find(
+            {
+              "$or": [
+                { "username": { $regex: req.params.key } },
+                { "firstname": { $regex: req.params.key } },
+                { "lastname": { $regex: req.params.key } },
+                { "email": { $regex: req.params.key } },
+                { "role": { $regex: req.params.key } },
+            
+              ]
+            }
+          );
+          res.send(user)
+      
+      
+        } catch (err) {
+          return res.status(500).json({ msg: err });
+        }
+      
+      })
+      
 module.exports = {
     getUser,
     getAllUsers,
@@ -660,5 +580,6 @@ module.exports = {
     changePictureProfile,
     sendTemporaryPassword,
     deleteUser,
-    getNewArrivals
+    getNewArrivals,
+    getUserSearch
 };

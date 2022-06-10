@@ -26,5 +26,7 @@ router.post("/logout", userController.logOut);
 router.put("/addToAuthor/:id", userController.AddToAuthor);
 router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader, userController.deleteUser);
 
+router.get('/filter/:key',verifyToken.verifyUserToken, userController.getUserSearch);
+
 
 module.exports = router;

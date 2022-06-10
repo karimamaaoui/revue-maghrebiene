@@ -855,14 +855,7 @@ const getArticleSearch = (async (req, res) => {
   console.log("key", req.params.key)
 
   try {
-    // const search = req.query;
-    // var condition = search ? { title: { $regex: new RegExp(search.title), $options: "i" } } : {};
-
-    // Article.find(condition)
-    //   .then(data => {
-    //     res.send(data)
-    //   })
-
+   
     const article = await Files.find(
       {
         "$or": [

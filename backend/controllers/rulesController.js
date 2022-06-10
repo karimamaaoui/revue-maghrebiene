@@ -45,7 +45,67 @@ const retrieveAllRules = ( async (req, res) => {
   }
 });
   
+
+
+
+
+// update Attribute
+const updateRule = async (req, res) => {
+  console.log('inside find update rule');
+  try {
+    const updateru = await Rule.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+        updatedAt: Date.now()
+      },
+      {
+        new: true
+      }
+
+    );
+
+    res.status(200).json(updateru);
+  } catch (err) {
+    res.status(404).json("Rule not found");
+  }
+
+}
+
+//delete Attribute
+const deleteRule = async (req, res) => {
+  console.log('inside  delete  Attribute');
+  try {
+    await Rule.findByIdAndRemove(req.params.id);
+    res.status(201).json('Attribute has been deleted...');
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+};
+const getOneRule= (async (req, res) => {
+  console.log('inside find article by id');
+
+  try {
+    const rule = await Rule.findById(req.params.id);
+    console.log("inside get user", rule)
+
+    res.status(200).json(rule);
+
+
+  } catch (err) {
+    res.status(500).json({ msg: "Unauthorized" });
+  }
+
+
+});
+
+
 module.exports = {
     createRules, 
-    retrieveAllRules
+    retrieveAllRules,
+    deleteRule,
+    getOneRule,
+    updateRule
   }
