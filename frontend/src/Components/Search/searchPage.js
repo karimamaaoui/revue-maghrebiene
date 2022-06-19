@@ -236,7 +236,7 @@ export default function SearchPahe() {
                 console.log(res.data);
                 Swal.fire({
                     title: "Succces!",
-                    text: "Request Sended Successfully",
+                    text: "Favorite Sended Successfully",
                     icon: 'success',
                     button: "OK!"
                 });
@@ -245,7 +245,7 @@ export default function SearchPahe() {
                 console.log(err)
                 Swal.fire({
                     title: "Error!",
-                    text: "Request Already Send",
+                    text: "Favorite Already Exist",
                     icon: 'error',
                     button: "OK!"
                 });
@@ -278,49 +278,7 @@ export default function SearchPahe() {
 
     }
 
-    const [fileURL, setFileURL] = useState('');
-    //console.log('fileURL', fileURL)
-
-    // const handleRead = async (id) => {
-    //     const { data: pdf } = await axios.get(`http://localhost:5000/api/file/get/${id}`,
-
-    //         {
-    //             responseType: 'arraybuffer',
-    //             responseEncoding: 'binary',
-
-    //             headers: {
-    //                 "Content-type": "application/pdf",
-    //             },
-    //         }
-    //     );
-
-    //     const blob = new Blob([pdf], {
-    //         type: 'application/pdf'
-    //     });
-    //     const fileURL = URL.createObjectURL(blob);
-    //     setFileURL(fileURL)
-
-    //     window.open(fileURL, '_blank', 'location=yes,height=650,width=1000,scrollbars=yes,status=yes');
-
-
-    //     // console.log("user data", pdf)
-    //     //  await axios.get(`http://localhost:5000/api/file/get/${id}`
-    //     //     , {
-    //     //         responseType: 'blob',
-    //     //     }
-    //     // )
-    //     // .then((response) => {
-    //     //     console.log("resp", response);
-    //     // }
-
-    //     //  )
-    //     //  console.log(Buffer.from(pdf).toString('base64'));
-
-    //     console.log(new Blob([new Uint8Array(pdf)]))
-
-    // }
-
-
+ 
     const handleCategory = e => {
         let updatedCategoryIds;
 
@@ -331,7 +289,6 @@ export default function SearchPahe() {
         if (indexFound === -1) {
             // add
             updatedCategoryIds = [...typeIds, currentCategoryChecked];
-            // console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', updatedCategoryIds[0])
 
             setTypeIds(updatedCategoryIds);
         } else {
@@ -347,36 +304,15 @@ export default function SearchPahe() {
         setTypeIds('')
 
     };
-    // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', typeIds)
 
 
-    const handleAttribute = e => {
-
-        const currentAttributeChecked = e.target.value;
-        const allAttributeChecked = [...attributeIds];
-        const indexFound = allAttributeChecked.indexOf(currentAttributeChecked);
-
-        let updatedAttributeIds;
-        if (indexFound === -1) {
-            // add
-            updatedAttributeIds = [...attributeIds, currentAttributeChecked];
-            console.log('updatedAttributeIds ', updatedAttributeIds)
-            setAttributeIds(updatedAttributeIds);
-        } else {
-            // remove
-            updatedAttributeIds = [...attributeIds];
-            updatedAttributeIds.splice(indexFound, 1);
-            setAttributeIds(updatedAttributeIds);
-        }
-
-
-        dispatch(getArticleByAttribute(updatedAttributeIds));
-
-
-    };
-
+   
     return (
         <div>
+              {!userInfo ? history('/'):
+      
+      userInfo.roleuser === "Reader" ?
+
             <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
                 <div className="main-body" >
                     <div className="row gutters-sm" style={{ maxWidth: "100%" }}>
@@ -542,7 +478,7 @@ export default function SearchPahe() {
                                                                                         <div key={index}>
                                                                                             <div class="card-body">
                                                                                                 <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
-                                                                                                <img src={tdata.pathFile} alt="" height="140px" width="30px" />
+                                                                                                <img src={tdata.pathFile} alt="" height="140px" style={{ width:"30%"}} />
 
                                                                                                 <p>
                                                                                                     KeyWords :
@@ -627,7 +563,7 @@ export default function SearchPahe() {
 
                                                                                                                                                     </div>
                                                                                                                                                     :
-                                                                                                                                                    history(`/b/${tdata._id}`)
+                                                                                                                                                    history(`/read/${tdata._id}`)
                                                                                                                                             }
                                                                                                                                         }}> read all article</button>
 
@@ -826,8 +762,9 @@ export default function SearchPahe() {
                                                                                             <div key={index}>
                                                                                                 <div class="card-body">
                                                                                                     <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
+                                                                                                    <br/>
 
-                                                                                                    <img src={tdata.pathFile} alt="" height="140px" width="30px" />
+                                                                                                    <img src={tdata.pathFile} alt="" height="140px" style={{ width:"30%"}} />
 
                                                                                                     <p>
                                                                                                         KeyWords :
@@ -909,7 +846,7 @@ export default function SearchPahe() {
 
                                                                                                                                                         </div>
                                                                                                                                                         :
-                                                                                                                                                        history(`/b/${tdata._id}`)
+                                                                                                                                                        history(`/read/${tdata._id}`)
                                                                                                                                                 }
                                                                                                                                             }}> read all article</button>
 
@@ -1100,6 +1037,8 @@ export default function SearchPahe() {
                     </div>
                 </div>
             </div>
+   : "Not Authorized"
+}
 
         </div>
     )

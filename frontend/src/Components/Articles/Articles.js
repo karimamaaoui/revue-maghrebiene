@@ -15,15 +15,12 @@ import HeaderTran from "../adminPanel/views/ui/TRANSLATE/headerTrans";
 import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import PDF from "./PDF";
 import axios from "axios";
-import AddForm from "./addFrom";
 import Swal from "sweetalert2";
 
 import { EditorState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import DOMPurify from 'dompurify';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-import RichTextEditor from "./RichTextEditor";
 const ENDPOINT = "http://localhost:5000";
 
 export const socket = io(ENDPOINT);
@@ -41,16 +38,14 @@ function Article() {
     const { loadingType, errorType, types } = typeList;
     const getAllRule = useSelector((state) => state.getAllRule);
     const { loadingRule, errorRule, rules } = getAllRule;
-    const [multiple_files, setMultiple_files] = useState([]);
+    const [contenu, setContenu] = useState([]);
     const [filename, setFilename] = useState('choose file');
     const [typeArticle, setTypeArticle] = useState('');
     const [title, setTitle] = useState('');
-    const [bio, setBio] = useState('');
     const [abstract, setAbstract] = useState('');
-    const [keyWords, setKeyWords] = useState('');
+    const [keyWords, setKeyWords] = useState([]);
     const [filepassword, setFilePassword] = useState('');
 
-    const [abbreviations, setAbbreviations] = useState('');
     const [postSubmitted, setPostSubmitted] = useState(false);
     const [isValidKeyWords, setIsValidKeyWords] = useState(false);
     const [messageKeyWords, setMessageKeyWords] = useState('');
@@ -212,7 +207,7 @@ function Article() {
                 console.log('article => ' + JSON.stringify(auteur));
                 Swal.fire({
                     title: "Succces!",
-                    text: "Request Sended Successfully",
+                    text: "Author Updated Successfully",
                     icon: 'success',
                     button: "OK!"
                 });
@@ -221,7 +216,7 @@ function Article() {
                 console.log(err)
                 Swal.fire({
                     title: "Error!",
-                    text: "Request Already Send",
+                    text: "Bad Request",
                     icon: 'error',
                     button: "OK!"
                 });
@@ -263,12 +258,10 @@ function Article() {
 
         e.preventDefault();
         const formData = new FormData();
-        formData.append('multiple_files', multiple_files);
+        formData.append('contenu', contenu);
         formData.append('title', title);
-        formData.append('bio', bio);
         formData.append('abstract', abstract);
         formData.append('keyWords', keyWords);
-        formData.append('abbreviations', abbreviations);
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
      //   formData.append('rulesChecked', rulesChecked);
@@ -277,12 +270,11 @@ function Article() {
         formData.append('filepassword', filepassword);
 
 
-        console.log(multiple_files.length);
-        for (let i = 0; i < multiple_files.length; i++) {
-            console.log(multiple_files[i]);
+        console.log(contenu.length);
+        for (let i = 0; i < contenu.length; i++) {
 
-            formData.append('multiple_files', multiple_files[i]);
-            setFilesname(multiple_files[i])
+            formData.append('contenu', contenu[i]);
+            setFilesname(contenu[i])
         }
 
         for (let j = 0; j < rulesChecked.length; j++) {
@@ -299,7 +291,7 @@ function Article() {
 
 
     const handlePhoto = (e) => {
-        setMultiple_files(e.target.files);
+        setContenu(e.target.files);
         setFilename(e.target.files[0].names);
         console.log("handlephpoto")
     }
@@ -309,11 +301,7 @@ function Article() {
 
         console.log(title)
     }
-    const handleChangeBio = (e) => {
-        setBio(e.target.value);
-
-    }
-
+   
     const replaceModalItem = (id) => {
         handleShow()
         setRequiredItem(id)
@@ -442,22 +430,7 @@ function Article() {
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div class="row mb-3">
-                                                                <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{t("profile:bio")}</h6>
-                                                                </div>
-                                                                <div class="col-sm-9 text-secondary">
-
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        name="bio"
-                                                                        required
-                                                                        onChange={handleChangeBio}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                         
+                                                           
                                                          
                                                          
                                                             <div class="row mb-3">
@@ -559,23 +532,6 @@ function Article() {
                                                             
                                                             <div class="row mb-3">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{t("profile:abbreviations")}</h6>
-                                                                </div>
-                                                                <div class="col-sm-9 text-secondary">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        name="abbreviations"
-                                                                        required
-                                                                        onChange={(e) => {
-                                                                            setAbbreviations(e.target.value);
-
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <div class="col-sm-3">
                                                                     <h6 class="mb-0"> file Password</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
@@ -599,7 +555,7 @@ function Article() {
                                                                     <input
                                                                         type="file"
                                                                         required
-                                                                        name="multiple_files"
+                                                                        name="contenu"
                                                                         className="file-uploader "
                                                                         multiple
                                                                         onChange={handlePhoto}
@@ -772,14 +728,7 @@ function Article() {
                                                                 </div>
                                                             </div>
 
-                                                            {/* <div container spacing={2} justify="flex-end">
-                                                                <Card p={2}>
-                                                                    {
-                                                                        JSON.stringify({ title, bio, keyWords, abbreviations ,attributesAticle }, null, 4)
-                                                                    }
-                                                                </Card>
-                                                            </div> */}
-
+                                                         
                                                         </form>
 
                                                     </div>
@@ -790,8 +739,6 @@ function Article() {
                                                         attribute={attributesAticle}
                                                         type={typeArticle}
                                                         keyWords={keyWords}
-                                                        abbreviations={abbreviations}
-                                                        bio={bio}
                                                         author={authorList}
                                                         filepassword={filepassword}
 

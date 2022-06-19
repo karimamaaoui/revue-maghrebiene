@@ -57,24 +57,23 @@ export default function LoginForm() {
   useEffect(() => {
     if (userInfo) {
 
-      //{userInfo.roleuser === "Author" ?
         if (userInfo.roleuser === "Author")
         {
           history("/article");
 
         }
-        else   if (userInfo.roleuser === "Reader")
+        else   if (userInfo.roleuser === "Admin")
         {
           history("/adminpanel");
 
         }
-        else if (userInfo.roleuser === "User")
+        else if (userInfo.roleuser === "Reader")
         {
           history("/search");
 
         }
     
-        else if (userInfo.roleuser === "Editor")
+        else if (userInfo.roleuser === "Corrector")
         {
           history("/respond");
 

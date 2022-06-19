@@ -144,7 +144,9 @@ export default function AcceptDemand() {
                                             <h1 style={{ color: '#B91736' }}>List Of Demands</h1>
                                         </div>
                                         <div class="row" >
-                                            { demandList?.map((demand, i) => {
+                                            {!demandList.length ===0 ? <h2>No Demand Found </h2>
+                                            :
+                                             demandList?.map((demand, i) => {
                                                     return (
 
                                                         <div class="col-lg-3 col-md-4 col-sm-6" >
@@ -203,7 +205,7 @@ export default function AcceptDemand() {
                                                         </div>
                                                     )
                                                 })}
-                                                : <h2>No Demand Found </h2>
+                                                
                                             
                                         </div>
                                     </div>

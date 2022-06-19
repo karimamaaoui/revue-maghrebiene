@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import NavbarsPage from '../LandingPage/Navbars/NavbarsPage';
 import './login.css'
 import { validEmail, validPassword, validUsername } from './regex.js';
 import axios from 'axios'

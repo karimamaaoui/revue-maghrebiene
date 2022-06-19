@@ -20,12 +20,12 @@ export const socket = io(ENDPOINT);
 
 
 
-function EditArticle({match}) {
+function EditArticle({ match }) {
 
     const [imagename, setImagename] = useState("");
     const [pathFile, setFilePath] = useState('');
-    
-    
+
+
     const dispatch = useDispatch();
     const history = useNavigate();
 
@@ -38,29 +38,27 @@ function EditArticle({match}) {
     const typeList = useSelector((state) => state.typeList);
     const { loadingType, errorType, types } = typeList;
 
-    const [multiple_files, setMultiple_files] = useState([]);
+    const [contenu, setContenu] = useState([]);
     const [filename, setFilename] = useState('choose file');
     const [typeArticle, setTypeArticle] = useState('');
     const [title, setTitle] = useState('');
-    const [bio, setBio] = useState('');
     const [abstract, setAbstract] = useState('');
     const [keyWords, setKeyWords] = useState('');
-    const [abbreviations, setAbbreviations] = useState('');
 
     const articleUpdate = useSelector((state) => state.articleUpdate);
-    const { loadingArticle, errorArticle,successUpdate } = articleUpdate;
-    const [attributesAticle, setAttributesAticle] = useState([]);
+    const { loadingArticle, errorArticle, successUpdate } = articleUpdate;
+    const [attributesAticle, setAttributesAticle] = useState('');
 
 
     useEffect(() => {
         if (!userInfo) {
             history("/");
         }
-        else{
-        dispatch(listTypes());
-        dispatch(listAttribute());
-        dispatch(listRules())
-    }
+        else {
+            dispatch(listTypes());
+            dispatch(listAttribute());
+            dispatch(listRules())
+        }
     }, [
         dispatch,
         history,
@@ -71,57 +69,57 @@ function EditArticle({match}) {
 
     useEffect(() => {
         socket.emit("initial_data");
-       // socket.on("get_data", getData);
+        // socket.on("get_data", getData);
         socket.on("change_data", changeData);
         return () => {
-        //  socket.off("get_data");
-          socket.off("change_data");
-          
+            //  socket.off("get_data");
+            socket.off("change_data");
+
         };
 
-      }, []);
-      
-      let articleId = useParams();
+    }, []);
+
+    let articleId = useParams();
     //   console.log('id article',articleId)
 
-      const changeData = () => socket.emit("initial_data");
+    const changeData = () => socket.emit("initial_data");
+    let ty;
+    useEffect(() => {
+        const fetching = async () => {
+            const config = {
+                headers: {
+                    Accept: 'application/json',
+                    'content-type': 'multipart/form-data',
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
 
-      useEffect(() => {
-      const fetching = async () => {
-        const config = {
-            headers: {
-              Accept: 'application/json',
-              'content-type': 'multipart/form-data',
-              Authorization: `Bearer ${userInfo.token}`,
-            },
-          };
-          console.log('id article',articleId.id)
+            const { data } = await axios.get(`http://localhost:5000/api/file/getsingle/${articleId.id}`, config);
 
-        const { data } = await axios.get(`http://localhost:5000/api/file/getsingle/${articleId.id}`,config);
 
-          console.log('data from get axios',data)
-          {console.log('files',data.multiple_files)}
-        //   setMultiple_files(data.multiple_files[0].name)
+            setTitle(data.title);
+            setAbstract(data.abstract);
+            setKeyWords(data.keyWords)
+            setTypeArticle(data.typeArticle[0]?._id.toString())
+            setAttributesAticle(data.attributesAticle[0]?._id.toString());
+            setFilePath(data.pathFile)
+            setImagename(data.imagename);
+            setContenu(data.contenu);
 
-        setTitle(data.title);
-        setBio(data.bio);
-        setAbbreviations(data.abbreviations);
-        setAbstract(data.abstract);
-        setKeyWords(data.keyWords)
-        setTypeArticle(data.typeArticle)
-        setAttributesAticle(data.attributesAticle);
-        setFilePath(data.pathFile)
-        setImagename(data.imagename);
-        setMultiple_files(data.multiple_files)
-      };
-  
-      fetching();
+            console.log('typeArticle', data.typeArticle)
+
+        };
+
+        fetching();
     }, [articleId]);
 
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState([])
     const addFile = useSelector((state) => state.addFile);
     const { loading, error, files } = addFile;
     const [profilePicMessage, setProfilePicMessage] = useState();
+
+
+
 
     const postDetails = (pics) => {
         setProfilePicMessage(null);
@@ -147,47 +145,46 @@ function EditArticle({match}) {
         }
 
     };
-    
+
     const handlePhoto = (e) => {
-        setMultiple_files(e.target.files);
+        setContenu(e.target.files);
         setFilename(e.target.files[0].names);
-        console.log("handlephpoto")
 
     }
 
-    const handleEdit = async(e) => {
+    const handleEdit = async (e) => {
         console.log("inside handle submit");
         e.preventDefault();
         const formData = new FormData();
-        formData.append('multiple_files', multiple_files);
+        formData.append('contenu', contenu);
         formData.append('title', title);
-        formData.append('bio', bio);
         formData.append('abstract', abstract);
         formData.append('keyWords', keyWords);
-        formData.append('abbreviations', abbreviations);
         formData.append('typeArticle', typeArticle);
         formData.append('attributesAticle', attributesAticle);
-        formData.append('pathFile',pathFile)
-        formData.append('imagename',imagename)
-        console.log('imagename',imagename)
+        formData.append('pathFile', pathFile)
+        formData.append('imagename', imagename)
+        console.log('imagename', imagename)
 
-        for (let i = 0; i < multiple_files.length; i++) {
-            console.log(multiple_files[i]);
+        for (let i = 0; i < contenu.length; i++) {
+            console.log(contenu[i]);
 
-            formData.append('multiple_files', multiple_files[i]);
+            formData.append('contenu', contenu[i]);
         }
-         console.log("formdata",formData)
+        console.log("formdata", formData)
 
-         const config = {
-                headers: {
-                    Accept: 'application/json',
-                    'content-type': 'multipart/form-data',
-                    Authorization: `Bearer ${userInfo.token}`,
-                
-        
-          }}
-          return  await axios.put(
-            `http://localhost:5000/api/file/update/${articleId.id}`, formData,config).then((res) => {
+        const config = {
+            headers: {
+                Accept: 'application/json',
+                'content-type': 'multipart/form-data',
+                Authorization: `Bearer ${userInfo.token}`,
+
+
+            }
+        }
+
+        return await axios.put(
+            `http://localhost:5000/api/file/update/${articleId.id}`, formData, config).then((res) => {
 
                 console.log(res.data);
                 history('/managearticles')
@@ -197,278 +194,265 @@ function EditArticle({match}) {
                     text: "Article Updated Successfully",
                     icon: 'success',
                     button: "OK!"
-                })})
+                })
+            })
 
-          .catch(err => {
-            console.log(err)
-        })
+            .catch(err => {
+                console.log(err)
+            })
     }
     return (
 
         <>
-   {!userInfo ? history('/'):
- 
-            userInfo.roleuser === "Reader" ?
+            {!userInfo ? history('/') :
 
-                <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
-                    <div className="main-body" >
-                        <div className="row gutters-sm" style={{ maxWidth: "100%" }}>
-                            <SidebarScreen />
-                            <div className="col-md-8" style={{ marginTop: '50px' }}>
-                                <div className='container'>
-                                    <div id="content" className="p-6 p-md-10 pt-12">
-                                        <NavbarList />
-                                        <div className="" style={{ backgroundColor: 'white' }}>
-                                            <div class="card-body">
-                                            <form  onSubmit={handleEdit} encType='multipart/form-data' >
-                                                    <div class="row mb-3">
-                                                        <div class="sign-up-container">
+                userInfo.roleuser === "Author" ?
 
-                                                            <label style={{ fontSize: '20px' }}>Select A Type</label>
+                    <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
+                        <div className="main-body" >
+                            <div className="row gutters-sm" style={{ maxWidth: "100%" }}>
+                                <SidebarScreen />
+                                <div className="col-md-8" style={{ marginTop: '50px' }}>
+                                    <div className='container'>
+                                        <div id="content" className="p-6 p-md-10 pt-12">
+                                            <NavbarList />
+                                            <div className="" style={{ backgroundColor: 'white' }}>
+                                                <div class="card-body">
+                                                    <form onSubmit={handleEdit} encType='multipart/form-data' >
+                                                        <div class="row mb-3">
+                                                            <div class="sign-up-container">
 
-                                                            <div class="col-sm-9 text-secondary">
+                                                                <label style={{ fontSize: '20px' }}>Select A Type</label>
 
-                                                                <select className="select" name="typeArticle"
-                                                                value={typeArticle}
-                                                                    onChange={(e) => {
-                                                                        setTypeArticle(e.target.value);
-                                                                    }}
-                                                                >
-                                                                    <option value="">Choose one</option>
-                                                                    {types?.map((type, key) => {
+                                                                <div class="col-sm-9 text-secondary">
 
-                                                                        return <option key={key} value={type._id} > {type.label}</option>;
-                                                                    })}
-                                                                    {console.log('trrrfrf',typeArticle)}
-                                                                </select>
+                                                                    <select className="select" name="typeArticle"
+                                                                        onChange={(e) => {
+                                                                            console.log('e.target.value', e.target.value.toString())
+                                                                            setTypeArticle(e.target.value.toString());
+                                                                        }}
+
+                                                                    >
+                                                                        {console.log('typesArti', typeArticle[0]?._id)}
+                                                                        {types?.map((type, key) => {
+                                                                            return(                                               
+                                                                        //    return <option key={key} value={type._id} selected>
+                                                                        //         {type.label}</option>
+
+                                                                            <>
+                                                                            {
+                                                                                typeArticle[0]?._id=== type._id ?
+                                                                                <>
+                                                                                    <option key={key} value={type._id} selected>
+                                                                                        {type.label}</option>
+
+                                                                                </>
+
+                                                                                :
+
+                                                                                <>
+                                                                                    <option key={key} value={type._id} >
+                                                                                        {type.label}</option>
+
+                                                                                </>
+
+                                                                            }
+                                                                            </>
+                                                                       ) })}
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <br/>
-                                                   
+                                                        <div class="container">
+                                                            <div className='row mb-3 '>
+                                                                <div className="col-md-15 offset-md">
+                                                                    <div className='card'>
+                                                                        <div class="sign-up-container">
+                                                                            <br />
+                                                                            <label style={{ fontSize: '20px' }}>Choose A Theme</label>
 
-                                                    <div class="container">
-                                                        <div className='row mb-3 '>
-                                                            <div className="col-md-15 offset-md">
-                                                                <div className='card'>
-                                                                <div class="sign-up-container">
-                                                                    <br/>
-                                                                    <label style={{ fontSize: '20px' }}>Choose A Theme</label>
-                                                                  
-                                                                    <div style={{ display: "flex", fontSize: "50px", flexWrap:"wrap" }}>
+                                                                            <div style={{ display: "flex", fontSize: "50px", flexWrap: "wrap" }}>
 
-                                                                        {attributes?.map((item, i) => (
+                                                                                {attributes?.map((item, i) => (
 
-                                                                            <div key={i}>
-                                                                                {(attributesAticle[0]===item._id) ? 
-                                                                                    <p>
-                                                                                    <input type="checkbox" className='checkbox__box'  checked
-                                                                                    defaultValue={item._id}
-                                                                                    name="attributesAticle"
-                                                                                    onChange={(e) => setAttributesAticle([e.target.value])}                                                              
+                                                                                    <div key={i}>
 
-                                                                                   />
-                                                                                    </p>
-                                                                                    
-                                                                                    
-                                                                                    :
-                                                                                    <input type="checkbox" className='checkbox__box'  
-                                                                                    defaultValue={item._id}
-                                                                                    name="attributesAticle"
-                                                                                   
-                                                                                    
-                                                                                    onChange={(e) => {
-                                                                                        // Destructuring
-                                                                                        const { value, checked } = e.target;
-                                                                                        console.log(`${value} is ${checked}`);
-                
-                                                                                        // Case 1 : The user checks the box
-                                                                                        if (checked) {
-                                                                                            setAttributesAticle([value])
-                
+                                                                                        {(attributesAticle[0]?._id === item._id) ?
+                                                                                            <p>
+                                                                                                <input type="checkbox" className='checkbox__box' checked
+                                                                                                    name="attributesAticle"
+                                                                                                    onChange={(e) => setAttributesAticle(e.target.value.toString())}
+
+                                                                                                />
+                                                                                            </p>
+
+
+                                                                                            :
+                                                                                            <input type="checkbox" className='checkbox__box'
+                                                                                                name="attributesAticle"
+                                                                                                
+
+                                                                                                onChange={(e) => {
+                                                                                                    // Destructuring
+                                                                                                    const { value, checked } = e.target;
+                                                                                                    console.log(`${item._id} is ${checked}`);
+
+                                                                                                    // Case 1 : The user checks the box
+                                                                                                    if (checked) {
+                                                                                                        setAttributesAticle(item._id.toString())
+
+                                                                                                    }
+                                                                                                }}
+
+                                                                                            />
+
                                                                                         }
-                                                                                    }}
-                
-                                                                                    /> 
-                                                                              
-                                                                                    }
 
-                                                                                <label className='col' id="check" style={{ fontSize: '17px' }}  >{item.label}  </label>
+                                                                                        <label className='col' id="check" style={{ fontSize: '17px' }}  >{item.label}  </label>
 
+
+                                                                                    </div>
+                                                                                ))
+                                                                                }
 
                                                                             </div>
-                                                                        ))
-                                                                        }
-
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Title</h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <input
+                                                                    type="text"
+                                                                    name="title"
+                                                                    className="form-control"
+                                                                    value={title}
+                                                                    onChange={(e) => setTitle(e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Abstract</h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+
+                                                                <textarea name="abstract"
+                                                                    rows="5" cols="33"
+                                                                    className="form-control"
+                                                                    value={abstract}
+                                                                    onChange={(e) => {
+                                                                        setAbstract(e.target.value);
+
+                                                                    }}
+
+                                                                >
+
+                                                                </textarea>
 
                                                             </div>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Title</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            <input
-                                                                type="text"
-                                                                name="title"
-                                                                className="form-control"
-                                                                value={title}
-                                                                onChange={(e) => setTitle(e.target.value)}                                                              
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Bio</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="bio"
-                                                                value={bio}
-                                                                onChange={(e) => setBio(e.target.value)}
-                                                                                                                          
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Abstract</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-
-                                                            <textarea name="abstract"
-                                                                rows="5" cols="33"
-                                                                className="form-control"
-                                                                value={abstract}                                                              
-                                                                onChange={(e) => {
-                                                                    setAbstract(e.target.value);
-
-                                                                }}
-
-                                                            >
-
-                                                            </textarea>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">KeyWords</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="keyWords"
-                                                                value={keyWords}
-                                                                onChange={(e) => {
-                                                                    setKeyWords(e.target.value);
-
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Abbreviations</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="abbreviations"
-                                                                value={abbreviations}
-                                                                onChange={(e) => {
-                                                                    setAbbreviations(e.target.value);
-
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-3">
-                                                                <div class="col-sm-3">
-                                                                    <h6 class="mb-0">Content</h6>
-                                                                </div>
-                                                                <div class="col-sm-9 text-secondary">
-                                                                    <input
-                                                                        type="file"
-                                                                        name="multiple_files"
-                                                                        className="file-uploader "
-                                                                        multiple
-                                                                        onChange={handlePhoto}
-                                                                    />
-                                                                </div>
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">KeyWords</h6>
                                                             </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    name="keyWords"
+                                                                    value={keyWords}
+                                                                    onChange={(e) => {
+                                                                        setKeyWords(e.target.value);
 
-                                                    <div class="row mb-3">
-                                                                <div class="col-sm-3">
-                                                                    <h6 class="mb-0">image </h6>
-                                                                </div>
-                                                                <div class="col-sm-9 text-secondary">
-                                                                    <input
-                                                                        type="file"
-                                                                        
-                                                                        name="imagename"
-                                                                        className="file-uploader "
-                                                                        onChange={(e) => postDetails(e.target.files[0])}
-                                                                    />
-                                                                </div>
+                                                                    }}
+                                                                />
                                                             </div>
-                                                            <img src={pathFile} alt="" height="140px" width="30px" />
+                                                        </div>
 
-                                                            <input
-                                                                type="text"
-                                                                className="form-control"
-                                                                name="pathFile"
-                                                                defaultValue={pathFile}
-                                                                onChange={(e) => setFilePath(e.target.value)}
-                                                                 style={{ visibility: 'hidden' }}
-                                                            />
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Content</h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <input
+                                                                    type="file"
+                                                                    name="contenu"
+                                                                    className="file-uploader "
+                                                                    multiple
+                                                                    onChange={handlePhoto}
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">image </h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <input
+                                                                    type="file"
+
+                                                                    name="imagename"
+                                                                    className="file-uploader "
+                                                                    onChange={(e) => postDetails(e.target.files[0])}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <img src={pathFile} alt="" height="140px" width="30px" />
+
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            name="pathFile"
+                                                            defaultValue={pathFile}
+                                                            onChange={(e) => setFilePath(e.target.value)}
+                                                            style={{ visibility: 'hidden' }}
+                                                        />
 
 
-                                                    {/* <div class="row mb-3">
+                                                        {/* <div class="row mb-3">
                                                         <div class="col-sm-3">
                                                             <h6 class="mb-0">Content</h6>
                                                         </div>
                                                         <div class="col-sm-9 text-secondary">
                                                             <input
                                                                 type="file"
-                                                                name="multiple_files"
+                                                                name="contenu"
                                                                 className="file-uploader "
                                                                 multiple
                                                                 onChange={handlePhoto}
                                                             />
                                                         </div>
                                                     </div> */}
-                                                    <div class="row">
-                                                    <div class="col-sm-3"></div>
-                                                    <div class="col-sm-9 text-secondary">
-                                                        <div className="footer">
+                                                        <div class="row">
+                                                            <div class="col-sm-3"></div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <div className="footer">
 
-                                                            <div style={{ display: "inline-flex" }}>
+                                                                    <div style={{ display: "inline-flex" }}>
 
-                                                                <button 
-                                                                    style={{ borderRadius: "15px" }}
-                                                                >
-                                                                    Edit Article
-                                                                </button>
+                                                                        <button
+                                                                            style={{ borderRadius: "15px" }}
+                                                                        >
+                                                                            Edit Article
+                                                                        </button>
 
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
 
-                                                </form>
-                                                
+                                                    </form>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -476,9 +460,8 @@ function EditArticle({match}) {
                             </div>
                         </div>
                     </div>
-                </div>
-                : "Not Authorized"
-                     }
+                    : "Not Authorized"
+            }
 
 
         </>

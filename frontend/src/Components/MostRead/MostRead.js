@@ -276,9 +276,10 @@ export default function MostRead() {
                                                                             <div key={index}>
                                                                                 <div class="card-body">
                                                                                     <label style={{ fontSize: '20px' }}>Title:{tdata.title}</label>
-
-                                                                                    <img src={tdata.pathFile} alt="" height="140px" width="30px" />
-
+                                                                                    
+                                                                                    <br/>
+                                                                                    <img src={tdata.pathFile} alt="" height="140px" style={{ width:"30%"}} />
+                                                                                    <br/>
                                                                                     <p>
                                                                                         Abstract :
                                                                                         {tdata.abstract}
@@ -337,7 +338,7 @@ export default function MostRead() {
 
                                                                                                                                                     </div>
                                                                                                                                                     :
-                                                                                                                                                    history(`/b/${tdata._id}`)
+                                                                                                                                                    history(`/read/${tdata._id}`)
                                                                                                                                             }
                                                                                                                                         }}> read all article</button>
 

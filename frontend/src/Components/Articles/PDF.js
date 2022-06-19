@@ -161,14 +161,6 @@ const PDF = (props) => {
                 </div>
                 </div>
                 <div class="line-items">
-                  <div class="headers clearfix">
-                    <div class="row">
-                      <div class="col-xs-4" style={{fontSize:'16px'}}>Bio : {props.bio}</div>
-                      <div class="col-xs-3" style={{fontSize:'16px'}}> {t("profile:abbreviations")} :
-                        {props.abbreviations}
-                      </div>
-                    </div>
-                  </div>
                   <div class="total text-right">
                     <p class="extra-notes col-sm-12" >
                       <strong>{t("profile:abstract")} : </strong>
@@ -177,10 +169,10 @@ const PDF = (props) => {
 
                   </div>
                     <br/>
-                  <div class="footer">
-                    <Pdf targetRef={ref} filename="post.pdf" >
+                  <div class="footer" >
+                    <Pdf targetRef={ref} filename="article.pdf" >
                     {({ toPdf }) =>
-                      <button className="" onClick={toPdf}>Capture as PDF</button>
+                      <button className="" style={{marginTop:'-24px'}} onClick={toPdf}>Capture as PDF</button>
                     }
                   </Pdf>
                   </div>

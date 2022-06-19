@@ -21,7 +21,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/Actions/actions";
-import NavBarFeed from "../../feed/navbarFeed";
+import NavBarNotif from "../../notification/navbarNotiffy";
 import axios from "axios";
 
 const Header = () => {
@@ -94,9 +94,9 @@ const Header = () => {
         <Nav className="me-auto" navbar>
           <NavItem>
           </NavItem>
-          <NavItem style= {{visibility: userInfo.roleuser==="Reader"? "visible":"hidden"}}>
+          <NavItem style= {{visibility: userInfo.roleuser==="Corrector"? "visible":"hidden"}}>
 
-          <NavBarFeed />
+          <NavBarNotif />
 
           </NavItem>
       

@@ -73,7 +73,7 @@ export default function EditType() {
 
                 Swal.fire({
                     title: "Succces!",
-                    text: "Rule Updated Successfully",
+                    text: "Type Updated Successfully",
                     icon: 'success',
                     button: "OK!"
                 })})
@@ -87,7 +87,7 @@ export default function EditType() {
              <>
    {!userInfo ? history('/'):
  
-            userInfo.roleuser === "Reader" ?
+            userInfo.roleuser === "Admin" ?
 
                 <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
                     <div className="main-body" >

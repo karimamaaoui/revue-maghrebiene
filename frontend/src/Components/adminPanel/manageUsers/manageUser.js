@@ -14,6 +14,7 @@ import Accepter from '../../../assets/accepter.png'
 import Refuser from '../../../assets/refuser.png'
 import { getArticleByFilter } from "../../../redux/Actions/articleActions";
 import ReactPaginate from "react-paginate";
+import { CSVLink } from "react-csv";
 
 const ENDPOINT = "http://localhost:5000";
 var socket;
@@ -111,7 +112,7 @@ export default function ManageUser() {
     <>
 
       {!userInfo ? history('/') :
-        userInfo.roleuser === "Reader" ?
+        userInfo.roleuser === "Admin" ?
           <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
             <div className="main-body">
               <div className="row gutters-sm">
@@ -127,6 +128,17 @@ export default function ManageUser() {
 
                             <CardBody>
                               <CardTitle tag="h5">Users List</CardTitle>
+                              <CSVLink
+            style={{  padding: "8px 8px",
+            verticalAlign: "middle",
+            marginLeft:"10%"  ,
+            }}
+                data={searchResult}
+                filename={"user-list.csv"}
+                className="btn btn-success"
+                >
+                Export To CSV
+            </CSVLink>
                               <Col lg="32" >
                         <button className="btn btn-danger" onClick={()=>{history('/addnewuser')}} style={{float:'right'}}>Add new user</button>
                         </Col>

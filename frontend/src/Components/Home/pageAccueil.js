@@ -83,33 +83,7 @@ export default function PageAccueil() {
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                                {/* <div className="col-md-15 offset-md">
-                                    <div className='row'>
-                                        <div className='col' style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", }}>
-                                            {articles?.map((tdata, index) => (
-                                                <div>
-
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div key={index} >
-                                                                <h5 class="card-title">{tdata.title}</h5>
-
-                                                                <ReadMoreReact  text={tdata.abstract}
-                                                                        min={3}
-                                                                        ideal={30}
-                                                                        max={100}
-                                                                        readMoreText="click here to read more" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                            )
-                                            }
-                                        </div>
-                                    </div>
-                                </div> */}
-                            </div>
+                              </div>
 
 
                         </div>

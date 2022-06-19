@@ -10,6 +10,7 @@ import { Confirm, Prompt, Alert } from 'react-st-modal';
 
 import First from '../../assets/first.jpg'
 import { Button, Card, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
+import Swal from 'sweetalert2'
 
 
 export default function FavoriteList() {
@@ -47,21 +48,18 @@ export default function FavoriteList() {
                 },
             };
 
-            const data= await axios.get(`http://localhost:5000/api/favorite/`, config);
+            const data = await axios.get(`http://localhost:5000/api/favorite/`, config);
             console.log('data from get favorite', data)
-            console.log('fddfddfd',data.includes('no'))
-            if(data==='no')
-            {return "no data found"}
-            
-            else {setFavorites(data)}
+            //   console.log('fddfddfd',data.includes('no'))
 
+            setFavorites(data.data)
 
         } catch (error) {
             console.log(error)
         }
 
 
-        
+
 
         if (!userInfo) {
             history("/");
@@ -84,7 +82,36 @@ export default function FavoriteList() {
     const slice = favorites?.slice(0, noOfElement)
     const currentUrl = window.location.href;
     const [disable, setDisable] = useState(false);
-    console.log('fav',slice.length)
+    
+    const handleDelete=async(id)=>{
+        try {const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+         await axios.delete(`http://localhost:5000/api/favorite/delete/${id}`, config);
+         Swal.fire({
+            title: "Succces!",
+            text: "Favorite Removed Successfully",
+            icon: 'success',
+            button: "OK!"
+        });
+
+
+    } catch (error) {
+        console.log(error)
+        Swal.fire({
+            title: "Error!",
+            text: "Favorite Removed Error",
+            icon: 'error',
+            button: "OK!"
+        });
+
+    }
+
+    }
 
     return (
         <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
@@ -112,153 +139,145 @@ export default function FavoriteList() {
                                                     <div class="row justify-content-center">
 
                                                         <div class="col order-last" style={{ display: "flex", flexWrap: "wrap" }} >
-                                                            {slice.length !=0 ? 
-                                                            slice.map((atrib) => {
-                                                                return (
-                                                                    <>
-                                                                {atrib.article.published === true ?
+                                                            {
+                                                                slice.map((favorite) => {
+                                                                    return (
+                                                                        <>
 
-                                                                    <div class="card card-margin">
-                                                                        <div class="card-header no-border">
-                                                                            <h5 class="card-title" style={{ textTransform: "uppercase" }}>
-                                                                                <b>
-                                                                                    {atrib.title}
-                                                                                    </b>
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div class="card-body pt-0">
-                                                                            <div class="widget-49">
-                                                                                <div class="widget-49-title-wrapper">
-                                                                                    <div class="widget-49-date-primary">
-                                                                                        <span class="widget-49-date-day" >{moment(atrib.article.createdAt).format("DD-MM-YYYY")}</span>
-                                                                                    </div>
-                                                                                    <div class="widget-49-meeting-info">
-                                                                                                <span class="widget-49-pro-title" >
-                                                                                                    Writed By <b>
-                                                                                                        <span style={{ textTransform: "capitalize" }}>
-                                                                                                            {atrib.user.username}
-                                                                                                        </span>
-                                                                                                    </b>
-                                                                                                </span>
-                                                                                           
-                                                                                    </div>
+                                                                            <div class="card card-margin">
+                                                                                <div class="card-header no-border">
                                                                                 </div>
+                                                                                <div class="card-body pt-0">
+                                                                                    <div class="widget-49">
 
-                                                                                <div className='widget-49-meeting-points'>
-                                                                                    <span >{atrib.article.bio} </span>
-                                                                                    <br />
-
-                                                                                    <img src={atrib.article.pathFile} alt="" height="140px" width="30px" />
-
-                                                                                    <span></span>
-                                                                                    <span class="widget-49-meeting-time">{atrib.article.abstract} abstract</span>
-                                                                                    <br />
-
-                                                                                    <span>{atrib.article.keyWords}</span>
-                                                                                    <br />
-                                                                                    <span> {atrib.article.view[0].count} view(s)</span>
-                                                                                </div>
-                                                                                <ol class="widget-49-meeting-points">
-
-                                                                                    <span> </span>
-                                                                                    <span></span>
-                                                                                </ol>
-                                                                              
-
-                                                                            <div class="widget-49-meeting-action" >
-                                                                                <button className="btn btn-warning"
-                                                                                    onClick={
-                                                                                        async () => {
-                                                                                            {
-                                                                                                atrib.article.filepassword.length != 0 ?
-                                                                                                <div>
-                                                                                                    {replaceModalItem(atrib.article._id)}
-
-                                                                                                </div>
-                                                                                                :
-                                                                                                history(`/b/${atrib.article._id}`)
-                                                                                            }
-                                                                                        }}
-                                                                                >
-                                                                                    View All
-                                                                                </button>
-                                                                                <Modal show={show} onHide={handleClose}>
-                                                                                    <Modal.Header closeButton >
-                                                                                    </Modal.Header>
-                                                                                    <Modal.Body>
-
-
-                                                                                        <div class="row">
-                                                                                            <div class="col">
-                                                                                                <div class="panel panel-default">
-                                                                                                    <div class="panel-heading">
-                                                                                                        <div class="row">
-                                                                                                            <h3 class="text-center">Payment Details</h3>
-                                                                                                            <div class="inlineimage">
-                                                                                                                <img class="img-responsive images"
-                                                                                                                    src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
-                                                                                                                <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                        <div className='widget-49-meeting-points'>
+                                                                                            {favorite.article.map((a) => {
+                                                                                                return (
+                                                                                                    <>
+                                                                                                        <div class="widget-49-title-wrapper">
+                                                                                                            
+                                                                                                            <div class="widget-49-date-primary">
+                                                                                                            <button onClick={()=>{handleDelete(favorite._id)}}>
+                                                                                                                Remove
+                                                                                                            </button>
+                                                                                                            </div>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="panel-body">
-                                                                                                        <form role="form">
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-12">
-                                                                                                                    <div class="form-group"> <label>CARD NUMBER</label>
-                                                                                                                        <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                        
+
+                                                                                                        <img src={a.pathFile} alt="" height="140px"
+                                                                                                            style={{ width: "30%" }} />
+                                                                                                        <br />
+                                                                                                        <span></span>
+                                                                                                        <span class="widget-49-meeting-time">{a.abstract} abstract</span>
+                                                                                                        <br />
+
+                                                                                                        <span>{a.keyWords}</span>
+                                                                                                        <br />
+
+
+                                                                                                        <div class="widget-49-meeting-action" >
+                                                                                                            <button className="btn btn-warning"
+                                                                                                                onClick={
+                                                                                                                    async () => {
+                                                                                                                        {
+                                                                                                                            a.filepassword.length != 0 ?
+                                                                                                                                <div>
+                                                                                                                                    {replaceModalItem(a._id)}
+
+                                                                                                                                </div>
+                                                                                                                                :
+                                                                                                                                history(`/b/${a._id}`)
+                                                                                                                        }
+                                                                                                                    }}
+                                                                                                            >
+                                                                                                                View All
+                                                                                                            </button>
+                                                                                                            <Modal show={show} onHide={handleClose}>
+                                                                                                                <Modal.Header closeButton >
+                                                                                                                </Modal.Header>
+                                                                                                                <Modal.Body>
+
+
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col">
+                                                                                                                            <div class="panel panel-default">
+                                                                                                                                <div class="panel-heading">
+                                                                                                                                    <div class="row">
+                                                                                                                                        <h3 class="text-center">Payment Details</h3>
+                                                                                                                                        <div class="inlineimage">
+                                                                                                                                            <img class="img-responsive images"
+                                                                                                                                                src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Mastercard-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Discover-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/Paypal-Curved.png" />
+                                                                                                                                            <img class="img-responsive images" src="https://cdn0.iconfinder.com/data/icons/credit-card-debit-card-payment-PNG/128/American-Express-Curved.png" /> </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="panel-body">
+                                                                                                                                    <form role="form">
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-12">
+                                                                                                                                                <div class="form-group"> <label>CARD NUMBER</label>
+                                                                                                                                                    <div class="input-group"> <input type="tel" class="form-control" placeholder="Valid Card Number" /> <span class="input-group-addon"><span class="fa fa-credit-card"></span></span> </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-7 col-md-7">
+                                                                                                                                                <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                                                                                                                <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-xs-12">
+                                                                                                                                                <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </form>
+                                                                                                                                </div>
+                                                                                                                                <div class="footer">
+                                                                                                                                    <div class="row">
+                                                                                                                                        <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-7 col-md-7">
-                                                                                                                    <div class="form-group"> <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label> <input type="tel" class="form-control" placeholder="MM / YY" /> </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-xs-5 col-md-5 pull-right">
-                                                                                                                    <div class="form-group"> <label>CV CODE</label> <input type="tel" class="form-control" placeholder="CVC" /> </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-xs-12">
-                                                                                                                    <div class="form-group"> <label>CARD OWNER</label> <input type="text" class="form-control" placeholder="Card Owner Name" /> </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    </div>
-                                                                                                    <div class="footer">
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-xs-12"> <button class="pull-right" style={{ borderRadius: '10px' }}>Confirm Payment</button> </div>
+                                                                                                                </Modal.Body>
+
+                                                                                                            </Modal>
+
+
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
+
+
+                                                                                                    </>
+                                                                                                )
+                                                                                            }
+                                                                                            )
+                                                                                            }
                                                                                         </div>
-                                                                                    </Modal.Body>
+                                                                                    </div>
 
-                                                                                </Modal>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                        </div>
-                                                                         : <></>}
                                                                         </>
-                                                        )
-                                                            })
-                                                            : "No data "
-                                                        }
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
+
                                                     </div>
-
                                                 </div>
-                                            </div>
 
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-sm-12">
-                                                <button className="btn btn-dark " style={{ textAlign: "center" }} onClick={loadMore}  >
-                                                    Show More Articles
-                                                </button>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-sm-12">
+                                                    <button className="btn btn-dark " style={{ textAlign: "center" }} onClick={loadMore}  >
+                                                        Show More Articles
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -268,7 +287,6 @@ export default function FavoriteList() {
                     </div>
                 </div>
             </div>
-        </div>
 
 
         </div >)

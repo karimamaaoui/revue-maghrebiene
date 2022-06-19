@@ -1,4 +1,4 @@
-import React ,{useEffect}from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, Col, Row } from "react-bootstrap";
@@ -8,19 +8,20 @@ import ReactPaginate from 'react-paginate'
 import SidebarScreen from '../../sideBar/sidebarScreen';
 import NavbarList from '../views/navbarList';
 import { deleteRule, listRules } from '../../../redux/Actions/rulesActions';
-import { deleteType, listTypes } from '../../../redux/Actions/typeAction';
+import { deleteType, getTypeByFilter, listTypes } from '../../../redux/Actions/typeAction';
+import { CSVLink } from 'react-csv';
 
 export default function ListType() {
 
-    const dispatch = useDispatch();
-    const history = useNavigate();
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-    
-    const typeList = useSelector((state) => state.typeList);
-    const { loadingGetAllUser, errorGetAllUser, types } = typeList;
-  
-    
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const typeList = useSelector((state) => state.typeList);
+  const { loadingGetAllUser, errorGetAllUser, types } = typeList;
+
+
   const typeDelete = useSelector((state) => state.typeDelete);
 
   const {
@@ -44,15 +45,48 @@ export default function ListType() {
   ]);
   const deleteHandler = (id) => {
     // if (window.confirm("Are you sure?")) {
-      dispatch(deleteType(id));
-    
-  };
+    dispatch(deleteType(id));
 
+  };
+  const typeFilters = useSelector((state) => state.typeFilters);
+  const { loadingUserFilter, errorUserFilter, typeFilter } = typeFilters;
+
+
+  const [searchResult, setSearchResult] = useState(types);
+
+  const [searchInput, setSearchInput] = useState('');
+
+  const filterContent = (userFilter, searchTerm) => {
+    if (searchTerm !== '') {
+
+      const result = types.filter((type) => {
+        return (type.label.toLowerCase().startsWith(searchTerm)
+        );
+      }
+      );
+      setSearchResult(result);
+    }
+    else {
+      setSearchResult(types);
+    }
+    console.log("searchResult", searchResult)
+  }
+
+  const handleSearch = async (e) => {
+
+    const searchTerm = e.currentTarget.value;
+    setSearchInput(searchTerm)
+
+    dispatch(getTypeByFilter(typeFilter, searchTerm));
+
+    filterContent(typeFilter, searchTerm)
+
+  }
 
   return (
-          <>
+    <>
       {!userInfo ? history('/') :
-        userInfo.roleuser === "Reader" ?
+        userInfo.roleuser === "Admin" ?
 
           <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
             <div className="main-body">
@@ -70,14 +104,29 @@ export default function ListType() {
                           <Card id="articlesList">
                             <CardBody>
                               <CardTitle tag="h5">Types List</CardTitle>
+                              <CSVLink
+                                style={{
+                                  padding: "8px 8px",
+                                  verticalAlign: "middle",
+                                  marginLeft: "10%",
+                                }}
+                                data={searchResult}
+                                filename={"type-list.csv"}
+                                className="btn btn-success"
+                              >
+                                {console.log('types',types)}
+                                Export To CSV
+                              </CSVLink>
                               <Col lg="32" >
-                        <button className="btn btn-danger" onClick={()=>{history('/addtype')}} style={{float:'right'}}>Add new Type</button>
-                        </Col>
-                        <br/>
+                                <button className="btn btn-danger" onClick={() => { history('/addtype') }} style={{ float: 'right' }}>Add new Type</button>
+                              </Col>
+                              <br />
                               <input className="mr-sm-2"
                                 type="search"
                                 name="key"
                                 placeholder="Search"
+                                onChange={handleSearch}
+
                                 aria-label="Search"
                               />
 
@@ -92,15 +141,10 @@ export default function ListType() {
 
                                   </tr>
                                 </thead>
-
-
-                                {
-                                  types?.map((tdata, index) => {
-
-
+                                {searchInput.length > 1 ? (
+                                  searchResult.map((tdata, index) => {
                                     return (
                                       <tbody>
-
                                         <tr key={index} className="border-top">
                                           <td>
                                             <div className="d-flex align-items-center p-2">
@@ -109,7 +153,7 @@ export default function ListType() {
                                               </div>
                                             </div>
                                           </td>
-                                        
+
 
                                           <td>
                                           </td>
@@ -118,27 +162,74 @@ export default function ListType() {
                                           </Button>
                                           <Button variant="outline-warning"
                                             className="mx-2"
-                                            onClick={async() =>{
-                                              const result=  await Confirm('Are you sure you want to delete this one', 
-                                              'Delete Сonfirmation');
-                                            if (result) {
-                                              deleteHandler(tdata._id)
-                                            } else {
-                                              history(`/rules`);
-                                          }}
+                                            onClick={async () => {
+                                              const result = await Confirm('Are you sure you want to delete this one',
+                                                'Delete Сonfirmation');
+                                              if (result) {
+                                                deleteHandler(tdata._id)
+                                              } else {
+                                                history(`/types`);
+                                              }
                                             }
-                                            >
+                                            }
+                                          >
                                             <i class="bi bi-trash3"></i>
                                           </Button>
                                         </tr>
-                                      </tbody>
 
+                                      </tbody>
                                     )
-                                  })
-                                }
+                                  })) : (
+
+
+                                  <tbody>
+                                    {
+                                      types?.map((tdata, index) => {
+
+
+                                        return (
+
+                                          <tr key={index} className="border-top">
+                                            <td>
+                                              <div className="d-flex align-items-center p-2">
+                                                <div className="ms-3">
+                                                  <h6 className="mb-0">{tdata.label}</h6>
+                                                </div>
+                                              </div>
+                                            </td>
+
+
+                                            <td>
+                                            </td>
+                                            <Button variant="outline-danger" href={`/edittype/${tdata._id}`}>
+                                              <i class="bi bi-pencil-square"></i>
+                                            </Button>
+                                            <Button variant="outline-warning"
+                                              className="mx-2"
+                                              onClick={async () => {
+                                                const result = await Confirm('Are you sure you want to delete this one',
+                                                  'Delete Сonfirmation');
+                                                if (result) {
+                                                  deleteHandler(tdata._id)
+                                                } else {
+                                                  history(`/rules`);
+                                                }
+                                              }
+                                              }
+                                            >
+                                              <i class="bi bi-trash3"></i>
+                                            </Button>
+                                          </tr>
+                                        )
+                                      })
+                                    }
+                                  </tbody>
+
+                                )}
+
 
                               </Table>
-                             
+
 
                               <div className="row">
                                 <div className="col-sm-12"  >
@@ -183,6 +274,6 @@ export default function ListType() {
 
     </>
 
-    
+
   )
 }

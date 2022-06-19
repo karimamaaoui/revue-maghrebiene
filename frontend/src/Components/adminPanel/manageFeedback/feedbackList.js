@@ -9,62 +9,17 @@ import SidebarScreen from '../../sideBar/sidebarScreen';
 import NavbarList from '../views/navbarList';
 import { deleteRule, getRuleByFilter, listRules } from '../../../redux/Actions/rulesActions';
 import { CSVLink } from 'react-csv';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
-export default function ListRule() {
+export default function ListFeedback() {
 
     const dispatch = useDispatch();
     const history = useNavigate();
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
     
-    const getAllRule = useSelector((state) => state.getAllRule);
-    const { loadingGetAllUser, errorGetAllUser, rules } = getAllRule;
-    const ruleFilters = useSelector((state) => state.ruleFilters);
-    const { loadingUserFilter, errorUserFilter, ruleFilter } = ruleFilters;
-  
-  
-    const [searchResult, setSearchResult] = useState(rules);
-  
-    const [searchInput, setSearchInput] = useState('');
-  
-    const filterContent = (userFilter, searchTerm) => {
-      if (searchTerm !== '') {
-  
-        const result = rules.filter((rule) => {
-          return (rule.label.toLowerCase().startsWith(searchTerm)
-          );
-        }
-        );
-        setSearchResult(result);
-      }
-      else {
-        setSearchResult(rules);
-      }
-      console.log("searchResult", searchResult)
-    }
-  
-    const handleSearch = async (e) => {
-  
-      const searchTerm = e.currentTarget.value;
-      setSearchInput(searchTerm)
-  
-      dispatch(getRuleByFilter(ruleFilter, searchTerm));
-  
-      filterContent(ruleFilter, searchTerm)
-  
-    }
-  
-    
-  const ruleDelete = useSelector((state) => state.ruleDelete);
-
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = ruleDelete;
-
   useEffect(() => {
-    dispatch(listRules());
 
     if (!userInfo) {
       history("/");
@@ -73,14 +28,75 @@ export default function ListRule() {
     dispatch,
     history,
     userInfo,
-    successDelete
 
   ]);
-  const deleteHandler = (id) => {
-    // if (window.confirm("Are you sure?")) {
-      dispatch(deleteRule(id));
-    
-  };
+
+  const [feedbackList, setFeedbackList] = useState([]);
+
+
+  useEffect(async () => {
+      try {
+          const config = {
+              headers: {
+                  "Content-type": "application/json",
+                  Authorization: `Bearer ${userInfo.token}`,
+              },
+          };
+
+          const data = await axios.get(`http://localhost:5000/api/feedback/getFeedback`, config);
+          console.log('data from get favorite', data)
+
+          setFeedbackList(data.data)
+
+      } catch (error) {
+          console.log(error)
+      }
+
+
+
+
+      if (!userInfo) {
+          history("/");
+      }
+  },
+      [
+          dispatch,
+          history,
+          userInfo,
+
+
+
+      ]);
+ 
+  const deleteHandler=async(id)=>{
+    try {const config = {
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${userInfo.token}`,
+        },
+    };
+
+     await axios.delete(`http://localhost:5000/api/feedback/delete/${id}`, config);
+     Swal.fire({
+        title: "Succces!",
+        text: "Feedback Removed Successfully",
+        icon: 'success',
+        button: "OK!"
+    });
+
+
+} catch (error) {
+    console.log(error)
+    Swal.fire({
+        title: "Error!",
+        text: "Feedback Removed Error",
+        icon: 'error',
+        button: "OK!"
+    });
+
+}
+
+}
 
 
   return (
@@ -103,63 +119,38 @@ export default function ListRule() {
                         <Col lg="12">
                           <Card id="articlesList">
                             <CardBody>
-                              <CardTitle tag="h5">Rules List</CardTitle>
-                              <CSVLink
-                                style={{
-                                  padding: "8px 8px",
-                                  verticalAlign: "middle",
-                                  marginLeft: "10%",
-                                }}
-                                data={searchResult}
-                                filename={"type-list.csv"}
-                                className="btn btn-success"
-                              >
-                                Export To CSV
-                              </CSVLink>
-                            
-                              <Col lg="32" >
-                        <button className="btn btn-danger" onClick={()=>{history('/addrule')}} style={{float:'right'}}>Add new Rule</button>
-                        </Col>
+                              <CardTitle tag="h5">Feedback List</CardTitle>
+                              
                         <br/>
-                              <input className="mr-sm-2"
-                                type="search"
-                                name="key"
-                                placeholder="Search"
-                                aria-label="Search"
-                                onChange={handleSearch}
-
-                              />
-
-
                               <Table className="no-wrap " responsive borderless>
                                 <thead>
                                   <tr>
                                     <th>Label</th>
-                                    <th></th>
-
+                                    <th>Stars</th>
                                     <th>Action</th>
 
                                   </tr>
                                 </thead>
-                                {searchInput.length > 1 ? (
-                                  searchResult.map((tdata, index) => {
+                                  {feedbackList.map((tdata, index) => {
                                     return (
                                       <tbody>
                                         <tr key={index} className="border-top">
                                           <td>
                                             <div className="d-flex align-items-center p-2">
                                               <div className="ms-3">
-                                                <h6 className="mb-0">{tdata.label}</h6>
+                                                <h6 className="mb-0">{tdata.message}</h6>
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <div className="d-flex align-items-center p-2">
+                                              <div className="ms-3">
+                                                <h6 className="mb-0">{tdata.star}</h6>
                                               </div>
                                             </div>
                                           </td>
 
 
-                                          <td>
-                                          </td>
-                                          <Button variant="outline-danger" href={`/edittype/${tdata._id}`}>
-                                            <i class="bi bi-pencil-square"></i>
-                                          </Button>
                                           <Button variant="outline-warning"
                                             className="mx-2"
                                             onClick={async () => {
@@ -180,52 +171,10 @@ export default function ListRule() {
                                       </tbody>
                                     )
                                
-                                  })) : (
-
-                                    <tbody>
- {
-                                  rules?.map((tdata, index) => {
-
-
-                                    return (
-
-                                        <tr key={index} className="border-top">
-                                          <td>
-                                            <div className="d-flex align-items-center p-2">
-                                              <div className="ms-3">
-                                                <h6 className="mb-0">{tdata.label}</h6>
-                                              </div>
-                                            </div>
-                                          </td>
-                                        
-
-                                          <td>
-                                          </td>
-                                          <Button variant="outline-danger" href={`/editrule/${tdata._id}`}>
-                                            <i class="bi bi-pencil-square"></i>
-                                          </Button>
-                                          <Button variant="outline-warning"
-                                            className="mx-2"
-                                            onClick={async() =>{
-                                              const result=  await Confirm('Are you sure you want to delete this one', 
-                                              'Delete Сonfirmation');
-                                            if (result) {
-                                              deleteHandler(tdata._id)
-                                            } else {
-                                              history(`/rules`);
-                                          }}
-                                            }
-                                            >
-                                            <i class="bi bi-trash3"></i>
-                                          </Button>
-                                        </tr>
-
-                                    )
                                   })
-                                }
+                                } 
 
-                                      </tbody>
-                                )}
+                                
                            
 
 

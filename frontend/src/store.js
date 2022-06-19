@@ -21,6 +21,9 @@ import { retrieveRulesReducer, ruleDeleteReducer } from './redux/reducers/rulesR
 import { getArticleByFilter } from './redux/Actions/articleActions';
 import { addFeedBackReducer, retreiveFeedBackReducer, retrieveAllFeedbackReducer } from './redux/reducers/feedbackReducers';
 import { getUserByFilter } from './redux/Actions/actions';
+import { getTypeByFilter } from './redux/Actions/typeAction';
+import { getThemeByFilter } from './redux/Actions/attributeActions';
+import { getRuleByFilter } from './redux/Actions/rulesActions';
 
 const reducer = combineReducers({
   // here contain our reducers
@@ -44,6 +47,9 @@ const reducer = combineReducers({
   articleDelete:articleDeleteReducer,
   getAllRule:retrieveRulesReducer,
   articleFilters: getArticleByFilter,
+  typeFilters: getTypeByFilter,
+  ruleFilters:getRuleByFilter,
+  themeFilters: getThemeByFilter,
   userFilters:getUserByFilter,
   RandomArticle:retrieveArticlerRandomReducer,
   listArrivals:userNewArrivalReducer,

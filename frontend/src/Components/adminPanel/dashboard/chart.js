@@ -10,8 +10,10 @@ import {
 
 export default function Chart({ title, data, dataKey, grid }) {
 
+
   return (
-    <div className="chart" style={{height:"90%"}}>
+    <> 
+       <div className="chart" style={{height:"90%"}}>
       <h3 className="chartTitle">{title}</h3>
       <ResponsiveContainer width="100%"  >
         <LineChart  data={data}  >
@@ -22,5 +24,8 @@ export default function Chart({ title, data, dataKey, grid }) {
         </LineChart>
       </ResponsiveContainer>
     </div>
+    
+    </>
+
   );
 }

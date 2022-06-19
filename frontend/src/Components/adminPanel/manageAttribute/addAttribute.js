@@ -49,7 +49,7 @@ export default function AddAttribute() {
 
                 Swal.fire({
                     title: "Succces!",
-                    text: "Rule Updated Successfully",
+                    text: "Theme Updated Successfully",
                     icon: 'success',
                     button: "OK!"
                 })})
@@ -64,7 +64,7 @@ export default function AddAttribute() {
              <>
    {!userInfo ? history('/'):
  
-            userInfo.roleuser === "Reader" ?
+            userInfo.roleuser === "Admin" ?
 
                 <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
                     <div className="main-body" >
@@ -75,6 +75,8 @@ export default function AddAttribute() {
                                     <div id="content" className="p-6 p-md-10 pt-12">
                                         <NavbarList />
                                         <div className="" style={{ backgroundColor: 'white' }}>
+                                        <h3 className="fieldset-title">Add New Theme</h3>
+
                                             <div class="card-body">
                                             <form  onSubmit={handleSubmit}  >
                                                     <div class="row mb-3">

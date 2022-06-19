@@ -180,7 +180,7 @@ export default function SearchWithAttribute() {
 
                                                                                                 </div>
                                                                                                 :
-                                                                                                history(`/b/${atrib._id}`)
+                                                                                                history(`/read/${atrib._id}`)
                                                                                             }
                                                                                         }}
                                                                                 >

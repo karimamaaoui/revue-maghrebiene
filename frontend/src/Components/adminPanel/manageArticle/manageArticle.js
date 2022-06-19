@@ -117,7 +117,7 @@ export default function ManageArticle() {
   return (
     <>
       {!userInfo ? history('/') :
-        userInfo.roleuser === "Reader" ?
+        userInfo.roleuser === "Admin" ?
 
           <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
             <div className="main-body">

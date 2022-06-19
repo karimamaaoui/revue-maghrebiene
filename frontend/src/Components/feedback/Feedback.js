@@ -75,7 +75,7 @@ export default function Feedback() {
                                 <div className="card mb-3" style={{ backgroundColor: 'white' }}>
                                     <div class="card-body">
                                         <div className="row">
-                                            <h1 style={{ color: '#B91736' }}>Feedback::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</h1>
+                                            <h1 style={{ color: '#B91736' }}>Feedback</h1>
                                         </div>
 
                                         <div class="mb-4 p-4 text-center">
@@ -107,8 +107,9 @@ export default function Feedback() {
 
                                                             <i className="fas fa-envelope"></i>
                                                         </div>
-                                                        <div className="footer">
-                                                            <button type="submit" ><span>Send feedback</span></button>
+                                                        <br/>
+                                                        <div >
+                                                            <button className='btn btn-danger' type="submit" ><span>Send feedback</span></button>
                                                         </div>
                                                         <p class="mt-3"><a href="/search">Continue without sending feedback </a></p>
 

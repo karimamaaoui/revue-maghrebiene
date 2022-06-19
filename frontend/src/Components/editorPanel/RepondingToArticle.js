@@ -42,7 +42,7 @@ export default function RepondingToArticle() {
         userInfo,
 
     ]);
-   
+
 
     const handlePageClick = (data) => {
 
@@ -56,170 +56,179 @@ export default function RepondingToArticle() {
 
     return (
         <>
-        {!userInfo ? history('/'):
-      
-                 userInfo.roleuser === "Editor" ?
-     
-        <div>
+            {!userInfo ? history('/') :
 
-            <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
-                <div className="main-body">
-                    <div className="row gutters-sm">
-                        <SidebarScreen />
-                        <div className="col-md-9" style={{ marginTop: '50px' }}>
-                            <div className='container'>
+                userInfo.roleuser === "Corrector" ?
 
+                    <div>
 
-                                <div id="content" className="p-6 p-md-10 pt-12">
-
-                                    <NavbarList />
-
-                                    <div className="card mb-3">
-
-                                        <div className="card-body">
-
-                                            <div className="row">
-                                                <h1 style={{ color: '#B91736' }}>Correct Article</h1>
-                                            </div>
-                                            <br />
-                                            <div className="row ">
-
-                                                <div class="padding">
-
-                                                </div>
-                                                {articles?.map((tdata, index) => {
+                        <div className="containerr" style={{ backgroundColor: '#f7fafc' }}>
+                            <div className="main-body">
+                                <div className="row gutters-sm">
+                                    <SidebarScreen />
+                                    <div className="col-md-9" style={{ marginTop: '50px' }}>
+                                        <div className='container'>
 
 
-                                                    return (
+                                            <div id="content" className="p-6 p-md-10 pt-12">
 
-                                                        <div class="row" key={index}>
+                                                <NavbarList />
 
-                                                            <div class="col-md-12">
+                                                <div className="card mb-3">
 
-                                                                <ul class="list-group fa-padding">
-                                                                    <li class="list-group-item" data-toggle="modal" data-target="#issue">
-                                                                        <div className='col-12'>
-                                                                            <button type="button" class="pull-right"
-                                                                                style={{ backgroundColor: '#FEE5CF', border: 'none', borderRadius: '12px', padding: '5px' }}
-                                                                                data-toggle="modal"
-                                                                                data-target="#newIssue"
-                                                                                onClick={() => {
-                                                                                    history(`/correction/${tdata._id}`)
-                                                                                }}> Correct</button>
-                                                                        </div>
-                                                                        <br/>
-                                                                        
-                                                                        <div className='row'>
-                                                                        <div className='col'> 
-                                                                        <div class="media">
-                                                                            <i class="fa fa-file-o pull-left"></i>
+                                                    <div className="card-body">
 
-                                                                            <div class="media-body" >
+                                                        <div className="row">
+                                                            <h1 style={{ color: '#B91736' }}>Correct Article</h1>
+                                                        </div>
+                                                        <br />
+                                                        <div className="row ">
 
-                                                                                <strong >Title : {tdata.title}</strong>
-                                                                                <br />
-                                                                                <span >
-                                                                                    Status :
-                                                                                    {tdata.status === "loading" ?
-                                                                                        <div style={{ display: "inline-flex" }}>
-                                                                                            <img src={Loading}
-                                                                                                style={{ height: '20px', }} />
-                                                                                        </div>
-                                                                                        : tdata.status === "accepted" ?
-
-                                                                                            <div style={{ display: "inline-flex" }}>
-                                                                                                <img src={Accepter}
-                                                                                                    style={{ height: '20px' }} />
-                                                                                            </div>
-                                                                                            :
-                                                                                            <div style={{ display: "inline-flex" }}>
-                                                                                                <img src={Refuser}
-                                                                                                    style={{ height: '20px' }} />
-                                                                                            </div>
-
-
-                                                                                    }
-
-
-
-
-                                                                                </span>
-                                                                                {tdata.authors?.map((a, key) => {
-                                                                                    return (
-                                                                                        <div key={key}>
-
-                                                                                            <p class="info">Writted by {a.username}
-                                                                                            </p>
-                                                                                        </div>
-                                                                                    )
-                                                                                })}
-                                                                                <p>
-                                                                                    
-                                                                                filepassword : {tdata.filepassword}
-                                                                                </p>
-                                                                                <p>
-                                                                                    keyWords : {tdata.keyWords}
-                                                                                    <br />
-                                                                                    <br />  CreatedAt :{moment(tdata.createdAt).format("DD-MM-YYYY HH:mm:ss")}  </p>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
+                                                            <div class="padding">
 
                                                             </div>
+                                                            {articles?.map((tdata, index) => {
+                                                                 
+                                                                
+                                                                    return (
+                                                                        <>
+                                                                          {tdata.published===false ? <>
+                                                                    <div class="row" key={index}>
+                                                                        <div class="col-md-12">
+
+                                                                            <ul class="list-group fa-padding">
+                                                                                <li class="list-group-item" data-toggle="modal" data-target="#issue">
+                                                                                    <div className='col-12'>
+                                                                                        <button type="button" class="pull-right"
+                                                                                            style={{ backgroundColor: '#FEE5CF', border: 'none', borderRadius: '12px', padding: '5px' }}
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#newIssue"
+                                                                                            onClick={() => {
+                                                                                                history(`/correction/${tdata._id}`)
+                                                                                            }}> Correct</button>
+                                                                                    </div>
+                                                                                    <br />
+
+                                                                                    <div className='row'>
+                                                                                        <div className='col'>
+                                                                                            <div class="media">
+                                                                                                <i class="fa fa-file-o pull-left"></i>
+
+                                                                                                <div class="media-body" >
+
+                                                                                                    <strong >Title : {tdata.title}</strong>
+                                                                                                    <br />
+                                                                                                    <span >
+                                                                                                        Status :
+                                                                                                        {tdata.status === "loading" ?
+                                                                                                            <div style={{ display: "inline-flex" }}>
+                                                                                                                <img src={Loading}
+                                                                                                                    style={{ height: '20px', }} />
+                                                                                                            </div>
+                                                                                                            : tdata.status === "accepted" ?
+
+                                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                                                    <img src={Accepter}
+                                                                                                                        style={{ height: '20px' }} />
+                                                                                                                </div>
+                                                                                                                :
+                                                                                                                <div style={{ display: "inline-flex" }}>
+                                                                                                                    <img src={Refuser}
+                                                                                                                        style={{ height: '20px' }} />
+                                                                                                                </div>
+
+
+                                                                                                        }
+
+
+
+
+                                                                                                    </span>
+                                                                                                    {tdata.authors?.map((a, key) => {
+                                                                                                        return (
+                                                                                                            <div key={key}>
+
+                                                                                                                <p class="info">Writted by {a.username}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        )
+                                                                                                    })}
+                                                                                                    <p>
+
+                                                                                                        filepassword : {tdata.filepassword}
+                                                                                                    </p>
+                                                                                                    <p>
+                                                                                                        keyWords : {tdata.keyWords}
+                                                                                                        <br />
+                                                                                                        <br />  CreatedAt :{moment(tdata.createdAt).format("DD-MM-YYYY HH:mm:ss")}  </p>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+
+                                                                        </div>
+                                                                   
+                                                                    </div>
+                                                                    </>
+                                                               :<></>
+                                                            }
+                                                                    </>
+                                                                    )
+                                                                }
+
+                                                                   
+
+                                                            )}
+
+
                                                         </div>
-                                                    )
-                                                })}
+                                                    </div>
 
+                                                    <div className="row">
+                                                        <div className="col-sm-12"  >
+
+                                                            <ReactPaginate
+                                                                previousLabel={'previous'}
+                                                                nextLabel={"next"}
+                                                                breakLabel={'...'}
+                                                                pageCount={25}
+                                                                marginPagesDisplayed={2}
+                                                                pageRangeDisplayed={3}
+                                                                onPageChange={handlePageClick}
+                                                                containerClassName={'pagination justofy-content-center'}
+                                                                pageClassName={'page-item'}
+                                                                pageLinkClassName={'page-link'}
+                                                                previousClassName={'page-item'}
+                                                                previousLinkClassName={'page-link'}
+                                                                nextClassName={'page-item'}
+                                                                nextLinkClassName={'page-link'}
+                                                                breakClassName={'page-item'}
+                                                                breakLinkClassName={'page-link'}
+                                                                activeClassName={'active '}
+
+
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="col-sm-12"  >
-
-                                                <ReactPaginate
-                                                    previousLabel={'previous'}
-                                                    nextLabel={"next"}
-                                                    breakLabel={'...'}
-                                                    pageCount={25}
-                                                    marginPagesDisplayed={2}
-                                                    pageRangeDisplayed={3}
-                                                    onPageChange={handlePageClick}
-                                                    containerClassName={'pagination justofy-content-center'}
-                                                    pageClassName={'page-item'}
-                                                    pageLinkClassName={'page-link'}
-                                                    previousClassName={'page-item'}
-                                                    previousLinkClassName={'page-link'}
-                                                    nextClassName={'page-item'}
-                                                    nextLinkClassName={'page-link'}
-                                                    breakClassName={'page-item'}
-                                                    breakLinkClassName={'page-link'}
-                                                    activeClassName={'active '}
 
 
-                                                />
-                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-         : "Not Authorized"
-        }
+                    : "Not Authorized"
+            }
 
 
-</>
+        </>
 
     )
 }

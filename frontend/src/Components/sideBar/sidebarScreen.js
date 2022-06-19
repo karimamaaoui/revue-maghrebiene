@@ -49,7 +49,7 @@ export default function SidebarScreen() {
             </h2>
 
           
-            {userInfo.roleuser === "Reader" ?
+            {userInfo.roleuser === "Admin" ?
               <>
 
                 <li className="list-unstyled components mb-2">
@@ -114,7 +114,7 @@ export default function SidebarScreen() {
 
             }
 
-        {userInfo.roleuser === "User" ?
+        {userInfo.roleuser === "Reader" ?
               <>
                 <li className="list-unstyled components mb-2">
               <a href="/search" className="inline-block ">
@@ -197,7 +197,7 @@ export default function SidebarScreen() {
               : <></>
             }
 
-{userInfo.roleuser === "Editor" ?
+{userInfo.roleuser === "Corrector" ?
               <>
 
                 <li className="list-unstyled components mb-2">

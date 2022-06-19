@@ -52,7 +52,7 @@ export default function NavbarList() {
         </div>
 
         <div>
-        {userInfo.roleuser === "User" ?
+        {userInfo.roleuser === "Reader" ?
 
           <header className='navbar'>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
