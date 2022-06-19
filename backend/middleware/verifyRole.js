@@ -3,7 +3,7 @@ const db = require("../routes/Roles");
 const Role = db.role;
 
 
-const isReader = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     User.findById(req.decoded.id).exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
@@ -28,13 +28,13 @@ const isReader = (req, res, next) => {
             
             console.log("role name is ",roles[i].name)
   
-            if (roles[i].name === "Reader") {
+            if (roles[i].name === "Admin") {
               next();
               return;
             }
           }
   
-          res.status(403).send({ message: "Require Reader Role!" });
+          res.status(403).send({ message: "Require Admin Role!" });
           return;
         }
       );
@@ -81,6 +81,6 @@ const isAuthor = (req, res, next) => {
   };
   
   module.exports={
-    isReader: isReader,
+    isAdmin: isAdmin,
     isAuthor:isAuthor
 }

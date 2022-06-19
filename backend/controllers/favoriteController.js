@@ -1,12 +1,10 @@
 const Favorite = require('../model/Favorite');
-const Article =require('../model/Files');
 const User = require('../model/user');
 
 const createFavorite = async (req, res) => {
     console.log('inside  create  Favorite');
    
     const userId = await User.findOne({_id:req.decoded.id});
-  //  console.log('inside  create  Demand',userId);
     if (!userId) {
         res.status(404).json({ msg: 'User does not exist' });
     }
@@ -42,13 +40,16 @@ const getAllFavorite = ( async (req, res) => {
           const favorite = await Favorite.find().populate('user',['email','username'])
           .populate('article')
           .sort({ _id: -1 }) ;
+          console.log('favorite',favorite)
           const _idUser=favorite.map((fav)=>{return (fav.user._id)});
+          
+          console.log('iduser',_idUser)
          
           if(req.decoded.id.includes(_idUser))
           {
           return res.status(200).json(favorite);
         }else {
-          return res.status(200).json('no');
+          return res.status(400).json('no');
 
         }
 
@@ -57,7 +58,7 @@ const getAllFavorite = ( async (req, res) => {
       }
   });
 
-  //delete Demand
+  //delete Favorite
 const deleteFavorite = async (req, res) => {
   console.log('inside  delete  favorite');
   try {

@@ -103,9 +103,33 @@ const getOneType= (async (req, res) => {
 
 });
 
+
+const getTypeSearch = (async (req, res) => {
+  console.log("key", req.params.key)
+
+  try {
+   
+    const type = await Type.find(
+      {
+        "$or": [
+          { "label": { $regex: req.params.key } },
+        
+        ]
+      }
+    );
+    res.send(type)
+
+
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+
+})
+
 module.exports = {
   createType,getOneType,
   deleteType,
   updateType,
-  retrieveAllTypes
+  retrieveAllTypes,
+  getTypeSearch
 }

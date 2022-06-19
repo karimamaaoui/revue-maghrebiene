@@ -57,9 +57,22 @@ const getAllFeedback = (
         }
     });
 
-
+ //delete Demand
+ const deleteFeedback = async (req, res) => {
+    console.log('inside  delete  favorite');
+    try {
+      await Feedback.findByIdAndRemove(req.params.id);
+      res.status(201).json('favorite has been deleted...');
+  
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  
+  };
+  
 
 module.exports = {
     createFeedback,
-    getAllFeedback
+    getAllFeedback,
+    deleteFeedback
 }

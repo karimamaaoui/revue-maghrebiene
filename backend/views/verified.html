@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {
+        background: brown;
+    }
+
+    .card {
+        box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+        color: brown;
+
+    }
+
+    .text{
+        color: brown;
+    }
+    button{
+        background-color: brown;
+        color: beige;
+        
+    }
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: 1rem;
+    }
+
+    .img-thumbnail {
+        padding: .25rem;
+        background-color: #ecf2f5;
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .avatar-lg {
+        height: 150px;
+        width: 150px;
+    }
+  
+</style>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<body>
+    <div class="container" >
+        <br>
+        <div class="row">
+            <div class="col-lg-5 col-md-7 mx-auto my-auto">
+                <div class="card" style="        background-color: beige">
+                    <div class="card-body px-lg-5 py-lg-5 text-center">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                            class="rounded-circle avatar-lg img-thumbnail mb-4" alt="profile-image">
+                        <h2 class="text"  >Verified Account</h2>
+                        <p class="mb-4"></p>
+                        <form>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-lg my-4"  ><a href="http://localhost:3000/" style="color: brown;" >Continue </a></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

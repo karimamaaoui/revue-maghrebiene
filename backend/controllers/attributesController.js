@@ -97,11 +97,36 @@ const retrieveAllAttributes = (async (req, res) => {
   }
 });
 
+
+const getThemeSearch = (async (req, res) => {
+  console.log("key", req.params.key)
+
+  try {
+   
+    const attribut = await Attribute.find(
+      {
+        "$or": [
+          { "label": { $regex: req.params.key } },
+        
+        ]
+      }
+    );
+    res.send(attribut)
+
+
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+
+})
+
+
 module.exports = {
   createAttribute,
   updateAttribute,
   deleteAttribute,
   retrieveAllAttributes,
-  getOneAttribute
-  ,
+  getOneAttribute,
+  getThemeSearch
+  
 }

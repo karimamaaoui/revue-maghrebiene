@@ -1,11 +1,11 @@
 const Demand =require('../model/Demand');
 const User = require('../model/user');
 
+//create demand
 const createDemand = async (req, res) => {
     console.log('inside  create  Demand');
    
     const userId = await User.findOne({_id:req.decoded.id});
-  //  console.log('inside  create  Demand',userId);
     if (!userId) {
         res.status(404).json({ msg: 'User does not exist' });
     }
@@ -22,8 +22,6 @@ const createDemand = async (req, res) => {
     demand
       .save(demand)
       .then(data => {
-       // if(data.includes())
-        console.log("data demand", data)
 
         res.send(data);
       })

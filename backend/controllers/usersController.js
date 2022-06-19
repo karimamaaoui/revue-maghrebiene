@@ -229,34 +229,12 @@ const changePictureProfile = (async (req, res, next) => {
 
                 const updatedUser = await user.save();
 
-                /*   res.json({
-                     username: updatedUser.username,
-                     firstname: updatedUser.firstname,
-                     lastname: updatedUser.lastname,
-                     token: generateToken(updatedUser),
-                   });*/
+             
                 const token = generateToken(updatedUser, user);
 
                 return res.json({ token, user });
 
-                // User.findOneAndUpdate(
-                //     { _id: req.decoded.id },
-
-                //     { $set: { profilePic: profilePic.name, updatedAt: Date.now() } },
-                //     (err, result) => {
-                //         if (err) return res.status(500).json({ msg: err });
-                //         const msg = {
-                //             msg: "user successfully updated",
-                //             // username: req.params.username,
-
-                //         };
-                //         console.log(" add photo ", profilePic.name)
-
-
-                //         return res.json(msg);
-                //     }
-                // )
-            }
+                         }
         }
 
 
@@ -276,6 +254,8 @@ const logOut = async (req, res) => {
         this.next(err);
     }
 }
+
+const path = require('path');
 
 // forgot password
 const forgotPassword = async (req, res) => {
@@ -306,13 +286,15 @@ const forgotPassword = async (req, res) => {
                         if (err) throw err;
                         await User.findOneAndUpdate({ email: email },
                             { $set: { resetToken: resetToken } })
-
+                            
                         const mailOptions = {
                             from: "scongresses@gmail.com",
                             to: email,
                             subject: "Password Reset",
                             html: `<p>verify account <a href="http://localhost:5000/api/auth/${user._id}/${resetToken}"> here </a> to procced. </p>`,
                         };
+                       
+                        
                         transporter.sendMail(mailOptions, function (error, info) {
                             if (error) {
                                 console.log(error);
@@ -325,9 +307,13 @@ const forgotPassword = async (req, res) => {
                                 res.status(200).send({ result });
                             }
                         }
+                        
                         );
+                       
                     }
+                    
                 )
+
             }
         })
 };
@@ -416,10 +402,6 @@ const AddToAuthor = async (req, res) => {
     try {
 
         let user = await User.findById(_id);
-        // let userId = await User.findOne({ user: req.decoded.id })
-        // console.log("user id from add author", user)
-
-
         if (!user) {
             res.status(404).json({ msg: 'User does not exist' });
         }
@@ -432,7 +414,7 @@ const AddToAuthor = async (req, res) => {
                 return;
             }
             user.role = [role._id];
-            // console.log("user role role user role", user.role)
+             console.log("user role role user role", user.role)
 
         })
 
@@ -447,7 +429,7 @@ const AddToAuthor = async (req, res) => {
         })
 
         const isApproved = true;
-        await User.findOneAndUpdate(
+        await User.findByIdAndUpdate(
 
             { _id: req.params.id },
             {
@@ -455,7 +437,7 @@ const AddToAuthor = async (req, res) => {
 
             });
 
-        //console.log("useer role after", user.role)
+        console.log("useer role after", user.role)
 
         user.save();
         res.json({ msg: 'Approved', user });
@@ -474,7 +456,7 @@ const AddToAuthor = async (req, res) => {
 
             });
 
-        console.log("user roles after updating", user._id)
+        console.log("user roles after updating", user)
 
 
         await User.findOneAndUpdate(
@@ -491,22 +473,22 @@ const AddToAuthor = async (req, res) => {
         await author.save();
 
 
-        const mailOptions = {
-            from: "scongresses@gmail.com",
-            to: user.email,
-            subject: "Your  Demand To Be An Author Is Accepted ",
-            html: `<p>verify account  here  to procced. </p>`,
-        };
-        console.log(req.body.email)
-        transporter.sendMail(mailOptions, function (error, response) {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                console.log("msg sent");
+        // const mailOptions = {
+        //     from: "scongresses@gmail.com",
+        //     to: user.email,
+        //     subject: "Your  Demand To Be An Author Is Accepted ",
+        //     html: `<p>verify account  here  to procced. </p>`,
+        // };
+        // console.log(req.body.email)
+        // transporter.sendMail(mailOptions, function (error, response) {
+        //     if (error) {
+        //         console.log(error);
+        //     }
+        //     else {
+        //         console.log("msg sent");
 
-            }
-        })
+        //     }
+        // })
     } catch (err) {
         console.error(err);
         res.status(500).json({ msg: err });

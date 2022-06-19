@@ -102,10 +102,34 @@ const getOneRule= (async (req, res) => {
 });
 
 
+const getRuleSearch = (async (req, res) => {
+  console.log("key", req.params.key)
+
+  try {
+   
+    const rule = await Rule.find(
+      {
+        "$or": [
+          { "label": { $regex: req.params.key } },
+        
+        ]
+      }
+    );
+    res.send(rule)
+
+
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+
+})
+
+
 module.exports = {
     createRules, 
     retrieveAllRules,
     deleteRule,
     getOneRule,
-    updateRule
+    updateRule,
+    getRuleSearch
   }

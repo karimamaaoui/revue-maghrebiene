@@ -9,21 +9,19 @@ const userLogin = require("./routes/login")
 const userRoute = require("./routes/users")
 const fileUpload = require('express-fileupload');
 const cookieSession = require("cookie-session");
-const articleRoute = require('./routes/articlesRoutes/articlesRoutes');
 const typeRoute = require('./routes/typesRoute/typesRoute');
 const attributeRoute = require('./routes/attributeRoute/attributesRoute')
-const filesRoute = require('./routes/filesRoute/filesRoute')
+const filesRoute = require('./routes/articleRoute/articleRoute')
 const rulesRoute = require('./routes/rulesRoute/rules')
 const authorRoute = require('./routes/authorsRoutes/authorsRoute')
 const bodyParser = require('body-parser')
-const viewRoute = require('./routes/viewRoute');
 const demandRoute = require('./routes/demandRoute/demandRoute');
 const feedbackRoute=require('./routes/feedbackRoute/feedRoute')
 const favoriteRoute=require('./routes/favoriteRoute/favoriteRoute')
 const cors = require("cors");
 
 const http = require('http');
-const Files = require("./model/Files");
+const Files = require("./model/Article");
 const User = require("./model/user");
 const Message = require("./model/Message");
 const verifyToken = require("./middleware/verifyToken");
@@ -205,14 +203,10 @@ io.on("connection", (socket) => {
 
 })
 
-
-
-
 // routes 
 app.use('/api/auth/', userRegister);
 app.use('/api/auth/', userLogin);
 app.use('/api/user', userRoute);
-app.use('/api/articles', articleRoute);
 app.use('/api/type', typeRoute);
 app.use('/api/attribute', attributeRoute);
 app.use('/api/file', filesRoute);
@@ -221,19 +215,18 @@ app.use('/api/author', authorRoute);
 app.use('/api/demand', demandRoute);
 app.use('/api/feedback', feedbackRoute);
 app.use('/api/favorite', favoriteRoute);
-app.use('/api/view', viewRoute);
 
 
 function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
-        name: "User"
+        name: "Reader"
       }).save(err => {
         if (err) {
           console.log("error", err);
         }
-        console.log("added 'User' to roles collection");
+        console.log("added 'Reader' to roles collection");
       });
       new Role({
         name: "Author"
@@ -244,20 +237,20 @@ function initial() {
         console.log("added 'Author' to roles collection");
       });
       new Role({
-        name: "Reader"
+        name: "Admin"
       }).save(err => {
         if (err) {
           console.log("error", err);
         }
-        console.log("added 'Reader' to roles collection");
+        console.log("added 'Admin' to roles collection");
       });
       new Role({
-        name: "Editor"
+        name: "Corrector"
       }).save(err => {
         if (err) {
           console.log("error", err);
         }
-        console.log("added 'Editor' to roles collection");
+        console.log("added 'Corrector' to roles collection");
       });
 
     }

@@ -8,9 +8,9 @@ const verifyToken = require('../../middleware/verifyToken');
 
 router.post("/add",verifyToken.verifyUserToken  ,demandController.createDemand);
 
-router.get("/",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.getAllDemands);
+router.get("/",verifyToken.verifyUserToken,verifyRoles.isAdmin,demandController.getAllDemands);
 
-router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isReader,demandController.deleteDemand);
+router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isAdmin,demandController.deleteDemand);
 
 module.exports = router;
 

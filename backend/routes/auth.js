@@ -4,13 +4,15 @@ const authController = require('../controllers/registerController');
 const cors = require("cors");
 router.use(cors());
 const verifySignUp =require('../middleware/verifySignUp');
-const verifyRoles =require("../middleware/verifyRoles")
+//const verifyRoles =require("../middleware/verifyRoles")
 const User= require('../model/user')
 
 
 router.post("/register",authController.handleRegister);
 
 router.get('/verify/:id/:token',authController.handleVerifyWithToken);
+
+router.get('/verif', authController.verifed);
 
 module.exports = router;
 

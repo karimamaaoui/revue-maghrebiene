@@ -11,7 +11,6 @@ const {v4: uuidv4}=require("uuid");
 //transporter 
 const transporter =require('../middleware/transporter')
 const user = require("../model/user");
-var expressValidator = require('express-validator');
 
 
 require('dotenv').config();
@@ -76,6 +75,7 @@ const handleRegister= async (req,res)=>{
         to: req.body.email,
         subject:"Verify your email",
         html: `<p>verify account <a href="http://localhost:5000/api/auth/verify/${user._id}/${token}"> here </a> to procced. </p>`,
+        
         };
       console.log(req.body.email)
       transporter.transporter.sendMail(mailOptions,function(error,response){
@@ -109,7 +109,7 @@ const handleRegister= async (req,res)=>{
           }
         );
       } else {
-        Role.findOne({ name: "User" }, (err, role) => {
+        Role.findOne({ name: "Reader" }, (err, role) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
@@ -129,6 +129,8 @@ const handleRegister= async (req,res)=>{
     })
 
 };
+const path = require('path');
+const { REFUSED } = require("dns");
 
 //verify  account with email
 const handleVerifyWithToken=async (req, res) => {
@@ -152,11 +154,19 @@ const handleVerifyWithToken=async (req, res) => {
       { $set: {isVerified: isVerified}});
 
     await user.save();
-    res.json({ msg: 'Confirmed', user });
-  } catch (err) {
+    let redure= res.sendFile(path.join(__dirname,'../views/verified.html'));
+      return redure
+      } catch (err) {
     console.error(err);
     res.status(500).json({ msg: err});
   }
 }
 
-  module.exports = { handleRegister,handleVerifyWithToken };
+
+const verifed =async (req, res) => {
+  res.sendFile(path.join(__dirname,'./../views/verified.html'))
+}
+
+  module.exports = { handleRegister,
+    verifed,
+    handleVerifyWithToken };

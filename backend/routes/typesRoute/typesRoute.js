@@ -6,12 +6,13 @@ router.use(cors());
 const verifyRoles = require('../../middleware/verifyRole');
 const verifyToken = require('../../middleware/verifyToken');
 
-router.post("/add", verifyToken.verifyUserToken, verifyRoles.isReader, typesController.createType);
-router.put("/update/:id", verifyToken.verifyUserToken, verifyRoles.isReader, typesController.updateType);
-router.delete("/delete/:id", verifyToken.verifyUserToken, verifyRoles.isReader, typesController.deleteType);
+router.post("/add", verifyToken.verifyUserToken, verifyRoles.isAdmin, typesController.createType);
+router.put("/update/:id", verifyToken.verifyUserToken, verifyRoles.isAdmin, typesController.updateType);
+router.delete("/delete/:id", verifyToken.verifyUserToken, verifyRoles.isAdmin, typesController.deleteType);
 router.get("/types", verifyToken.verifyUserToken, typesController.retrieveAllTypes);
 
 router.get("/gettype/:id", typesController.getOneType);
+router.get('/filter/:key',verifyToken.verifyUserToken, typesController.getTypeSearch);
 
 
 module.exports = router;

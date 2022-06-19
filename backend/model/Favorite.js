@@ -9,10 +9,10 @@ const Favorite =FavoriteSchema({
     
   },
 
-  article: {
+  article: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Files',
-  },
+  }],
 
 },
   { timestamps: true }

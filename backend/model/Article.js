@@ -1,42 +1,101 @@
 const mongoose = require("mongoose");
 
+const ReviewSchema = mongoose.Schema;
+const DecisionSchema = mongoose.Schema;
+
+var reviews = new ReviewSchema({
+    postedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+
+    }],
+    text:String
+    },
+    { timestamps: true }
+
+);
+
+// var keyword = new KeywordSchema({
+//         type: [String],
+//         required: true
+//     },
+//     { timestamps: true }
+
+// );
+
+
+var decision = new DecisionSchema({
+  
+    articleDecision:{
+        type:Boolean,
+        default:false
+    }
+    },
+    { timestamps: true }
+
+);
+
+
 const ArticleSchema = mongoose.Schema;
 
 const Article = ArticleSchema({
 
+    contenu: [],
+
+
     title: {
         type: String,
-        required: true,
-        max: 55,
-        minlength:2 
     },
-
-
     abstract: {
         type: String,
-        require:true,
-        max: 1024,
-        minlength: 6
     },
-
-    content: {
-        type: String,
-        required: true,
-        max: 1024,
-        minlength: 4
-    },
-
 
     keyWords: {
         type: [String],
-        required:true
+        required: true
     },
 
-    abbreviations: {
+   
+    filepassword: {
         type: String,
-        required:true
-
+        default: ''
     },
+    authors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+
+    }],
+
+    like: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+
+    }],
+
+
+    view: [{
+        viewBy: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+
+        name: String,
+        count: Number,
+
+
+    }],
+
+    comments: [{
+        text: String,
+        postedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+
+    }],
+
 
 
     status: {
@@ -50,14 +109,6 @@ const Article = ArticleSchema({
         default: false
     },
 
-    authors: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-
-    },
-
-
     typeArticle: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Type',
@@ -65,32 +116,43 @@ const Article = ArticleSchema({
 
     }],
 
-    attributesAticle:[ {
+
+    attributesAticle: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Attributes',
         required: true,
 
     }],
+    read: {
+        type: Boolean,
+        default: false,
+    },
 
-
-    articleFiles: [
-        {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Files',
-    }
-    ],
     rulesChecked: [
         {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Rules',
-    }]
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Rule',
+        }],
+
+    imagename: {
+        type: String,
+        required: true,
+
+    },
+
+    pathFile: {
+        type: String,
+        required: true,
+    },
+    
+    editorReview: [reviews],
+
+    editorValidation: [decision]
+    
 
 
 },
     { timestamps: true }
 );
-
-//add index to article model for search filter
-Article.index({title:"text"})
 
 module.exports = mongoose.model("Article", Article);

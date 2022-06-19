@@ -7,13 +7,15 @@ const verifyRoles = require('../../middleware/verifyRole');
 const verifyToken = require('../../middleware/verifyToken');
 
 
-router.post("/add",verifyToken.verifyUserToken, verifyRoles.isReader,rulesController.createRules);
-router.get("/getallrules",verifyToken.verifyUserToken, verifyRoles.isReader,rulesController.retrieveAllRules);
+router.post("/add",verifyToken.verifyUserToken, verifyRoles.isAdmin,rulesController.createRules);
+router.get("/getallrules",verifyToken.verifyUserToken,rulesController.retrieveAllRules);
 
-router.put("/update/:id", verifyToken.verifyUserToken, verifyRoles.isReader, rulesController.updateRule);
-router.delete("/delete/:id", verifyToken.verifyUserToken, verifyRoles.isReader, rulesController.deleteRule);
+router.put("/update/:id", verifyToken.verifyUserToken, verifyRoles.isAdmin, rulesController.updateRule);
+router.delete("/delete/:id", verifyToken.verifyUserToken, verifyRoles.isAdmin, rulesController.deleteRule);
 
 router.get("/getrule/:id",verifyToken.verifyUserToken,  rulesController.getOneRule);
+
+router.get('/filter/:key',verifyToken.verifyUserToken, rulesController.getRuleSearch);
 
 module.exports = router;
 
