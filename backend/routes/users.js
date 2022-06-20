@@ -28,5 +28,10 @@ router.delete("/delete/:id",verifyToken.verifyUserToken,verifyRoles.isAdmin, use
 
 router.get('/filter/:key',verifyToken.verifyUserToken, userController.getUserSearch);
 
+router.get('/getuser/:id',verifyToken.verifyUserToken, userController.getUserByID);
+
+router.get('/getrole',verifyToken.verifyUserToken, userController.getUserRole);
+router.put("/adminupdate/:id",verifyToken.verifyUserToken, userController.getUserAndUpdate);
+
 
 module.exports = router;

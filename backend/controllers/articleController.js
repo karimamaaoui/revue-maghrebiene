@@ -1068,15 +1068,19 @@ const addReview = (async (req, res) => {
 })
 
   //pulishArticle
-  const publishArticle = (async (req, res) => {     
+  const publishArticle = (async (req, res) => { 
+    
     try{
-    const editorValidation = {
+      const article =await Article.findById(req.params.id);
+      console.log("Article",article.authors)
+      const user =await User.findById(article.authors);
+      console.log("Article",user.email)
+     
+      const editorValidation = {
    
       articleDecision:req.body.articleDecision,
      }
 
-     const article =Article.findById(req.params.id);
-     console.log("Article",article.authors)
 
   if(editorValidation.articleDecision ==='false' )
 {
@@ -1123,7 +1127,8 @@ const addReview = (async (req, res) => {
           from: "scongresses@gmail.com",
           to: user.email,
           subject: "Your  Article Is Accepted ",
-          html: `<p>See more <a href="localhost:3000"<a> </p>`,
+          html: `<p>See more <a href="http://localhost:3000"><a> </p>`,
+
       };
       console.log(req.body.email)
       transporter.sendMail(mailOptions, function (error, response) {

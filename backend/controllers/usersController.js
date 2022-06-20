@@ -53,6 +53,75 @@ const getUser = (async (req, res) => {
 
 });
 
+const getUserRole = (async (req, res) => {
+    console.log('inside find user by id');
+
+    try {
+        const role = await Role.find({});
+
+        console.log('inside find user by id',role);
+
+        res.status(200).json(role);
+
+
+    } catch (err) {
+        res.status(500).json({ msg: "Unauthorized" });
+    }
+
+
+});
+
+const getUserAndUpdate = (async (req, res) => {
+    console.log('inside find user by id');
+
+    try {
+        /*   const user= await User.findById({user:req.decoded.id } );
+           console.log("inside get user",user)
+           console.log("inside get user id ",req.decoded.id)
+           */
+        const user = User.findOneAndUpdate(
+            req.params.id,
+            { $set: { password: req.body.password, updatedAt: Date.now() } },
+        ).then(result => {
+            res.status(200).json(result)
+        })
+    
+        res.status(200).json(user);
+
+
+    } catch (err) {
+        res.status(500).json({ msg: "Unauthorized" });
+    }
+
+
+});
+
+
+
+
+
+const getUserByID = (async (req, res) => {
+    console.log('inside find user by id');
+
+    try {
+        /*   const user= await User.findById({user:req.decoded.id } );
+           console.log("inside get user",user)
+           console.log("inside get user id ",req.decoded.id)
+           */
+        const user = await User.findOne({_id:req.params.id}).populate('roles');
+        console.log("inside get user", user)
+
+        const { password, ...info } = user._doc;
+        console.log(info.role)
+        res.status(200).json(info);
+
+
+    } catch (err) {
+        res.status(500).json({ msg: "Unauthorized" });
+    }
+
+
+});
 //GET ALL
 
 const getAllUsers = (
@@ -554,6 +623,8 @@ const getNewArrivals = (
 module.exports = {
     getUser,
     getAllUsers,
+    getUserByID,
+    getUserAndUpdate,
     updatePassword,
     AddToAuthor,
     updateUser,
@@ -563,5 +634,6 @@ module.exports = {
     sendTemporaryPassword,
     deleteUser,
     getNewArrivals,
-    getUserSearch
+    getUserSearch,
+    getUserRole
 };

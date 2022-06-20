@@ -11,7 +11,7 @@ const Favorite =FavoriteSchema({
 
   article: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Files',
+    ref: 'Article',
   }],
 
 },
