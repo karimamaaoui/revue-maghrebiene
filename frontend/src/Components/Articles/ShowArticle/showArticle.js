@@ -83,6 +83,8 @@ export default function ShowArticle() {
                                                                                 return (
                                                                                     <>
                                                                                         {console.log('au.username ', au.username)}
+                                                                                        {console.log('atdata aith ', userInfo.user.username)}
+
                                                                                         {au.username === userInfo.user.username ? <>
 
 
@@ -143,7 +145,7 @@ export default function ShowArticle() {
                                                                                                 </tr>
                                                                                             </tbody>
                                                                                         </>
-                                                                                            : "no article found"
+                                                                                            : <></>
 
                                                                                         }
 

@@ -109,7 +109,7 @@ const PDF = (props) => {
         <div class="container bootstrap snippets bootdey "ref={ref}>
           <div class="row">
             <div class="col-md-12">
-              <div class="invoice-wrapper">
+              <div class="invoice-wrapper"  style={{height:'100%'}}>
                 <div class="intro">
                 {t("profile:title")} : <strong>{props.title}</strong>,
                   <br />

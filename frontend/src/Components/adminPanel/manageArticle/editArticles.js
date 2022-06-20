@@ -187,7 +187,7 @@ function EditArticle({ match }) {
             `http://localhost:5000/api/file/update/${articleId.id}`, formData, config).then((res) => {
 
                 console.log(res.data);
-                history('/managearticles')
+                history('/getList')
 
                 Swal.fire({
                     title: "Succces!",
@@ -233,7 +233,7 @@ function EditArticle({ match }) {
                                                                         }}
 
                                                                     >
-                                                                        {console.log('typesArti', typeArticle[0]?._id)}
+                                                                        {console.log('typesArti', typeArticle)}
                                                                         {types?.map((type, key) => {
                                                                             return(                                               
                                                                         //    return <option key={key} value={type._id} selected>
@@ -241,7 +241,7 @@ function EditArticle({ match }) {
 
                                                                             <>
                                                                             {
-                                                                                typeArticle[0]?._id=== type._id ?
+                                                                                typeArticle=== type._id ?
                                                                                 <>
                                                                                     <option key={key} value={type._id} selected>
                                                                                         {type.label}</option>
@@ -278,7 +278,7 @@ function EditArticle({ match }) {
                                                                                     <div key={i}>
                                                                         {console.log('attributes',item._id)}
 
-                                                                                        {(attributesAticle[0]?._id === item._id) ?
+                                                                                        {(attributesAticle === item._id) ?
                                                                                             <p>
                                                                                                 <input type="checkbox" className='checkbox__box' checked
                                                                                                     name="attributesAticle"

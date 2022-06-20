@@ -59,7 +59,7 @@ export default function LoginForm() {
 
         if (userInfo.roleuser === "Author")
         {
-          history("/article");
+          history("/getList");
 
         }
         else   if (userInfo.roleuser === "Admin")

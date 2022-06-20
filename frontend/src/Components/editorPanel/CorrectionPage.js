@@ -186,19 +186,19 @@ export default function CorrectionPage() {
                 console.log(res.data);
                 Swal.fire({
                     title: "Succces!",
-                    text: "Comment Added Successfully",
+                    text: "Article Added Successfully",
                     icon: 'success',
                     button: "OK!"
                 });
 
-
+                history('/respond')
                 console.log('article => ' + JSON.stringify(res.data));
 
             }).catch(err => {
                 console.log(err)
                 Swal.fire({
                     title: "Error!",
-                    text: "Comment Added Successfully",
+                    text: "Article Added Successfully",
                     icon: 'error',
                     button: "OK!"
                 });
@@ -391,10 +391,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -476,10 +472,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -653,10 +645,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -740,10 +728,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -837,10 +821,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -936,14 +916,9 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
-
 
                                                                                             </div>
                                                                                         </div>
@@ -1031,10 +1006,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -1131,10 +1102,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -1229,10 +1196,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -1335,10 +1298,6 @@ export default function CorrectionPage() {
                                                                                                                 alt="" class="img-circle" />
                                                                                                         </a>
                                                                                                         <div class="media-body">
-                                                                                                            <strong style={{ color: 'red' }}>dfdfdfdf</strong>
-                                                                                                            <p>
-                                                                                                                ssdsdsd;
-                                                                                                            </p>
                                                                                                         </div>
                                                                                                     </li>
                                                                                                 </ul>
@@ -1391,7 +1350,7 @@ export default function CorrectionPage() {
                                                     <Button type="checkbox"
                                                         onClick={async () => {
 
-                                                            const result = await Confirm('Are you sure you want to delete this one',
+                                                            const result = await Confirm('Are you sure you want to Publish this one',
                                                                 'Publish Сonfirmation');
                                                             if (result) {
         
