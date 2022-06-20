@@ -45,6 +45,8 @@ import ListAttribute from './Components/adminPanel/manageAttribute/listAttribute
 import EditAttribute from './Components/adminPanel/manageAttribute/editAttribute';
 import AddAttribute from './Components/adminPanel/manageAttribute/addAttribute';
 import ListFeedback from './Components/adminPanel/manageFeedback/feedbackList';
+import ShowArticle from './Components/Articles/ShowArticle/showArticle';
+import UpdateUser from './Components/adminPanel/manageUsers/updateUser';
 
 export default function RoutesList() {
   const [rooms, setRooms] = useState([]);
@@ -111,8 +113,12 @@ export default function RoutesList() {
               <Route path="/editrule/:id" element={<EditRule />} />
               <Route path="/edittype/:id" element={<EditType />} />
 
+              <Route path="/getList" element={<ShowArticle />} />
+
               <Route path="/profile" element={<Profile />} />
               <Route path="/editprofile" element={<UpdateProfile />} />
+              <Route path="/edituser/:id" element={<UpdateUser />} />
+
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/arti/:id" element={<FormArticle />} />

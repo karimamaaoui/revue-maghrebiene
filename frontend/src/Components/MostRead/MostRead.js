@@ -257,7 +257,7 @@ export default function MostRead() {
                                             <br />
 
                                             <div>
-                                                {slice.sort((a, b) => b.view[0].count - a.view[0].count)
+                                                {slice.sort((a, b) => b.view[0]?.count - a.view[0]?.count)
                                                     .map((tdata,index) => {
                                                         return (
                                                             <>

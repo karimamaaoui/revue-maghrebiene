@@ -113,10 +113,7 @@ export default function AddNewUser() {
 
                                 <h3 className="fieldset-title">Add New User</h3>
                                 <div class="card" >
-                                    {loading && <Loading />}
-                                    {error && <ErrorMessage variant="danger">
-                                        Username Or Email Already exists</ErrorMessage>}
-
+                                
                                     <div class="card-body">
                                         <form onSubmit={submitHandler}>
 

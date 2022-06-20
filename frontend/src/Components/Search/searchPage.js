@@ -97,9 +97,7 @@ export default function SearchPahe() {
 
             const result = articles.filter((article) => {
                 return (article.title.toLowerCase().startsWith(searchTerm) ||
-                    article.abstract.toLowerCase().startsWith(searchTerm) ||
-                    article.abbreviations.toLowerCase().startsWith(searchTerm) ||
-                    article.status.toLowerCase().startsWith(searchTerm)
+                    article.abstract.toLowerCase().startsWith(searchTerm) 
 
 
                 );
@@ -234,13 +232,7 @@ export default function SearchPahe() {
             .then((res) => {
 
                 console.log(res.data);
-                Swal.fire({
-                    title: "Succces!",
-                    text: "Favorite Sended Successfully",
-                    icon: 'success',
-                    button: "OK!"
-                });
-
+           
             }).catch(err => {
                 console.log(err)
                 Swal.fire({

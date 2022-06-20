@@ -131,7 +131,7 @@ export default function CorrectionPage() {
     const [text, setText] = useState('');
 
     const [formData, setFormData] = useState({
-        articleDecision:"",
+        articleDecision:"true",
     })    
 
 
@@ -1389,13 +1389,11 @@ export default function CorrectionPage() {
                                                         <i class="bi bi-trash3"></i>
                                                     </Button> */}
                                                     <Button type="checkbox"
-                                                        defaultChecked={formData.articleDecision}
                                                         onClick={async () => {
 
                                                             const result = await Confirm('Are you sure you want to delete this one',
                                                                 'Publish Сonfirmation');
                                                             if (result) {
-                                                                setFormData({ ...formData, articleDecision: "true" });
         
                                                                 handlePublish(readId)
                                                             } else {

@@ -92,7 +92,7 @@ export default function LoginForm() {
         {error && <ErrorMessage variant="danger">
           Username Or Password Incorrect</ErrorMessage>}
      
-            <div className='main' style={{height: "730px",backgroundColor:'#FEE5CF'}}>
+            <div className='main' style={{height: "760px",backgroundColor:'#FEE5CF'}}>
 
                 <div className='container mx-auto' style={{ marginTop: '-18px' }} >
                     <div className='sub-container' style={{ marginTop: '40px',borderRadius:'15px', marginBottom: '32px',height:'600px' }}>

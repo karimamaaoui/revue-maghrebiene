@@ -178,6 +178,14 @@ export default function SidebarScreen() {
                 </li>
 
                 <li className="list-unstyled components mb-2">
+                  <a href="/getList" className="inline-block">
+                    <i className="bi bi-book"></i>
+                    {' '}
+                    List Article </a>
+                </li>
+
+             
+                <li className="list-unstyled components mb-2">
               <a href="/chat" className="inline-block ">
                 <i className="bi bi-chat-dots "></i>
                 {' '}

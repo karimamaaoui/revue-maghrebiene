@@ -155,14 +155,14 @@ export default function FavoriteList() {
                                                                                                 return (
                                                                                                     <>
                                                                                                         <div class="widget-49-title-wrapper">
-                                                                                                            
-                                                                                                            <div class="widget-49-date-primary">
-                                                                                                            <button onClick={()=>{handleDelete(favorite._id)}}>
+                                                                                                            <div >
+                                                                                                            <button className='btn btn-danger' onClick={()=>{handleDelete(favorite._id)}} style={{borderRadius:'12px',}}>
                                                                                                                 Remove
                                                                                                             </button>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        
+                                                                                                        <br/>
+                                                                                                          
 
                                                                                                         <img src={a.pathFile} alt="" height="140px"
                                                                                                             style={{ width: "30%" }} />

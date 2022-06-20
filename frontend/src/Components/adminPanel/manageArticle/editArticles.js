@@ -106,7 +106,7 @@ function EditArticle({ match }) {
             setImagename(data.imagename);
             setContenu(data.contenu);
 
-            console.log('typeArticle', data.typeArticle)
+            console.log('data attributesAticle', data.attributesAticle[0]?._id.toString())
 
         };
 
@@ -276,6 +276,7 @@ function EditArticle({ match }) {
                                                                                 {attributes?.map((item, i) => (
 
                                                                                     <div key={i}>
+                                                                        {console.log('attributes',item._id)}
 
                                                                                         {(attributesAticle[0]?._id === item._id) ?
                                                                                             <p>

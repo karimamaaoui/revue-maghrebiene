@@ -89,9 +89,16 @@ export default function DemandAuthor() {
                                             <div class="row">
                                                 <div class="col-lg-4 col-md-7 mx-auto my-auto">
                                                     <div class="cardd mb-2">
-                                                        <div class="card-body  text-center">
-                                                            <img src="https://th.bing.com/th/id/OIP.At1YjL25G60Z3HppBZXdNQHaHa?pid=ImgDet&rs=1" class="rounded-circle avatar-lg px-lg-5 py-lg-5 mb-16" alt="profile-image" />
-                                                            <h2 class="text-danger">To Be An Author</h2>
+                                                    <div class="userprofile">
+
+<div class="userpic" >
+    <img src="https://th.bing.com/th/id/OIP.At1YjL25G60Z3HppBZXdNQHaHa?pid=ImgDet&rs=1" 
+    
+    alt="" class="userpicimg" />
+</div>
+
+
+<h2 class="text-danger">To Be An Author</h2>
                                                             <p class="mb-4">Send A Demand To The Admin </p>
 
                                                             <form>

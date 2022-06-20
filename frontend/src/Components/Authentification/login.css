@@ -6,7 +6,6 @@ body {
   font-family: 'Raleway';
   background: #AAD3E2;
   max-width: 100%;
-
 }
 
 
@@ -120,7 +119,7 @@ p {
   text-transform: uppercase;
   font-size: 15px;
   cursor: pointer;
-  top: -100px;
+  top: -50px;
 }
 
 .img-btn::after {
@@ -387,7 +386,7 @@ p {
 }
 
 .form-img .banner-img {
-  padding-top: 230px;
+  padding-top: 210px;
 }
 
 p.img-btn {

@@ -156,8 +156,9 @@ export default function AcceptDemand() {
 
                                                                     <div class="userprofile">
 
-                                                                        <div class="userpic">
+                                                                        <div class="userpic" >
                                                                             <img src="https://th.bing.com/th/id/OIP.At1YjL25G60Z3HppBZXdNQHaHa?pid=ImgDet&rs=1" 
+                                                                            
                                                                             alt="" class="userpicimg" />
                                                                         </div>
 
@@ -171,8 +172,15 @@ export default function AcceptDemand() {
                                                                         <br />
 
                                                                         {demand.user.email}
-                                                                    </p>
 
+                                                                        <br/>
+
+                                                                    </p>
+                                                                        <p>
+
+                                                                        {demand.coverletter}
+
+                                                                        </p>
 
 
 
