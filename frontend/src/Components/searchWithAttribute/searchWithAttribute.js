@@ -135,7 +135,7 @@ export default function SearchWithAttribute() {
                                                                                         {atrib.authors.map((auteur) => {
                                                                                             return (
                                                                                                 <span class="widget-49-pro-title" >
-                                                                                                    Writed By <b>
+                                                                                                    Posted By <b>
                                                                                                         <span style={{ textTransform: "capitalize" }}>
                                                                                                             {auteur.username}
                                                                                                         </span>
@@ -145,20 +145,20 @@ export default function SearchWithAttribute() {
                                                                                         })}
                                                                                     </div>
                                                                                 </div>
+                                                                                    <span style={{float:'left'}} ><b>KeyWords : </b> {atrib.keyWords} </span>
+                                                                                    <br/>
 
                                                                                 <div className='widget-49-meeting-points'>
-                                                                                    <span >{atrib.bio} </span>
+                                                                                   
+                                                                                    <img src={atrib.pathFile} alt="" height="140px"  />
+                                                                                    <br/>
                                                                                     <br />
-
-                                                                                    <img src={atrib.pathFile} alt="" height="140px" width="30px" />
 
                                                                                     <span></span>
-                                                                                    <span class="widget-49-meeting-time">{atrib.abstract} abstract</span>
+                                                                                    <span class="widget-49-meeting-time"><b>Abstract : </b>{atrib.abstract} </span>
                                                                                     <br />
 
-                                                                                    <span>{atrib.keyWords}</span>
                                                                                     <br />
-                                                                                    <span>view {atrib.view.length}</span>
 
                                                                                 </div>
                                                                                 <ol class="widget-49-meeting-points">

@@ -2,6 +2,7 @@
   "name": "clients",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://karimamaaoui.github.io/",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -24,6 +25,7 @@
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
     "emailjs-com": "^3.2.0",
+    "gh-pages": "^4.0.0",
     "html-parse-stringify": "^3.0.1",
     "i18next": "^21.6.14",
     "i18next-browser-languagedetector": "^6.1.3",
@@ -86,7 +88,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "vscode:prepublish": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

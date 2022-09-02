@@ -502,7 +502,7 @@ export default function SearchPahe() {
                                                                                                                     <div class="input-group">
                                                                                                                         <input
                                                                                                                             type="text"
-                                                                                                                            placeholder="Message"
+                                                                                                                            placeholder="Comment"
                                                                                                                             name='text'
                                                                                                                             onChange={(e) => {
                                                                                                                                 setText(e.target.value);
@@ -787,7 +787,7 @@ export default function SearchPahe() {
                                                                                                                         <div class="input-group">
                                                                                                                             <input
                                                                                                                                 type="text"
-                                                                                                                                placeholder="Message"
+                                                                                                                                placeholder="Comment"
                                                                                                                                 name='text'
                                                                                                                                 onChange={(e) => {
                                                                                                                                     setText(e.target.value);

@@ -241,7 +241,7 @@ export default function AddPost() {
                                                                         <div key={key}>
                                                                             <h6 class="mb-3" style={{ textTransform: "capitalize", textAlign: 'left' }}>
 
-                                                                                Written By {' '}
+                                                                                Posted By {' '}
                                                                                 <span style={{ fontWeight: 'bold' }}> {a.username}</span>
 
                                                                             </h6>
@@ -309,7 +309,7 @@ export default function AddPost() {
                                                                                 Created At :{' '}
                                                                                 {moment(datas.createdAt).format("DD-MM-YYYY")}
                                                                             </small>
-                                                                            <small class="float-right">{0.025 * (getAllText.split(' ').length)} min
+                                                                            <small class="float-right">{moment((0.025 * (getAllText.split(' ').length))).format('hh-mm-ss')} min
                                                                                 <i class="bi bi-stopwatch"></i>
                                                                             </small>
                                                                             <small class="float-left">

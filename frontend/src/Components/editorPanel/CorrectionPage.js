@@ -198,7 +198,7 @@ export default function CorrectionPage() {
                 console.log(err)
                 Swal.fire({
                     title: "Error!",
-                    text: "Article Added Successfully",
+                    text: "Error",
                     icon: 'error',
                     button: "OK!"
                 });

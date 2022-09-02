@@ -167,18 +167,18 @@ export default function AcceptDemand() {
 
 
                                                                     <p>
-                                                                        {demand.user.username}
+                                                                        {demand?.user?.username}
 
                                                                         <br />
 
-                                                                        {demand.user.email}
+                                                                        {demand?.user?.email}
 
                                                                         <br/>
 
                                                                     </p>
                                                                         <p>
 
-                                                                        {demand.coverletter}
+                                                                        {demand?.coverletter}
 
                                                                         </p>
 
@@ -190,7 +190,7 @@ export default function AcceptDemand() {
                                                                     <div style={{ display: "inline-flex" }}>
                                                                         <img src={Accepter}
                                                                          onClick={() => {
-                                                                            approvedAuthor(demand.user._id);
+                                                                            approvedAuthor(demand?.user._id);
 
                                                                         }}
                                                                         
@@ -199,7 +199,7 @@ export default function AcceptDemand() {
                                                                             const result = await Confirm('Are you sure you want to delete this one', 
                                                                             'Delete Сonfirmation');
                                                                           if (result) {
-                                                                            deleteRequest(demand._id);
+                                                                            deleteRequest(demand?._id);
                                                                           }
 
                                                                         }}

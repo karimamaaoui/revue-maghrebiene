@@ -56,6 +56,13 @@ export default function AddType() {
 
           .catch(err => {
             console.log(err)
+               Swal.fire({
+                    title: "Error!",
+                    text: "Type already exist",
+                    icon: 'error',
+                    button: "OK!"
+                })
+
         })
     }
   
